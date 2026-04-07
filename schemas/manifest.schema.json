@@ -1,0 +1,29 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Step Manifest",
+  "type": "object",
+  "required": ["task_id", "screen_id", "step", "allowed_inputs", "allowed_outputs", "forbidden_paths", "clear_memory_on_finish", "allow_chat_history", "allow_other_screen_context", "allow_other_task_context"],
+  "properties": {
+    "task_id": { "type": "string" },
+    "fix_id": { "type": "string" },
+    "screen_id": { "type": "string" },
+    "step": { "type": "string", "enum": ["analyze", "build", "test", "fix"] },
+    "status": { "type": "string", "enum": ["pending", "in_progress", "completed", "failed", "manual_required", "archived"] },
+    "artifact_state": { "type": "string", "enum": ["active", "working", "archive"], "description": "산출물 생명주기 상태" },
+    "severity": { "type": "string", "enum": ["high", "low"] },
+    "original_people_spec_path": { "type": "string" },
+    "original_machine_spec_path": { "type": "string" },
+    "final_people_spec_path": { "type": "string" },
+    "final_machine_spec_path": { "type": "string" },
+    "allowed_inputs": { "type": "array", "items": { "type": "string" } },
+    "allowed_outputs": { "type": "array", "items": { "type": "string" } },
+    "forbidden_paths": { "type": "array", "items": { "type": "string" } },
+    "clear_memory_on_finish": { "type": "boolean", "default": true },
+    "allow_chat_history": { "type": "boolean", "default": false },
+    "allow_other_screen_context": { "type": "boolean", "default": false },
+    "allow_other_task_context": { "type": "boolean", "default": false },
+    "started_at": { "type": "string", "format": "date-time" },
+    "completed_at": { "type": "string", "format": "date-time" },
+    "error": { "type": "string" }
+  }
+}

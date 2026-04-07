@@ -1,0 +1,124 @@
+version: "1.0"
+scope: framework.layout
+description: "HTML 레이아웃 및 컴포넌트 배치 규칙"
+rules:
+  - id: LR-001
+    description: "검색폼/상세폼 필드 5칸 배치 원칙"
+    condition: "dataForm elements 내 cols 배열 구성 시"
+    action: >
+      기본적으로 한 줄에 5칸으로 배치한다.
+      cols 배열은 항상 gravity 합계가 5가 되도록 구성한다.
+      - 기본: cols: [{},{},{},{},{}] → 1+1+1+1+1 = 5칸
+      - 2칸 필드: { gravity: 2, ... } → gravity:2 + 1 + 1 + 1 = 5
+      - PPT에서 한 줄에 3칸만 사용: cols: [{},{},{},{},{}] → 3개 채우고 나머지 2개는 빈 객체 {}
+      - 빈 칸은 반드시 빈 객체 {} 로 채워서 5칸을 맞춘다
+    severity: critical
+    examples:
+      basic: "cols: [{ view: DATA_VIEW.text, label: 'A', name: 'a' }, { view: DATA_VIEW.text, label: 'B', name: 'b' }, { view: DATA_VIEW.codeNone, ... }, { view: DATA_VIEW.date, ... }, { view: DATA_VIEW.text, ... }]"
+      gravity2: "cols: [{ view: DATA_VIEW.text, label: 'A', name: 'a', gravity: 2 }, { view: DATA_VIEW.text, ... }, { view: DATA_VIEW.text, ... }, {}]"
+      partial_row: "cols: [{ view: DATA_VIEW.text, ... }, { view: DATA_VIEW.codeNone, ... }, { view: DATA_VIEW.text, ... }, {}, {}]"
+
+  - id: LR-002
+    description: "레이아웃 CSS 클래스 규칙"
+    condition: "HTML div 레이아웃 구성 시"
+    action: >
+      프레임워크 제공 레이아웃 CSS 클래스를 사용한다:
+      - data-content-wrapper: flex row 컨테이너
+      - data-content-fill: flex:1 채움 (가장 넓은 메인 영역, 필수)
+      - data-content-half-left: 좌측 고정폭 영역
+      - data-content-N-left: N칸 고정폭 좌측 영역 (N * 132px)
+      - data-page: 기본 페이지 컨테이너
+      - data-grid: 그리드 컨테이너 (필수)
+      - data-modal: 모달 컨테이너
+    severity: critical
+    forbidden:
+      - "data-content-half-right — 사용 금지. 우측 영역이 메인이면 data-content-fill 사용"
+      - "data-content-half — 존재하지 않는 클래스"
+
+  - id: LR-007
+    description: "data-content-fill 필수 배치 원칙"
+    condition: "화면에 섹션(영역)이 1개 이상일 때"
+    action: >
+      화면 내 섹션(그리드, 폼, 트리 등)이 1개든 N개든, 반드시 가장 넓은 메인 영역 1개는
+      data-content-fill로 배치해야 한다. data-content-fill은 남은 공간을 모두 채우는 역할이므로
+      이것이 없으면 화면이 정상적으로 확장되지 않는다.
+
+      단일 영역:
+        data-content-wrapper > data-content-fill (그리드 또는 폼)
+
+      좌우 분할 (좌측 고정 + 우측 메인):
+        data-content-wrapper > data-content-half-left (좌측 고정) + data-content-fill (우측 메인)
+
+      좌우 분할 (좌측 메인 + 우측 고정):
+        data-content-wrapper > data-content-fill (좌측 메인) + data-content-half-left (우측 고정)
+
+      3섹션 이상:
+        data-content-wrapper > data-content-half-left + data-content-fill (가장 넓은 것) + data-content-half-left
+    severity: critical
+    examples:
+      single: |
+        <div class="data-content-wrapper">
+            <div class="data-content-fill">
+                <!-- 메인 그리드 또는 폼 -->
+            </div>
+        </div>
+      split_two: |
+        <div class="data-content-wrapper">
+            <div class="data-content-fill">
+                <!-- 좌측 메인 (가장 넓은 영역) -->
+            </div>
+            <div class="data-content-half-left">
+                <!-- 우측 보조 -->
+            </div>
+        </div>
+      split_three: |
+        <div class="data-content-wrapper">
+            <div class="data-content-half-left">
+                <!-- 좌측 보조 -->
+            </div>
+            <div class="data-content-fill">
+                <!-- 중앙 메인 (가장 넓은 영역) -->
+            </div>
+            <div class="data-content-half-left">
+                <!-- 우측 보조 -->
+            </div>
+        </div>
+
+  - id: LR-003
+    description: "그리드 div에 data-grid 클래스 필수"
+    condition: "datagrid 컨테이너 div 생성 시"
+    action: >
+      그리드를 담는 div에는 반드시 class="data-grid"를 추가해야 한다.
+      올바름: <div class="data-grid" th:id="|${PGM}grid1|"></div>
+      잘못됨: <div th:id="|${PGM}grid1|"></div>
+    severity: critical
+    auto_fixable: true
+
+  - id: LR-004
+    description: "편집 가능 그리드 초기 빈 행 추가"
+    condition: "editable: true인 datagrid 생성 시"
+    action: >
+      편집 가능한 그리드(editable: true)는 initPgm에서 UI 생성 후
+      gridRow.addRow()를 1회 호출하여 빈 행 1개를 미리 만들어야 한다.
+      예: listener.gridRow.addRow();
+    severity: critical
+
+  - id: LR-005
+    description: "data-content-wrapper 필수 구조"
+    condition: "모든 화면 HTML 생성 시"
+    action: >
+      data-page 직접 자식으로 반드시 data-content-wrapper가 있어야 한다.
+      올바름: data-page > data-content-wrapper > data-content-fill/half-left/half-right
+      잘못됨: data-page > data-content-fill (wrapper 생략)
+    severity: critical
+
+  - id: LR-006
+    description: "그리드 코드헬프 컬럼 editor 규칙"
+    condition: "그리드 컬럼이 코드헬프(돋보기 검색)를 사용하는 경우"
+    action: >
+      editor: GRID_VIEW.code (NOT GRID_VIEW.text)
+      type: DATA_CODE_TYPE.{코드유형} (예: user, dept, code, style 등)
+      targetCols: 선택 시 자동입력할 컬럼 매핑
+      예: { id: 'user_id', header: '성명', editor: GRID_VIEW.code,
+            type: DATA_CODE_TYPE.user, targetCols: { dept_nm: 'dept_nm' } }
+    severity: critical

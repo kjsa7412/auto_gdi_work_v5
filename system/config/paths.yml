@@ -1,0 +1,110 @@
+version: "2.0"
+description: "시스템 전역 경로 설정 — v5 단순화"
+
+# ─────────────────────────────────────────────
+# 외부 루트 경로
+# ─────────────────────────────────────────────
+roots:
+  SOURCE_ROOT: "C:/gdi"
+  REFERENCE_ROOT: "C:/GitLap/FERP/FERP(TOBE)/ferp-backoffice"
+
+# ─────────────────────────────────────────────
+# 배포 경로 (deploy 시 SOURCE_ROOT 하위)
+# ─────────────────────────────────────────────
+deploy:
+  html: "{SOURCE_ROOT}/src/main/resources/templates/project/{module}/{category}/{ScreenId}.html"
+  xml: "{SOURCE_ROOT}/src/main/resources/mapper/sjerp/{module}/{category}/{screenid}.xml"
+  controller: "{SOURCE_ROOT}/src/main/java/com/sjinc/sjerp/proj/{module}/{category}/{screenid}/{ScreenId}Controller.java"
+  service: "{SOURCE_ROOT}/src/main/java/com/sjinc/sjerp/proj/{module}/{category}/{screenid}/{ScreenId}Service.java"
+
+# 경로 변수 설명:
+#   {module}   = machine_spec.yml의 module_id 소문자 (예: SE → se)
+#   {category} = machine_spec.yml의 category_id 소문자 (예: SEA → sea)
+#   {ScreenId} = 화면ID 원본 (예: SEA010)
+#   {screenid} = 화면ID 소문자 (예: sea010)
+
+# ─────────────────────────────────────────────
+# user/ 영역 (단순화: review/fixes 통합)
+# ─────────────────────────────────────────────
+user:
+  inbox: "user/inbox/tasks/{taskId}/"
+  output: "user/output/tasks/{taskId}/"
+  test: "user/test/tasks/{taskId}/"
+
+# ─────────────────────────────────────────────
+# review 영역 — dual-spec 구조
+# ─────────────────────────────────────────────
+review:
+  original_people_spec: "user/review/tasks/{taskId}/original/people_spec.md"
+  original_machine_spec: "user/review/tasks/{taskId}/original/machine_spec.yml"
+  final_people_spec: "user/review/tasks/{taskId}/final/people_spec.md"
+  final_machine_spec: "user/review/tasks/{taskId}/final/machine_spec.yml"
+
+# ─────────────────────────────────────────────
+# system/ 영역 (단순화: 중간 파일 축소)
+# ─────────────────────────────────────────────
+system:
+  runtime: "system/runtime/tasks/{taskId}/"
+  cache:
+    convention: "system/cache/convention/"
+  templates:
+    root: "system/templates/"
+    skeletons: "system/templates/skeletons/"
+    screen_types: "system/templates/screen-types/"
+  config: "system/config/"
+
+# ─────────────────────────────────────────────
+# convention 캐시 파일
+# ─────────────────────────────────────────────
+convention:
+  ddl: "system/cache/convention/테이블_DDL.txt"
+  code_detail: "system/cache/convention/코드_상세.txt"
+  code_category: "system/cache/convention/코드_업무구분.txt"
+  program_list: "system/cache/convention/프로그램목록.txt"
+
+# ─────────────────────────────────────────────
+# archive 영역 (실행 입력 금지 — 보관/추적 전용)
+# ─────────────────────────────────────────────
+archive:
+  tasks: "system/archive/tasks/{taskId}/"
+  fixes: "system/archive/fixes/{fixId}/"
+
+# ─────────────────────────────────────────────
+# DB 접속 (policies/runtime/db_access.yml 참조)
+# ─────────────────────────────────────────────
+db:
+  host: "10.10.1.100"
+  port: 5466
+  database: "GDI_SERVICE"
+  user: "sjinc"
+  # password는 policies/runtime/db_access.yml 참조
+
+# ─────────────────────────────────────────────
+# 정책 경로
+# ─────────────────────────────────────────────
+policies:
+  analyze: "policies/analyze/"
+  framework: "policies/framework/"
+  verify: "policies/verify/"
+  runtime: "policies/runtime/"
+
+# ─────────────────────────────────────────────
+# 정책 제안 경로
+# ─────────────────────────────────────────────
+proposals:
+  new: "proposals/policy_changes/new/"
+  done: "proposals/policy_changes/done/"
+  backups: "proposals/policy_changes/backups/"
+
+# ─────────────────────────────────────────────
+# 문서/템플릿
+# ─────────────────────────────────────────────
+docs:
+  screen_spec_template: "docs/templates/screen_spec_template.md"
+  screen_spec_guide: "docs/templates/screen_spec_guide.md"
+
+# ─────────────────────────────────────────────
+# build 입력 (고정)
+# ─────────────────────────────────────────────
+build:
+  input: "user/review/tasks/{taskId}/final/machine_spec.yml"

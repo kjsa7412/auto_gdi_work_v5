@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- TODO: namespace는 반드시 소문자 (예: sea010) -->
+<mapper namespace="/* TODO: 화면ID 소문자 */">
+
+    <!-- ============================================================ -->
+    <!-- 목록 조회 -->
+    <!-- ============================================================ -->
+    <select id="select/* TODO: Subject */List" resultType="java.util.Map">
+        SELECT
+            /* TODO: 조회 컬럼 나열 */
+            a.pk_col
+            , a.col1
+            , a.col2
+            /* 코드명 서브쿼리 — 코드콤보 표시명 전달 필수 */
+            , (SELECT comm_cd_nm FROM sy_code_dtl
+               WHERE wrk_tp_cd = '/* TODO */'
+                 AND cd_tp_cd = '/* TODO */'
+                 AND comm_cd = a.code_cd) AS code_cd_nm
+            , TO_CHAR(a.firs_reg_dts, 'YYYY-MM-DD HH24:MI') AS firs_reg_dts
+        FROM /* TODO: 테이블명 */ a
+        WHERE 1 = 1
+        <if test="P_field != null and P_field != ''">
+            AND a.field = #{P_field}
+        </if>
+        <if test="P_code_cd != null and P_code_cd != ''">
+            AND a.code_cd = #{P_code_cd}
+        </if>
+        <if test="P_start_dt != null and P_start_dt != ''">
+            <![CDATA[AND a.dt_col >= REPLACE(#{P_start_dt}, '-', '')]]>
+        </if>
+        <if test="P_end_dt != null and P_end_dt != ''">
+            <![CDATA[AND a.dt_col <= REPLACE(#{P_end_dt}, '-', '')]]>
+        </if>
+        ORDER BY a.pk_col DESC
+    </select>
+
+</mapper>

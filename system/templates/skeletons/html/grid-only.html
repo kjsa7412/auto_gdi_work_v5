@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<th:block th:replace="~{frame/top_title_button :: topTitleButtonFragment}"></th:block>
+
+<div class="data-page">
+    <div th:id="|${PGM}searchForm|"></div>
+    <div class="data-content-wrapper">
+        <div class="data-content-fill">
+            <div th:id="|${PGM}toolbar1|"></div>
+            <div class="data-grid" th:id="|${PGM}grid1|"></div>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript" th:inline="javascript">
+    (() => {
+        const PGM = /*[[${PGM}]]*/ null;
+        const listener = platform.listener[PGM];
+
+        // ──────────────────────────────────────
+        // 상태 초기화
+        // ──────────────────────────────────────
+        const resetState = () => {
+            /* TODO: 상태 변수 초기화 */
+        };
+
+        // ──────────────────────────────────────
+        // 조회 폼 생성
+        // ──────────────────────────────────────
+        const createSearchForm = () => {
+            listener.form.searchForm = webix.ui({
+                container: `${PGM}searchForm`,
+                view: 'dataForm',
+                pgm: PGM,
+                search: true,
+                elements: [
+                    {
+                        cols: [
+                            /* TODO: 조회 필드 정의 — 한 줄 5칸 기준
+                            { view: DATA_VIEW.text, label: '필드명', name: 'P_field_nm' },
+                            { view: DATA_VIEW.codeNone, type: DATA_CODE_TYPE.codeValue, label: '코드명',
+                              name: 'P_code_cd', param: { wrk_tp_cd: 'XX', cd_tp_cd: 'YYY' } },
+                            {},
+                            {},
+                            {},
+                            */
+                        ],
+                    },
+                ],
+            });
+        };
+
+        // ──────────────────────────────────────
+        // 툴바 + 그리드 생성
+        // ──────────────────────────────────────
+        const createToolbarsAndGrids = () => {
+            listener.toolbar.toolbar1 = webix.ui({
+                container: `${PGM}toolbar1`,
+                view: "dataToolbar",
+                pgm: PGM,
+                title: '목록', /* TODO: 목록 제목 */
+            });
+
+            listener.grid.grid1 = webix.ui({
+                container: `${PGM}grid1`,
+                view: "datagrid",
+                listener: listener,
+                editable: false,
+                checkable: false,
+                columns: [
+                    /* TODO: 그리드 컬럼 정의
+                    { id: "col1", editor: GRID_VIEW.text, header: "컬럼1", sort: "string", css: "textCenter", adjust: true },
+                    { id: "col2", editor: GRID_VIEW.number, header: "금액", sort: "int", css: "textRight", format: priceFormat, adjust: true },
+                    { id: "col3", editor: GRID_VIEW.date, header: "일자", sort: "string", css: "textCenter", adjust: true },
+                    */
+                ],
+            });
+        };
+
+        // ──────────────────────────────────────
+        // 이벤트 핸들러
+        // ──────────────────────────────────────
+
+        /* 초기화 */
+        const onInitClick = () => {
+            listener.form.searchForm.formReset();
+            listener.grid.grid1.clearData();
+            resetState();
+        };
+
+        /* 조회 */
+        const onSearchClick = () => {
+            selectGrid();
+        };
+
+        // ──────────────────────────────────────
+        // 데이터 조회
+        // ──────────────────────────────────────
+        const selectGrid = () => {
+            if (!listener.form.searchForm.formValidate()) return;
+            resetState();
+
+            let param = listener.form.searchForm.getData();
+            param.statement = "/* TODO: namespace */.select/* TODO: Subject */List";
+
+            const callback = new Callback(function (result) {
+                if (result.resultCode === RESULT_CODE.OK) {
+                    listener.grid.grid1.setData(result.resultData);
+                } else if (result.resultCode === RESULT_CODE.ERROR) {
+                    popup.alert.show(result.resultMessage || "문제가 발생되었습니다.");
+                }
+            });
+
+            platform.post(platform.url.select, param, callback);
+        };
+
+        // ──────────────────────────────────────
+        // Assign Handlers
+        // ──────────────────────────────────────
+        listener.initPgm = () => {
+            resetState();
+            createSearchForm();
+            createToolbarsAndGrids();
+        };
+
+        listener.activePgm = (param, isNew) => {
+            /* 서브화면 복귀 시 자동 재조회 */
+            if (listener.grid.grid1.count() > 0) {
+                selectGrid();
+            }
+            listener.form.searchForm.focus();
+        };
+
+        listener.button.init.click = onInitClick;
+        listener.button.search.click = onSearchClick;
+
+        /* TODO: 그리드 더블클릭 → 서브화면 이동 (필요 시)
+        listener.gridRow.dblclick = (row, column, record, grid) => {
+            APP_PGM.openPgm('모듈ID', '화면ID', { pk_field: record.pk_field });
+        };
+        */
+    })();
+</script>
+</html>

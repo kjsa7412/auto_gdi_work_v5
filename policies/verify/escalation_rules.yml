@@ -1,0 +1,24 @@
+version: "1.0"
+scope: verify
+rules:
+  - id: ER-001
+    description: "critical 오류 자동 수정 시도"
+    condition: "severity == critical and auto_fixable"
+    action: "auto-fix and re-verify"
+    severity: critical
+  - id: ER-002
+    description: "critical 오류 수동 전환"
+    condition: "severity == critical and not auto_fixable"
+    action: "set manual_required: true, halt deploy"
+    severity: critical
+    requires_manual_review: true
+  - id: ER-003
+    description: "warning 오류 기록"
+    condition: "severity == warning"
+    action: "log warning, continue if no critical errors"
+    severity: warning
+  - id: ER-004
+    description: "3회 이상 동일 오류 정책 변경 제안"
+    condition: "same error_id occurs >= 3 times"
+    action: "trigger propose-policy-fix"
+    severity: warning

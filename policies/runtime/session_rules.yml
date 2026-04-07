@@ -1,0 +1,23 @@
+version: "1.0"
+scope: runtime
+rules:
+  - id: SR-001
+    description: "step 종료 시 memory clear"
+    condition: "step completion"
+    action: "clear_memory_on_finish: true"
+    severity: critical
+  - id: SR-002
+    description: "chat history 참조 금지"
+    condition: "step execution"
+    action: "allow_chat_history: false"
+    severity: critical
+  - id: SR-003
+    description: "다른 screen context 금지"
+    condition: "step execution"
+    action: "allow_other_screen_context: false"
+    severity: critical
+  - id: SR-004
+    description: "다른 task context 금지"
+    condition: "step execution"
+    action: "allow_other_task_context: false"
+    severity: critical

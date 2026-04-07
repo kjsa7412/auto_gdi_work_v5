@@ -1,0 +1,49 @@
+version: "1.0"
+screen_type: form-detail
+description: "단건 상세 화면 (서브화면, 화면ID 끝자리 != 0)"
+match_conditions:
+  - screen_id_suffix: "non-zero"
+  - has_detail_form: true
+  - is_sub_screen: true
+
+layout:
+  html_class: "data-content-wrapper"
+  sections:
+    - type: search_form
+      container: searchForm
+      optional: true
+    - type: content_fill
+      children:
+        - type: toolbar
+          container: toolbar1
+        - type: form
+          container: postForm
+
+skeleton:
+  html: "skeletons/html/form-detail.html"
+  xml: "skeletons/xml/standard-crud.xml"
+  controller: null   # 기본값: CommonController 사용. CG-002 조건 해당 시에만 skeleton 지정
+  service: null      # 기본값: CommonService 사용. CG-002 조건 해당 시에만 skeleton 지정
+  controller_skeleton: "skeletons/controller/standard-controller.java"   # 커스텀 필요 시 사용할 skeleton
+  service_skeleton: "skeletons/service/standard-service.java"            # 커스텀 필요 시 사용할 skeleton
+
+required_functions:
+  - resetState
+  - createPostForm
+  - createToolbarsAndGrids
+  - onSaveClick
+  - selectInfo
+  - assignHandlers
+
+required_listeners:
+  - initPgm
+  - activePgm
+  - button.save.click
+
+notes:
+  - "서브화면: sy_menu_info 등록 안 함 (sy_pgm_info만)"
+  - "activePgm(param, isNew)로 부모 파라미터 수신"
+  - "APP_PGM.closePgm(PGM)으로 부모 복귀"
+
+auto_generation: true
+confidence_threshold: 0.8

@@ -1,0 +1,27 @@
+version: "1.0"
+scope: instruct
+rules:
+  - id: MH-001
+    description: "특수 UI/UX 수작업 전환"
+    condition: "screen has non-standard UI components"
+    action: "set manual_required: true, log reason"
+    severity: critical
+    requires_manual_review: true
+  - id: MH-002
+    description: "예외 흐름 과다 수작업 전환"
+    condition: "event_flow complexity > threshold"
+    action: "set manual_required: true"
+    severity: critical
+    requires_manual_review: true
+  - id: MH-003
+    description: "템플릿 미매칭 수작업 전환"
+    condition: "screen_type == unknown or confidence < threshold"
+    action: "set manual_required: true"
+    severity: critical
+    requires_manual_review: true
+  - id: MH-004
+    description: "도메인 특화 로직"
+    condition: "business logic not expressible as standard pattern"
+    action: "set custom_implementation_required: true"
+    severity: warning
+    requires_manual_review: true

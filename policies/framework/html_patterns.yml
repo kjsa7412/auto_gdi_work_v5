@@ -1,0 +1,86 @@
+version: "1.0"
+scope: framework.html
+rules:
+  - id: HP-001
+    description: "IIFE 패턴 필수"
+    condition: "HTML script block"
+    action: "wrap in (() => { ... })()"
+    severity: critical
+  - id: HP-002
+    description: "PGM 변수 선언"
+    condition: "IIFE 내부 첫 줄"
+    action: "const PGM = /*[[${PGM}]]*/ null;"
+    severity: critical
+  - id: HP-003
+    description: "listener 초기화"
+    condition: "PGM 선언 후"
+    action: "const listener = platform.listener[PGM];"
+    severity: critical
+  - id: HP-004
+    description: "동적 ID 패턴"
+    condition: "HTML container id"
+    action: 'th:id="|${PGM}containerId|"'
+    severity: critical
+  - id: HP-005
+    description: "topTitleButtonFragment"
+    condition: "일반화면 (not popup, not tab)"
+    action: '<th:block th:replace="~{frame/top_title_button :: topTitleButtonFragment}"></th:block>'
+    severity: critical
+  - id: HP-006
+    description: "Thymeleaf inline javascript"
+    condition: "script tag"
+    action: '<script type="text/javascript" th:inline="javascript">'
+    severity: critical
+  - id: HP-007
+    description: "코드콤보 선언 방식"
+    condition: "code combo field"
+    action: "view: DATA_VIEW.codeNone, type: DATA_CODE_TYPE.codeValue, param: {wrk_tp_cd, cd_tp_cd} — 특별 지시 없으면 기본값. 명시적 요청 시에만 DATA_VIEW.code / DATA_CODE_TYPE.code 허용"
+    severity: critical
+  - id: HP-008
+    description: "이벤트 핸들러 참조 바인딩"
+    condition: "button event"
+    action: "별도 함수 선언 후 listener.button.{name}.click = fnRef"
+    severity: critical
+  - id: HP-009
+    description: "Assign Handlers IIFE 마지막 배치"
+    condition: "IIFE 블록"
+    action: "listener assignments at end of IIFE"
+    severity: warning
+  - id: HP-010
+    description: "editor.change에서 el.config.name 사용"
+    condition: "editor.change handler"
+    action: "use el.config.name, not el.name"
+    severity: critical
+  - id: HP-011
+    description: "gridRow.dblclick으로 서브화면 이동"
+    condition: "sub-screen navigation"
+    action: "use gridRow.dblclick (4 params: row, column, record, grid)"
+    severity: critical
+  - id: HP-012
+    description: "activePgm 서브화면 복귀 시 재조회"
+    condition: "parent screen activePgm"
+    action: "if grid has data, auto re-query"
+    severity: warning
+  - id: HP-013
+    description: "결과 0건 실패 처리"
+    condition: "save/delete callback"
+    action: "if resultData === 0, show failure message"
+    severity: critical
+  - id: HP-014
+    description: "미등록 버튼 핸들러 안전 할당"
+    condition: "listener.button.{slot}.click 할당 시 pgm_info에 해당 버튼이 미등록일 수 있는 경우"
+    action: "반드시 if (listener.button.{slot}) 가드로 감싸서 할당. 예: if (listener.button.upld) { listener.button.upld.click = handler; }"
+    severity: critical
+    auto_fixable: true
+  - id: HP-015
+    description: "formReadonly 호출 시 dataCheckbox 안전 처리"
+    condition: "폼에 DATA_VIEW.check 필드가 포함된 경우"
+    action: "formReadonly() 호출을 try-catch로 감싸야 함. 예: try { form.formReadonly(true); } catch(e) { /* dataCheckbox clearValidate 미지원 */ }"
+    severity: critical
+    auto_fixable: true
+  - id: HP-016
+    description: "activePgm param boolean 비교 시 String() 변환 필수"
+    condition: "activePgm handler에서 boolean 의미의 param 값 비교"
+    action: "String(param.field) !== 'true' 또는 String(param.field) === 'true' 패턴 사용. 직접 !param.field 또는 param.field === true 비교 금지"
+    severity: critical
+    auto_fixable: true

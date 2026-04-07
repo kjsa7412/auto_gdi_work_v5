@@ -1,0 +1,14 @@
+<!-- policy-loader partial: YML 정책 로드 지시 -->
+# Policy Loader
+
+## 적용할 정책 파일
+현재 step에 해당하는 policies/ 하위 YML을 로드하여 규칙을 적용합니다.
+
+## 정책 적용 순서
+1. framework/*.yml — 프레임워크 표준 (항상 적용)
+2. {step}/*.yml — 단계별 정책
+3. runtime/*.yml — 컨텍스트 격리 규칙
+
+## 정책 충돌 시
+- severity: critical > warning > info
+- 상위 정책이 하위 정책보다 우선

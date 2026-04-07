@@ -1,0 +1,53 @@
+version: "1.0"
+scope: framework.xml
+rules:
+  - id: XP-001
+    description: "namespace 소문자"
+    condition: "mapper namespace"
+    action: "namespace must be lowercase (e.g., psb010)"
+    severity: critical
+  - id: XP-002
+    description: "resultType java.util.Map"
+    condition: "select statement"
+    action: 'resultType="java.util.Map"'
+    severity: critical
+  - id: XP-003
+    description: "comp_cd/brndz_cd 사용 금지"
+    condition: "any SQL statement"
+    action: "do not use comp_cd or brndz_cd (TOBE 삭제 컬럼)"
+    severity: critical
+  - id: XP-004
+    description: "INSERT 감사컬럼"
+    condition: "INSERT statement"
+    action: "include firs_reg_pgm_id, firs_reg_dts, firs_reg_user_id, firs_reg_ip"
+    severity: critical
+  - id: XP-005
+    description: "UPDATE 감사컬럼"
+    condition: "UPDATE statement"
+    action: "include fina_reg_pgm_id, fina_reg_dts, fina_reg_user_id, fina_reg_ip"
+    severity: critical
+  - id: XP-006
+    description: "current_timestamp 사용"
+    condition: "timestamp value"
+    action: "use current_timestamp, not now()"
+    severity: critical
+  - id: XP-007
+    description: "_dts 접미사"
+    condition: "datetime column"
+    action: "use _dts suffix, not _dtm"
+    severity: critical
+  - id: XP-008
+    description: "COALESCE 타입 통일"
+    condition: "COALESCE function"
+    action: "both arguments must be same type (no varchar/bigint mix)"
+    severity: critical
+  - id: XP-009
+    description: "코드명 서브쿼리 필수"
+    condition: "SELECT with code field"
+    action: "include _nm subquery from sy_code_dtl"
+    severity: warning
+  - id: XP-010
+    description: "login_comp_cd 사용 금지"
+    condition: "any SQL parameter"
+    action: "do not use login_comp_cd (TOBE removed)"
+    severity: critical

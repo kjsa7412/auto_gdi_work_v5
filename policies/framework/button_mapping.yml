@@ -1,0 +1,42 @@
+version: "1.0"
+scope: framework
+standard_buttons:
+  - ppt_label: "초기화"
+    slot: init
+    pgm_info: "init_yn='Y'"
+    listener: "listener.button.init.click"
+  - ppt_label: "조회"
+    slot: search
+    pgm_info: "srch_yn='Y'"
+    listener: "listener.button.search.click"
+  - ppt_label: "신규"
+    slot: news
+    pgm_info: "new_yn='Y'"
+    listener: "listener.button.news.click"
+  - ppt_label: "저장"
+    slot: save
+    pgm_info: "save_yn='Y'"
+    listener: "listener.button.save.click"
+  - ppt_label: "삭제"
+    slot: del
+    pgm_info: "del_yn='Y'"
+    listener: "listener.button.del.click"
+  - ppt_label: "출력"
+    slot: print
+    pgm_info: "prnt_yn='Y'"
+    listener: "listener.button.print.click"
+  - ppt_label: "업로드"
+    slot: upload
+    pgm_info: "upld_yn='Y'"
+    listener: "listener.button.upload.click"
+custom_button_rules:
+  - id: BM-001
+    description: "PPT 버튼명이 표준 라벨과 불일치 시 etc_desc 사용"
+    condition: "ppt_label not in standard_buttons"
+    action: "use etc_desc{N} slot, listener.button.etc{N}.click"
+    severity: critical
+  - id: BM-002
+    description: "etc_desc 번호 순서대로 할당"
+    condition: "multiple custom buttons"
+    action: "assign etc_desc1, etc_desc2, ... sequentially"
+    severity: warning

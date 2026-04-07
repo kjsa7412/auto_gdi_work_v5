@@ -1,0 +1,13 @@
+<!-- io-contract partial: manifest 기반 입출력 제어 -->
+# I/O Contract
+
+이 step은 manifest에 정의된 입출력만 허용됩니다.
+
+## 규칙
+- allowed_inputs에 명시된 경로만 읽기 가능
+- allowed_outputs에 명시된 경로만 쓰기 가능
+- forbidden_paths에 명시된 경로 접근 금지
+- manifest 외 경로 접근 시 즉시 중단
+
+## manifest 위치
+system/runtime/tasks/{taskId}/screens/{screenId}/{step}.manifest.yaml

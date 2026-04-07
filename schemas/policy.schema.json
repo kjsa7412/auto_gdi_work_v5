@@ -1,0 +1,25 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Policy File",
+  "type": "object",
+  "required": ["version", "scope"],
+  "properties": {
+    "version": { "type": "string" },
+    "scope": { "type": "string" },
+    "rules": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["id", "description", "severity"],
+        "properties": {
+          "id": { "type": "string" },
+          "description": { "type": "string" },
+          "condition": { "type": "string" },
+          "action": { "type": "string" },
+          "severity": { "type": "string", "enum": ["critical", "warning", "info"] },
+          "requires_manual_review": { "type": "boolean", "default": false }
+        }
+      }
+    }
+  }
+}

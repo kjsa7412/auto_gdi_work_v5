@@ -1,0 +1,85 @@
+version: "1.0"
+scope: framework
+rules:
+  - id: FA-001
+    forbidden: "platform.openPgm(...)"
+    replacement: "APP_PGM.openPgm(모듈ID, 화면ID, param)"
+    severity: critical
+  - id: FA-002
+    forbidden: "APP_PGM.getOpenParam(PGM)"
+    replacement: "activePgm(param, isNew)의 첫 번째 인자(param)로 파라미터를 수신한다. APP_PGM.getOpenParam(PGM) 사용 금지."
+    severity: critical
+    standard: "activePgm(param, isNew)"
+    note: "popup-grid 등 팝업 화면의 파라미터 수신도 반드시 activePgm(param, isNew) 사용"
+  - id: FA-003
+    forbidden: "platform.closePgm(...)"
+    replacement: "APP_PGM.closePgm(pgmId)"
+    severity: critical
+  - id: FA-004
+    forbidden: "grid.getCheckedItems()"
+    replacement: "grid.getCheckedData()"
+    severity: critical
+  - id: FA-005
+    forbidden: "form.formEnable()"
+    replacement: "form.formReadonly(false)"
+    severity: critical
+  - id: FA-006
+    forbidden: "form.formDisable()"
+    replacement: "form.formReadonly(true)"
+    severity: critical
+  - id: FA-007
+    forbidden: "DATA_VIEW.hidden"
+    replacement: "{ hidden: true }"
+    severity: critical
+  - id: FA-008
+    forbidden: "POST_RESULT.SUCCESS"
+    replacement: "RESULT_CODE.OK"
+    severity: critical
+  - id: FA-009
+    forbidden: "RESULT_CODE_OK"
+    replacement: "RESULT_CODE.OK"
+    severity: critical
+  - id: FA-010
+    forbidden: "platform.msg(...)"
+    replacement: "popup.alert.show(message, callback?)"
+    severity: critical
+  - id: FA-011
+    forbidden: "platform.confirm(...)"
+    replacement: "popup.confirm.show(message, callback)"
+    severity: critical
+  - id: FA-012
+    forbidden: "APP_CODE.load(...)"
+    replacement: "폼 elements에서 type: DATA_CODE_TYPE.code + param 선언"
+    severity: critical
+  - id: FA-013
+    forbidden: "codeParam: { ... }"
+    replacement: "type: DATA_CODE_TYPE.code, param: { wrk_tp_cd, cd_tp_cd }"
+    severity: critical
+  - id: FA-014
+    forbidden: "listener.button.etc_desc{N}.click"
+    replacement: "listener.button.etc{N}.click"
+    severity: critical
+  - id: FA-015
+    forbidden: "el.name (in editor.change)"
+    replacement: "el.config.name"
+    severity: critical
+  - id: FA-016
+    forbidden: "el.value (in editor.change)"
+    replacement: "form.getData().fieldName"
+    severity: critical
+  - id: FA-017
+    forbidden: "now() in XML"
+    replacement: "current_timestamp"
+    severity: critical
+  - id: FA-018
+    forbidden: "resultType='map'"
+    replacement: "resultType='java.util.Map'"
+    severity: critical
+  - id: FA-019
+    forbidden: "_dtm suffix"
+    replacement: "_dts suffix"
+    severity: critical
+  - id: FA-020
+    forbidden: "form.elements.fieldName.hide()"
+    replacement: "form.getView(name).hide()"
+    severity: critical

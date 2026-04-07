@@ -1,0 +1,12 @@
+<!-- isolation-guard partial: 컨텍스트 격리 강제 -->
+# Context Isolation Guard
+
+## 격리 규칙
+- 현재 screen의 manifest만 참조 가능
+- 다른 screen의 산출물 직접 참조 금지
+- 다른 task의 산출물 직접 참조 금지
+- 이전 대화 메모리 사용 금지
+- step 종료 시 memory clear 전제
+
+## 위반 시
+즉시 실행 중단하고 오류 보고

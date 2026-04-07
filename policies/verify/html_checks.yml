@@ -1,0 +1,109 @@
+version: "1.0"
+scope: verify.html
+checks:
+  - id: VH-001
+    name: "IIFE 패턴 확인"
+    check: "script wrapped in (() => { ... })()"
+    severity: critical
+  - id: VH-002
+    name: "PGM 변수 확인"
+    check: "const PGM = /*[[${PGM}]]*/ null"
+    severity: critical
+  - id: VH-003
+    name: "listener 초기화 확인"
+    check: "const listener = platform.listener[PGM]"
+    severity: critical
+  - id: VH-004
+    name: "initPgm 존재 확인"
+    check: "listener.initPgm defined"
+    severity: critical
+  - id: VH-005
+    name: "activePgm 존재 확인"
+    check: "listener.activePgm defined"
+    severity: critical
+  - id: VH-006
+    name: "금지 API 미사용"
+    check: "none of forbidden_apis.yml patterns found"
+    severity: critical
+  - id: VH-007
+    name: "버튼 매핑 정확성"
+    check: "PPT buttons correctly mapped to standard/etc slots"
+    severity: critical
+  - id: VH-008
+    name: "etc_desc 프로퍼티 패턴"
+    check: "listener.button.etc{N}.click (not etc_desc{N})"
+    severity: critical
+  - id: VH-009
+    name: "DATA_VIEW 상수만 사용"
+    check: "no custom view types"
+    severity: critical
+  - id: VH-010
+    name: "topTitleButtonFragment 적절성"
+    check: "present for normal screens, absent for popups/tabs"
+    severity: critical
+  - id: VH-011
+    name: "동적 ID 패턴"
+    check: 'all container IDs use th:id="|${PGM}...|"'
+    severity: critical
+  - id: VH-012
+    name: "결과 0건 실패 처리"
+    check: "save/delete callbacks check resultData === 0"
+    severity: critical
+  - id: VH-013
+    name: "코드타입 필드 DATA_VIEW 검증"
+    check: "merged_spec에서 코드타입이 지정된 필드가 HTML에서 DATA_VIEW.text로 생성되었는지 검사. 코드타입이 있으면 반드시 DATA_VIEW.codeNone 또는 DATA_VIEW.code를 사용해야 함"
+    severity: critical
+    auto_fixable: true
+  - id: VH-015
+    name: "코드 컴포넌트 기본값 검증"
+    check: "특별한 지시가 없는 코드성 컴포넌트가 view: DATA_VIEW.codeNone, type: DATA_CODE_TYPE.codeValue를 사용하는지 확인. DATA_VIEW.code 또는 DATA_CODE_TYPE.code 사용 시 명시적 요청 근거 필요"
+    severity: critical
+    auto_fixable: true
+  - id: VH-014
+    name: "activePgm boolean param 문자열 비교"
+    check: "activePgm에서 boolean 파라미터(isNew 등)를 !param.xxx 또는 param.xxx === true/false로 직접 비교하지 않는지 확인"
+    severity: critical
+  - id: VH-016
+    name: "폼 필드 5칸 배치 검증"
+    check: "dataForm elements 내 각 cols 배열의 gravity 합계가 5인지 확인. 빈 칸은 {} 빈 객체로 채워야 함"
+    severity: critical
+    auto_fixable: true
+  - id: VH-017
+    name: "그리드 data-grid 클래스 필수"
+    check: "datagrid 컨테이너 div에 class='data-grid'가 포함되어 있는지 확인"
+    severity: critical
+    auto_fixable: true
+  - id: VH-018
+    name: "레이아웃 CSS 클래스 검증"
+    check: >
+      금지 클래스: data-content-half (접미사 없음), data-content-half-right.
+      허용 클래스: data-content-fill, data-content-half-left, data-content-N-left.
+      data-content-half-right 발견 시 즉시 차단.
+    severity: critical
+    auto_fixable: true
+    auto_fix_action: "data-content-half-right → data-content-half-left 또는 data-content-fill로 교정"
+  - id: VH-022
+    name: "data-content-fill 필수 존재"
+    check: >
+      화면 내 data-content-wrapper 안에 반드시 data-content-fill이 1개 이상 존재해야 한다.
+      data-content-fill은 가장 넓은 메인 영역에 사용하며, 이것이 없으면 화면이 정상 확장되지 않는다.
+      섹션이 1개여도 data-content-fill 필수.
+      섹션이 N개여도 그 중 가장 넓은 1개는 반드시 data-content-fill.
+    severity: critical
+    auto_fixable: false
+  - id: VH-019
+    name: "편집 그리드 초기 빈 행 추가"
+    check: "editable:true인 그리드가 있으면 initPgm 내에서 listener.gridRow.addRow() 호출이 있는지 확인"
+    severity: critical
+    auto_fixable: true
+  - id: VH-020
+    name: "data-content-wrapper 필수 존재"
+    check: "data-page 직접 자식으로 data-content-wrapper가 있는지 확인. data-content-fill/half 등이 wrapper 없이 직접 배치되면 안 됨"
+    severity: critical
+    auto_fixable: true
+  - id: VH-021
+    name: "그리드 코드헬프 컬럼 editor 검증"
+    check: "spec에서 코드헬프/유저정보 등 검색 기능이 명시된 그리드 컬럼이 GRID_VIEW.code editor를 사용하는지 확인. GRID_VIEW.text로 생성되면 안 됨"
+    severity: critical
+    auto_fixable: true
+    auto_fixable: true

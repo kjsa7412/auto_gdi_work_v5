@@ -1,0 +1,19 @@
+<!-- preamble partial: 모든 command/skill 상단에 공통 삽입 -->
+# 공통 전제조건
+
+## 참조 우선순위
+1순위: system/cache/convention/ (DDL, 코드) — Grep으로만 접근
+2순위: policies/ (YML 정책)
+3순위: system/templates/skeletons/ (골격 템플릿)
+4순위: 참고 소스 ({REFERENCE_ROOT})
+최하위: 에이전트 자체 판단
+
+## 금지사항
+- convention 전체 Read 금지 (Grep만)
+- 상위 참조에 내용 있으면 자의적 판단 금지
+- 다른 screen/task 컨텍스트 참조 금지
+
+## 경로 변수
+- SOURCE_ROOT = C:/gdi
+- WORK_ROOT = C:/auto_gdi_work_v5
+- REFERENCE_ROOT = C:/GitLap/FERP/FERP(TOBE)/ferp-backoffice

@@ -1,0 +1,40 @@
+version: "1.0"
+scope: instruct
+required_sections:
+  - section: meta
+    fields: [screen_id, screen_name, screen_type, module_id, category_id]
+    severity: critical
+  - section: search
+    fields: [field_list, data_view_types, code_mappings]
+    severity: critical
+  - section: grid
+    fields: [column_list, grid_view_types, css_alignment, editable, checkable]
+    severity: critical
+  - section: form
+    fields: [field_list, data_view_types, required_flags, code_mappings]
+    severity: critical
+    condition: "screen_type in [search-grid-form, form-detail]"
+  - section: button
+    fields: [button_list, standard_mapping, etc_desc_mapping, listener_properties]
+    severity: critical
+  - section: event
+    fields: [event_flow_per_button, api_call_sequence]
+    severity: warning
+  - section: api
+    fields: [xml_statement_list, namespace]
+    severity: critical
+  - section: code
+    fields: [code_usage_list, wrk_tp_cd, cd_tp_cd]
+    severity: warning
+  - section: table
+    fields: [main_table, ddl_verified]
+    severity: critical
+  - section: sql
+    fields: [menu_registration, ddl_supplement]
+    severity: warning
+rules:
+  - id: SRF-001
+    description: "필수 섹션 누락 시 보완"
+    condition: "required section missing"
+    action: "attempt resolution via DDL/code Grep, else tag [작업자 확인 필요]"
+    severity: critical

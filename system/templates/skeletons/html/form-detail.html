@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<th:block th:replace="~{frame/top_title_button :: topTitleButtonFragment}"></th:block>
+
+<div class="data-page">
+    <div class="data-content-wrapper">
+        <div class="data-content-fill">
+            <div th:id="|${PGM}toolbar1|"></div>
+            <div th:id="|${PGM}postForm|"></div>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript" th:inline="javascript">
+    (() => {
+        const PGM = /*[[${PGM}]]*/ null;
+        const listener = platform.listener[PGM];
+
+        /* 상태 변수 */
+        let currentMode = null;
+        let parentParam = null;
+
+        // ──────────────────────────────────────
+        // 상태 초기화
+        // ──────────────────────────────────────
+        const resetState = () => {
+            currentMode = null;
+            parentParam = null;
+            /* TODO: 추가 상태 변수 초기화 */
+        };
+
+        // ──────────────────────────────────────
+        // 툴바 생성
+        // ──────────────────────────────────────
+        const createToolbarsAndGrids = () => {
+            listener.toolbar.toolbar1 = webix.ui({
+                container: `${PGM}toolbar1`,
+                view: "dataToolbar",
+                pgm: PGM,
+                title: '상세', /* TODO: 상세 제목 */
+            });
+
+            /* TODO: 서브화면 내 그리드가 있으면 여기에 추가
+            listener.grid.grid1 = webix.ui({
+                container: `${PGM}grid1`,
+                view: "datagrid",
+                listener: listener,
+                editable: true,
+                checkable: true,
+                columns: [],
+            });
+            */
+        };
+
+        // ──────────────────────────────────────
+        // 상세 폼 생성
+        // ──────────────────────────────────────
+        const createPostForm = () => {
+            listener.form.postForm = webix.ui({
+                container: `${PGM}postForm`,
+                view: 'dataForm',
+                pgm: PGM,
+                elements: [
+                    {
+                        cols: [
+                            /* TODO: 상세 필드 정의 — 한 줄 5칸 기준
+                            { view: DATA_VIEW.text, label: '필드명', name: 'field_nm', required: true, maxlength: 50 },
+                            { view: DATA_VIEW.codeNone, type: DATA_CODE_TYPE.codeValue, label: '코드명',
+                              name: 'code_cd', param: { wrk_tp_cd: 'XX', cd_tp_cd: 'YYY' } },
+                            { view: DATA_VIEW.textarea, label: '비고', name: 'rmk', height: 200, gravity: 3 },
+                            { view: DATA_VIEW.text, name: 'pk_field', hidden: true },
+                            */
+                        ],
+                    },
+                ],
+            });
+        };
+
+        // ──────────────────────────────────────
+        // 이벤트 핸들러
+        // ──────────────────────────────────────
+
+        /* 저장 */
+        const onSaveClick = () => {
+            if (!listener.form.postForm.formValidate()) return;
+
+            popup.confirm.show('저장 하시겠습니까?', (result) => {
+                if (!result) return;
+
+                let param = listener.form.postForm.getData();
+
+                if (currentMode === EDIT_MODE.NEW) {
+                    param.statement = "/* TODO: namespace */.insert/* TODO: Subject */";
+                } else {
+                    param.statement = "/* TODO: namespace */.update/* TODO: Subject */";
+                }
+
+                platform.post(platform.url.save, param, new Callback((res) => {
+                    if (res.resultCode === RESULT_CODE.OK) {
+                        if (res.resultData === 0) {
+                            popup.alert.show('저장에 실패하였습니다. 데이터를 확인해주세요.');
+                            return;
+                        }
+                        popup.alert.show('저장되었습니다.', () => {
+                            APP_PGM.closePgm(PGM);
+                        });
+                    } else if (res.resultCode === RESULT_CODE.ERROR) {
+                        popup.alert.show(res.resultMessage || '저장 중 문제가 발생되었습니다.');
+                    }
+                }));
+            });
+        };
+
+        /* 삭제 */
+        const onDeleteClick = () => {
+            popup.confirm.show('삭제 하시겠습니까?', (result) => {
+                if (!result) return;
+
+                let param = listener.form.postForm.getData();
+                param.statement = "/* TODO: namespace */.delete/* TODO: Subject */";
+
+                platform.post(platform.url.save, param, new Callback((res) => {
+                    if (res.resultCode === RESULT_CODE.OK) {
+                        popup.alert.show('삭제되었습니다.', () => {
+                            APP_PGM.closePgm(PGM);
+                        });
+                    } else if (res.resultCode === RESULT_CODE.ERROR) {
+                        popup.alert.show(res.resultMessage || '삭제 중 문제가 발생되었습니다.');
+                    }
+                }));
+            });
+        };
+
+        // ──────────────────────────────────────
+        // 데이터 조회
+        // ──────────────────────────────────────
+
+        /* 단건 상세 조회 */
+        const selectInfo = (pkValue) => {
+            let param = { /* TODO: PK 파라미터 세팅 */ };
+            param.statement = "/* TODO: namespace */.select/* TODO: Subject */Info";
+
+            platform.post(platform.url.select, param, new Callback((result) => {
+                if (result.resultCode === RESULT_CODE.OK && result.resultData) {
+                    const data = Array.isArray(result.resultData) ? result.resultData[0] : result.resultData;
+                    listener.form.postForm.setData(data);
+                    listener.form.postForm.formReadonly(false, [/* TODO: PK 필드명 */]);
+                    currentMode = EDIT_MODE.EDIT;
+                }
+            }));
+        };
+
+        // ──────────────────────────────────────
+        // Assign Handlers
+        // ──────────────────────────────────────
+        listener.initPgm = () => {
+            resetState();
+            createPostForm();
+            createToolbarsAndGrids();
+        };
+
+        /* 부모 화면에서 파라미터 수신 */
+        listener.activePgm = (param, isNew) => {
+            parentParam = param;
+
+            if (param && !isNew) {
+                /* 기존 데이터 수정 모드 */
+                selectInfo(param./* TODO: PK 필드 */);
+            } else {
+                /* 신규 등록 모드 */
+                listener.form.postForm.formReset();
+                listener.form.postForm.formReadonly(false);
+                currentMode = EDIT_MODE.NEW;
+                /* TODO: 부모에서 전달받은 값 세팅 */
+            }
+        };
+
+        listener.button.save.click = onSaveClick;
+        listener.button.del.click = onDeleteClick;
+
+        /* TODO: 커스텀 버튼 바인딩
+        listener.button.etc1.click = onCustomClick;
+        */
+
+        /* TODO: 에디터 변경 이벤트 (필요 시)
+        listener.editor.change = (el) => {
+            if (el.config.name === 'field_cd') {
+                const formData = listener.form.postForm.getData();
+                // 로직 처리
+            }
+        };
+        */
+    })();
+</script>
+</html>

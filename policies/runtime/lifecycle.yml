@@ -1,0 +1,128 @@
+version: "1.0"
+scope: runtime
+description: "산출물 생명주기 관리 — active / working / archive 상태 분리 및 cleanup 절차"
+
+# ─────────────────────────────────────────────
+# 산출물 상태 정의
+# ─────────────────────────────────────────────
+artifact_states:
+  active:
+    description: "현재 시스템이 실제 입력으로 사용하는 공식 산출물"
+    locations:
+      - "policies/**/*.yml"
+      - "system/templates/**"
+      - "system/config/**"
+      - "schemas/**"
+      - "docs/templates/**"
+      - "user/review/tasks/{taskId}/final/**"
+      - "user/review/tasks/{taskId}/original/**"
+      - "system/runtime/tasks/{taskId}/manifest.yaml"
+      - "system/runtime/tasks/{taskId}/screens/{screenId}/*.manifest.yaml"
+      - "system/runtime/tasks/{taskId}/screens/{screenId}/outputs/**"
+    rules:
+      - "다음 단계 실행 시 참조 가능"
+      - "명령어의 allowed_inputs에 포함"
+
+  working:
+    description: "작업 중 임시 생성물, 초안, 분석 중간본"
+    locations:
+      - "system/runtime/tasks/{taskId}/ppt_raw.json"
+      - "system/runtime/tasks/{taskId}/extract_ppt.py"
+      - "system/runtime/tasks/{taskId}/screens/{screenId}/outputs/generation_log.md"
+      - "system/runtime/fixes/{fixId}/logs/**"
+      - "system/runtime/fixes/{fixId}/outputs/**"
+    rules:
+      - "해당 단계 실행 중에만 참조 가능"
+      - "단계 종료 후 cleanup 대상"
+      - "다음 단계의 입력으로 사용 금지"
+
+  archive:
+    description: "보관/추적용 로그성 산출물 — 실행 입력 절대 금지"
+    locations:
+      - "system/archive/tasks/{taskId}/**"
+      - "system/archive/fixes/{fixId}/**"
+      - "proposals/policy_changes/done/**"
+      - "proposals/policy_changes/backups/**"
+    rules:
+      - "어떤 step에서도 실행 입력으로 사용 금지"
+      - "forbidden_always에 등록"
+      - "사람이 필요할 때만 직접 열람"
+      - "과거 추적/감사 목적으로만 보관"
+
+# ─────────────────────────────────────────────
+# cleanup 절차
+# ─────────────────────────────────────────────
+cleanup:
+  after_analyze:
+    description: "analyze 완료 후 cleanup"
+    actions:
+      - action: "keep_active"
+        targets:
+          - "user/review/tasks/{taskId}/original/**"
+          - "user/review/tasks/{taskId}/final/people_spec.md"
+          - "system/runtime/tasks/{taskId}/manifest.yaml"
+          - "system/runtime/tasks/{taskId}/screens/{screenId}/analyze.manifest.yaml"
+      - action: "keep_working"
+        note: "사용자 검토 완료 전까지 유지, build 시작 시 정리 판단"
+        targets:
+          - "system/runtime/tasks/{taskId}/ppt_raw.json"
+          - "system/runtime/tasks/{taskId}/extract_ppt.py"
+
+  after_build:
+    description: "build 완료 후 cleanup"
+    actions:
+      - action: "keep_active"
+        targets:
+          - "user/review/tasks/{taskId}/final/machine_spec.yml"
+          - "system/runtime/tasks/{taskId}/screens/{screenId}/outputs/**"
+          - "system/runtime/tasks/{taskId}/screens/{screenId}/generate.manifest.yaml"
+          - "system/runtime/tasks/{taskId}/screens/{screenId}/deploy.manifest.yaml"
+          - "user/output/tasks/{taskId}/**"
+      - action: "delete_or_archive"
+        note: "build에서 사용 완료된 중간물"
+        targets:
+          - "system/runtime/tasks/{taskId}/ppt_raw.json"
+          - "system/runtime/tasks/{taskId}/extract_ppt.py"
+          - "system/runtime/tasks/{taskId}/screens/{screenId}/outputs/generation_log.md"
+
+  after_test_pass:
+    description: "전체 테스트 통과 후 cleanup (task 완결)"
+    actions:
+      - action: "keep_active"
+        targets:
+          - "user/output/tasks/{taskId}/**"
+          - "user/test/tasks/{taskId}/**"
+          - "user/review/tasks/{taskId}/**"
+      - action: "archive"
+        note: "runtime 데이터를 system/archive/로 이동"
+        targets:
+          - "system/runtime/tasks/{taskId}/ → system/archive/tasks/{taskId}/"
+
+  after_fix:
+    description: "fix 완료 후 cleanup"
+    actions:
+      - action: "keep_active"
+        targets:
+          - "user/output/fixes/{fixId}/**"
+          - "proposals/policy_changes/new/**"
+      - action: "archive"
+        note: "fix runtime을 archive로 이동"
+        targets:
+          - "system/runtime/fixes/{fixId}/ → system/archive/fixes/{fixId}/"
+
+# ─────────────────────────────────────────────
+# 정책 반영 수준 판단
+# ─────────────────────────────────────────────
+policy_promotion:
+  description: "수정사항은 아래 수준 중 어디에 반영되어야 하는지 판단"
+  levels:
+    - level: "local_patch"
+      description: "해당 화면/파일에만 적용"
+      action: "fix로 종결, 정책 변경 불필요"
+    - level: "type_level_rule"
+      description: "특정 화면유형 또는 특정 계층(HTML/XML 등)에 적용"
+      action: "verify/framework 정책에 규칙 추가"
+    - level: "global_policy"
+      description: "전체 시스템에 적용"
+      action: "runtime/analyze 정책 수정"
+  rule: "판단 근거 없이 국소 수정만 하지 않는다"

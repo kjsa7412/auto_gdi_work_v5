@@ -1,0 +1,74 @@
+version: "2.0"
+scope: runtime
+description: "step별 접근 허용/금지 경로 — v5 dual-spec 파이프라인 (analyze / build / test / fix)"
+
+global_allowed:
+  - "system/cache/convention/*"
+  - "policies/**/*.yml"
+  - "system/templates/**"
+  - "system/config/paths.yml"
+  - "schemas/*.json"
+
+step_specific:
+  analyze:
+    read:
+      - "user/inbox/tasks/{taskId}/*.pptx"
+      - "system/cache/convention/*"
+      - "docs/templates/screen_spec_template.md"
+    write:
+      - "system/runtime/tasks/{taskId}/**"
+      - "user/review/tasks/{taskId}/original/people_spec.md"
+      - "user/review/tasks/{taskId}/original/machine_spec.yml"
+      - "user/review/tasks/{taskId}/final/people_spec.md"
+
+  build:
+    read:
+      - "user/review/tasks/{taskId}/original/people_spec.md"
+      - "user/review/tasks/{taskId}/original/machine_spec.yml"
+      - "user/review/tasks/{taskId}/final/people_spec.md"
+      - "system/templates/skeletons/**"
+      - "system/templates/screen-types/**"
+      - "system/cache/convention/*"
+    write:
+      - "user/review/tasks/{taskId}/final/machine_spec.yml"
+      - "system/runtime/tasks/{taskId}/screens/{screenId}/outputs/*"
+      - "system/runtime/tasks/{taskId}/screens/{screenId}/logs/*"
+      - "{SOURCE_ROOT}/**"
+      - "user/output/tasks/{taskId}/**"
+
+  fix:
+    read:
+      - "user/inbox/fixes/{fixId}/*"
+      - "system/runtime/tasks/{taskId}/screens/{screenId}/outputs/*"
+      - "user/review/tasks/{taskId}/final/machine_spec.yml"
+      - "system/cache/convention/*"
+    write:
+      - "system/runtime/fixes/{fixId}/**"
+      - "user/output/fixes/{fixId}/**"
+      - "proposals/policy_changes/new/**"
+
+  test:
+    read:
+      - "system/runtime/tasks/{taskId}/manifest.yaml"
+      - "user/review/tasks/{taskId}/final/machine_spec.yml"
+      - "user/review/tasks/{taskId}/final/people_spec.md"
+      - "system/runtime/tasks/{taskId}/screens/{screenId}/analyze.manifest.yaml"
+    write:
+      - "user/test/tasks/{taskId}/**"
+      - "user/inbox/fixes/{fixId}/**"
+
+forbidden_always:
+  - "system/runtime/tasks/{other_taskId}/**"
+  - "system/runtime/fixes/{other_fixId}/**"
+  - "system/archive/**"
+  - "proposals/policy_changes/done/**"
+  - "proposals/policy_changes/backups/**"
+  - ".env"
+  - "credentials*"
+
+# ─────────────────────────────────────────────
+# archive 차단 원칙
+# ─────────────────────────────────────────────
+# system/archive/ 하위 파일은 어떤 step에서도 실행 입력으로 사용할 수 없다.
+# 사람이 필요할 때만 직접 열람한다.
+# proposals/policy_changes/done/, backups/ 역시 과거 이력이므로 실행 입력 아님.

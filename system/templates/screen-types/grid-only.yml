@@ -1,0 +1,44 @@
+version: "1.0"
+screen_type: grid-only
+description: "조회영역 + 그리드 (목록 전용, 상세폼 없음)"
+match_conditions:
+  - has_search_area: true
+  - has_grid: true
+  - has_detail_form: false
+  - grid_count: 1
+
+layout:
+  html_class: "data-content-wrapper"
+  sections:
+    - type: search_form
+      container: searchForm
+    - type: content_fill
+      children:
+        - type: toolbar
+          container: toolbar1
+        - type: grid
+          container: grid1
+
+skeleton:
+  html: "skeletons/html/grid-only.html"
+  xml: "skeletons/xml/select-only.xml"
+  controller: null  # 표준 controller 불필요 (platform.post 사용)
+  service: null
+
+required_functions:
+  - resetState
+  - createSearchForm
+  - createToolbarsAndGrids
+  - onInitClick
+  - onSearchClick
+  - selectGrid
+  - assignHandlers
+
+required_listeners:
+  - initPgm
+  - activePgm
+  - button.init.click
+  - button.search.click
+
+auto_generation: true
+confidence_threshold: 0.9

@@ -1,0 +1,28 @@
+version: "1.0"
+scope: framework.controller
+rules:
+  - id: CP-001
+    description: "Controller 어노테이션"
+    condition: "controller class"
+    action: "@Slf4j @Controller @RequestMapping"
+    severity: critical
+  - id: CP-002
+    description: "생성자 주입"
+    condition: "service dependency"
+    action: "constructor injection, not @Autowired on field"
+    severity: warning
+  - id: CP-003
+    description: "메서드 어노테이션"
+    condition: "endpoint method"
+    action: "@AddUserInfo @LogAction @ResponseBody @RequestMapping"
+    severity: critical
+  - id: CP-004
+    description: "BaseResponse 반환"
+    condition: "endpoint method return"
+    action: "return BaseResponse.Ok() or BaseResponse.Error()"
+    severity: critical
+  - id: CP-005
+    description: "예외 처리"
+    condition: "endpoint method body"
+    action: "try-catch with log.error and BaseResponse.Error"
+    severity: critical

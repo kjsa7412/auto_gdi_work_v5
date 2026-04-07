@@ -1,0 +1,89 @@
+version: "1.0"
+scope: analysis.ppt_extraction
+description: "PPT 화면설계서 추출 규칙 — 누락 없는 데이터 추출을 보장"
+rules:
+  - id: PE-001
+    description: "GROUP shape 재귀 탐색 필수"
+    condition: "PPT shape.shape_type == GROUP (6)"
+    action: "그룹 내부의 자식 shape를 재귀적으로 탐색하여 텍스트/테이블 추출. 화면설계서에서 검색 필드, 폼 필드는 대부분 '라벨+입력박스' 그룹으로 표현됨"
+    severity: critical
+    note: "이 규칙을 무시하면 검색 영역, 폼 필드 전체가 누락될 수 있음"
+
+  - id: PE-002
+    description: "shape 위치 기반 영역 분류"
+    condition: "PPT shape 추출 완료 후"
+    action: >
+      shape의 top 좌표를 기준으로 레이아웃 영역을 분류한다:
+      1. META 영역 — 상단 (업무구분, 프로그램ID 등 테이블)
+      2. 버튼 영역 — META 아래 (초기화, 조회, 신규 등 버튼 shape)
+      3. 검색 영역 — 버튼과 그리드 사이 (GROUP shape들 = 검색 필드)
+      4. 그리드 영역 — 대형 TABLE shape (데이터 행 포함)
+      5. 설명 영역 — 하단 (버튼/그리드/데이터 설명 텍스트)
+    severity: critical
+
+  - id: PE-003
+    description: "GROUP 내부 패턴 인식"
+    condition: "GROUP shape 내부 탐색 시"
+    action: >
+      GROUP 자식 shape 구성으로 UI 컴포넌트 유형을 판별한다:
+      - 라벨(Rectangle) + 입력박스(Rectangle) = 텍스트 필드
+      - 라벨(Rectangle) + 입력박스(Rectangle) + '?' 아이콘 = 코드헬프/콤보박스 필드 (코드타입은 입력박스의 텍스트에서 추출)
+      - 라벨(Rectangle) + '~' 텍스트 + 날짜아이콘(PICTURE) = 날짜범위 필드
+      - 라벨(Rectangle) + '▼' 포함 텍스트 = 콤보박스 (선택값 예시 포함)
+      - 라벨에 '*' 접두사 = 필수 필드
+    severity: critical
+
+  - id: PE-005
+    description: "필드 배치 레이아웃 추출 (행/열/gravity)"
+    condition: "검색 영역, 폼 영역의 GROUP shape 추출 완료 후"
+    action: >
+      PPT shape의 좌표(left, top, width)를 분석하여 필드의 행 배치와 칸 크기를 결정한다.
+
+      1. 행(row) 분류:
+         - top 좌표가 동일하거나 오차 0.3cm 이내인 GROUP들은 같은 행으로 판단
+         - top 좌표 순으로 정렬하여 row_1, row_2, ... 할당
+
+      2. 열(column) 순서:
+         - 같은 행 내에서 left 좌표 순으로 정렬하여 필드 순서 결정
+
+      3. gravity 산출:
+         - 기본 단위: 한 행의 전체 폭(보통 ~10cm)을 5등분한 1칸 ≈ 2cm
+         - 각 GROUP의 width를 기본 단위로 나누어 gravity 결정:
+           - width ≈ 2cm → gravity: 1 (기본값, 생략 가능)
+           - width ≈ 4cm → gravity: 2
+           - width ≈ 6cm → gravity: 3
+           - width ≈ 10cm (전체폭) → gravity: 5
+         - 한 행의 gravity 합계가 5가 되는지 검증
+         - 5 미만이면 빈 칸({})을 추가하여 5를 채움
+
+      4. 결과 기록 형식 (기능정의서에 반영):
+         각 필드에 row, col_order, gravity를 기록한다.
+         예: { label: '연구과제명', row: 1, col_order: 4, gravity: 2 }
+    severity: critical
+
+  - id: PE-006
+    description: "섹션 간 레이아웃 구조 추출"
+    condition: "슬라이드의 전체 shape 분석 완료 후"
+    action: >
+      검색 영역, 그리드, 폼 등 섹션 간의 배치 관계를 추출한다:
+      - 좌우 분할: 두 개의 대형 영역이 left 좌표로 나뉘면 좌/우 분할
+        - 좌측 영역 → data-content-half-left 또는 data-content-N-left
+        - 우측 영역 → data-content-half-right 또는 data-content-N-right
+      - 상하 배치: 동일 left에 top이 다르면 상/하 배치 → data-content-fill
+      - 분할 비율: 좌/우 영역의 width 비율로 N-left/N-right 결정
+        - 균등 → half-left/half-right
+        - 6:4 → 6-left / 4-right
+        - 7:3 → 7-left / 3-right
+    severity: critical
+
+  - id: PE-004
+    description: "추출 완전성 검증"
+    condition: "PPT 추출 완료 후"
+    action: >
+      추출 결과의 완전성을 검증한다:
+      1. 조회 버튼이 있으면 검색 필드가 반드시 1개 이상 존재해야 함
+      2. 검색 필드가 0개이면 GROUP shape 재탐색 수행
+      3. 그리드 컬럼 수와 PPT 표시 데이터 정합성 확인
+      4. 설명 텍스트([버튼], [인풋폼], [그리드] 등)에서 언급된 필드가 모두 추출되었는지 확인
+    severity: critical
+    auto_fixable: false

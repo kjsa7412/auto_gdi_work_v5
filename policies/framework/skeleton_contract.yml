@@ -1,0 +1,80 @@
+version: "1.0"
+scope: framework
+contracts:
+  html:
+    required_structure:
+      - "IIFE wrapper"
+      - "PGM declaration"
+      - "listener initialization"
+      - "resetState function"
+      - "UI creation functions"
+      - "event handlers"
+      - "data operations"
+      - "assign handlers block"
+    validation: "all required_functions from screen-type must exist"
+  xml:
+    required_structure:
+      - "mapper with lowercase namespace"
+      - "select statements with resultType='java.util.Map'"
+      - "audit columns in INSERT/UPDATE"
+      - "current_timestamp usage"
+    validation: "no forbidden patterns from forbidden_apis.yml"
+  controller:
+    generation_rule: >
+      기본적으로 CommonController를 사용하므로 커스텀 Controller를 생성하지 않는다.
+      policies/framework/controller_generation.yml CG-002 조건에 해당하는 경우에만 생성한다.
+      HTML은 platform.url.select/save/saveAll 등 Common 엔드포인트를 사용한다.
+    required_structure_when_custom:
+      - "@Slf4j @Controller class"
+      - "constructor injection"
+      - "@AddUserInfo @LogAction @ResponseBody methods"
+      - "BaseResponse return type"
+      - "try-catch error handling"
+    validation: "all endpoints match XML statement IDs"
+  service:
+    generation_rule: >
+      기본적으로 CommonService를 사용하므로 커스텀 Service를 생성하지 않는다.
+      Controller와 동일한 조건(CG-002)에 해당하는 경우에만 생성한다.
+    required_structure_when_custom:
+      - "@Service extends BaseService"
+      - "SqlSessionTemplate reader/writer"
+      - "@Transactional on write methods"
+      - "namespace.statementId format"
+    validation: "read methods use reader, write methods use writer"
+  sql:
+    audit_columns:
+      insert:
+        - firs_reg_pgm_id
+        - firs_reg_dts
+        - firs_reg_user_id
+        - firs_reg_ip
+        - fina_reg_pgm_id
+        - fina_reg_dts
+        - fina_reg_user_id
+        - fina_reg_ip
+      update:
+        - fina_reg_pgm_id
+        - fina_reg_dts
+        - fina_reg_user_id
+        - fina_reg_ip
+      naming_rule: >
+        감사컬럼명은 DDL에 정의된 이름을 그대로 사용한다.
+        에이전트가 약어를 추론하여 변형하는 것을 금지한다.
+        정확한 접두사: firs_reg (O), fina_reg (O)
+        금지 변형: frst_reg (X), first_reg (X), fist_reg (X), fnl_reg (X)
+    menu_registration:
+      menu_id_pattern: "CTE + COALESCE(existing pgm_id lookup, MAX+1) — 하드코딩 금지"
+      required: true
+      condition: "sy_menu_info INSERT 생성 시"
+    validation: "all audit column names must match DDL exactly"
+rules:
+  - id: SC-001
+    description: "skeleton 미사용 시 생성 거부"
+    condition: "generate without skeleton"
+    action: "block generation, require skeleton selection"
+    severity: critical
+  - id: SC-002
+    description: "감사컬럼명 DDL 원문 사용 강제"
+    condition: "SQL generation with audit columns"
+    action: "use exact column names from contracts.sql.audit_columns, never infer abbreviations"
+    severity: critical

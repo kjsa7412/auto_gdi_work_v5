@@ -1,0 +1,70 @@
+version: "2.0"
+scope: analyze
+description: "단일 analyze 절차 규칙 — v5 통합 분석 (phase1/phase2 분리 폐지)"
+
+pipeline:
+  name: "PPT → 기능정의서 (단일 패스)"
+  input: "user/inbox/tasks/{taskId}/*.pptx"
+  output: "user/review/tasks/{taskId}/specs/{screenId}_spec.md"
+  template: "docs/templates/screen_spec_template.md"
+  status_on_complete: analyzed
+
+flow:
+  - step: extract
+    description: "PPT 화면설계서에서 모든 shape/테이블/텍스트 추출"
+    applies: "ppt_extraction.yml 규칙 적용"
+
+  - step: classify
+    description: "추출 요소를 13개 태그로 분류 및 화면유형 결정"
+    applies: "classify_tags.yml, screen_type_rules.yml 규칙 적용"
+
+  - step: enrich
+    description: "DDL/코드정의서 Grep으로 누락 필드 보완, 기본값 적용"
+    applies: "spec_required_fields.yml, default_resolution.yml, source_access.yml 규칙 적용"
+
+  - step: emit
+    description: "{screenId}_spec.md 출력 — 단일 최종 산출물"
+    applies: "phase_rules.yml 규칙 적용"
+
+rules:
+  - id: PH-001
+    description: "기능정의서는 템플릿 구조를 보존해야 한다"
+    condition: "spec 생성 시"
+    action: "PPT에서 분석되지 않은 섹션도 빈 템플릿 구조를 유지"
+    severity: critical
+
+  - id: PH-002
+    description: "미분석 섹션에 안내 주석 추가"
+    condition: "section not found in PPT"
+    action: "섹션 상단에 <!-- PPT에서 확인되지 않은 항목입니다 --> 주석 추가"
+    severity: warning
+
+  - id: PH-003
+    description: "사용자 보충 내용 삭제 금지"
+    condition: "사용자가 spec 파일을 수정한 후 재분석 실행 시"
+    action: "사용자가 기능정의서에 추가한 내용을 반드시 보존하여 병합"
+    severity: critical
+
+  - id: PH-004
+    description: "PPT 원문 → 최종 spec 추적"
+    condition: "spec 생성 완료 후"
+    action: "PPT 원문 → 최종 기능정의서 2단계 추적 기록 (trace 섹션에 기재)"
+    severity: warning
+
+  - id: PH-005
+    description: "알림/메시지(VALID) 섹션은 반드시 빈 템플릿 유지"
+    condition: "tag == VALID"
+    action: "PPT에 관련 정보가 없어도 빈 테이블 + 가이드 유지 (사용자 보충률 높은 영역)"
+    severity: warning
+
+  - id: PH-006
+    description: "기능정의서 출력 경로"
+    condition: "analyze 완료 시"
+    action: "user/review/tasks/{taskId}/specs/{screenId}_spec.md 에 출력"
+    severity: critical
+
+  - id: PH-007
+    description: "단일 패스 원칙 — 별도 phase 분리 금지"
+    condition: "analyze 명령 실행 시"
+    action: "extract → classify → enrich → emit을 하나의 analyze 호출에서 순차 수행. 중간 산출물(phase1 결과 등) 없이 최종 spec만 출력"
+    severity: critical

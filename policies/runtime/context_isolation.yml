@@ -1,0 +1,38 @@
+version: "1.0"
+scope: runtime
+rules:
+  - id: CI-001
+    description: "step은 자기 manifest의 input만 읽음"
+    condition: "any file read operation"
+    action: "check against manifest.allowed_inputs"
+    severity: critical
+  - id: CI-002
+    description: "다른 screen 산출물 참조 금지"
+    condition: "file path contains different screen_id"
+    action: "block access"
+    severity: critical
+  - id: CI-003
+    description: "다른 task 산출물 참조 금지"
+    condition: "file path contains different task_id"
+    action: "block access"
+    severity: critical
+  - id: CI-004
+    description: "이전 대화 메모리 사용 금지"
+    condition: "step execution"
+    action: "clear_memory_on_finish: true"
+    severity: critical
+  - id: CI-005
+    description: "task 공통 정보는 공식 산출물만"
+    condition: "accessing task-level data"
+    action: "only manifest.yaml (screen_discovery.md는 v5에서 제거됨)"
+    severity: critical
+  - id: CI-006
+    description: "archive 산출물은 실행 입력으로 사용 금지"
+    condition: "file path contains system/archive/"
+    action: "block access — archive는 보관/추적용으로만 존재"
+    severity: critical
+  - id: CI-007
+    description: "working 산출물은 해당 단계 종료 후 참조 금지"
+    condition: "step completion"
+    action: "working artifacts must be promoted to active or moved to archive"
+    severity: critical

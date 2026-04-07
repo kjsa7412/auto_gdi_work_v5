@@ -1,0 +1,13 @@
+version: "1.0"
+scope: analysis
+rules:
+  - id: MP-001
+    description: "동일 화면ID 슬라이드 병합"
+    condition: "multiple slides with same screen_id"
+    action: "merge as continuous content, not separate tabs"
+    severity: critical
+  - id: MP-002
+    description: "원문 보존 — 중복 병합 가능하나 임의 삭제 금지"
+    condition: "merging duplicate content"
+    action: "merge but preserve source trace"
+    severity: critical

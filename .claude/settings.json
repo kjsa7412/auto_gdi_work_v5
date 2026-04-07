@@ -1,0 +1,25 @@
+{
+  "permissions": {
+    "allow": [
+      "Read",
+      "Glob",
+      "Grep",
+      "Edit",
+      "Write",
+      "Bash(ls *)",
+      "Bash(mkdir *)",
+      "Bash(cp *)",
+      "Bash(cat *)"
+    ],
+    "deny": [
+      "Bash(rm -rf *)",
+      "Bash(git push *)",
+      "Bash(git reset --hard *)"
+    ]
+  },
+  "env": {
+    "SOURCE_ROOT": "C:/gdi",
+    "REFERENCE_ROOT": "C:/GitLap/FERP/FERP(TOBE)/ferp-backoffice",
+    "PROJECT_ROOT": "C:/auto_gdi_work_v5"
+  }
+}

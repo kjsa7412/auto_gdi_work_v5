@@ -1,0 +1,28 @@
+version: "1.0"
+scope: framework.service
+rules:
+  - id: SP-001
+    description: "Service 어노테이션"
+    condition: "service class"
+    action: "@Service @Slf4j extends BaseService"
+    severity: critical
+  - id: SP-002
+    description: "SqlSessionTemplate 주입"
+    condition: "service constructor"
+    action: "ferpWriterSqlSessionTemplate + ferpReaderSqlSessionTemplate"
+    severity: critical
+  - id: SP-003
+    description: "읽기 메서드는 reader 사용"
+    condition: "select method"
+    action: "use ferpReaderSqlSessionTemplate"
+    severity: critical
+  - id: SP-004
+    description: "쓰기 메서드는 writer + @Transactional"
+    condition: "insert/update/delete method"
+    action: "use ferpWriterSqlSessionTemplate with @Transactional(value = 'txManagerFerpWriter')"
+    severity: critical
+  - id: SP-005
+    description: "namespace.statementId 형식"
+    condition: "SQL session call"
+    action: "use lowercase namespace + . + statementId"
+    severity: critical

@@ -1,0 +1,19 @@
+version: "1.0"
+scope: verify.service
+checks:
+  - id: VS-001
+    name: "BaseService 상속"
+    check: "extends BaseService"
+    severity: critical
+  - id: VS-002
+    name: "SqlSessionTemplate 주입"
+    check: "both reader and writer templates injected"
+    severity: critical
+  - id: VS-003
+    name: "읽기/쓰기 분리"
+    check: "select uses reader, insert/update/delete uses writer"
+    severity: critical
+  - id: VS-004
+    name: "@Transactional 쓰기"
+    check: "write methods have @Transactional(value='txManagerFerpWriter')"
+    severity: critical

@@ -1,0 +1,19 @@
+version: "1.0"
+scope: framework
+rules:
+  - id: TS-001
+    description: "화면유형별 템플릿 매핑"
+    condition: "screen_type determined"
+    action: "select matching template from screen-types/*.yml"
+    severity: critical
+  - id: TS-002
+    description: "confidence 미달 시 수작업 전환"
+    condition: "template_match_confidence < threshold"
+    action: "set manual_required: true"
+    severity: critical
+    requires_manual_review: true
+  - id: TS-003
+    description: "skeleton contract 강제"
+    condition: "template selected"
+    action: "load corresponding skeleton and verify required_functions present"
+    severity: critical

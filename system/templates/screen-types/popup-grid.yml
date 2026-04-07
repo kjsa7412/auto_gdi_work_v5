@@ -1,0 +1,49 @@
+version: "1.0"
+screen_type: popup-grid
+description: "팝업 화면 (그리드 + 확인/취소 버튼)"
+match_conditions:
+  - screen_id_suffix: "_P"
+  - is_popup: true
+
+layout:
+  html_class: "data-modal"
+  sections:
+    - type: modal_content
+      children:
+        - type: form
+          container: postForm
+        - type: grid
+          container: grid1
+          optional: true
+    - type: modal_footer
+      buttons:
+        - label: "확인"
+          id: btnOk
+        - label: "취소"
+          id: btnCancel
+
+skeleton:
+  html: "skeletons/html/popup.html"
+  xml: "skeletons/xml/select-only.xml"
+  controller: null
+  service: null
+
+required_functions:
+  - createPostForm
+  - assignHandlers
+
+required_listeners:
+  - initPgm
+  - activePgm
+
+parameter_binding:
+  source: "activePgm(param, isNew)의 첫 번째 인자(param)"
+  forbidden: "APP_PGM.getOpenParam(PGM)"
+  description: "팝업 파라미터는 activePgm(param, isNew)에서 수신한다"
+
+notes:
+  - "topTitleButtonFragment 금지"
+  - "APP_PGM.getOpenParam(PGM) 사용 금지 — activePgm(param, isNew)의 첫 번째 인자 사용"
+
+auto_generation: true
+confidence_threshold: 0.85

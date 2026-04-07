@@ -1,0 +1,24 @@
+version: "1.0"
+scope: framework.code_component
+description: "코드성 컴포넌트 기본값 정책 — 특별한 지시가 없으면 이 기본값을 적용"
+rules:
+  - id: CC-001
+    description: "코드 컴포넌트 view 기본값"
+    condition: "코드성 컴포넌트 생성 시 특별한 지시 없음"
+    action: "view: DATA_VIEW.codeNone 사용 (DATA_VIEW.code 대신)"
+    severity: critical
+    note: "DATA_VIEW.code는 명시적으로 요청된 경우에만 사용"
+
+  - id: CC-002
+    description: "코드 컴포넌트 type 기본값"
+    condition: "코드성 컴포넌트 생성 시 특별한 지시 없음"
+    action: "type: DATA_CODE_TYPE.codeValue 사용 (DATA_CODE_TYPE.code 대신)"
+    severity: critical
+    note: "DATA_CODE_TYPE.code는 명시적으로 요청된 경우에만 사용"
+
+  - id: CC-003
+    description: "코드 헬프 검색 기준 — 코드명 기반"
+    condition: "커스텀 코드 헬프 포함 코드성 컴포넌트"
+    action: "사용자가 코드ID/PK가 아닌 코드명(명칭)으로 검색할 수 있도록 구현"
+    severity: critical
+    note: "사용자는 ID를 알 필요 없음. 화면에서 코드를 찾을 때 코드명이나 명칭 기반으로 검색"

@@ -1,0 +1,23 @@
+version: "1.0"
+scope: analysis
+rules:
+  - id: SA-001
+    description: "convention 파일은 Grep으로만 접근"
+    condition: "accessing convention files"
+    action: "use Grep, never full Read"
+    severity: critical
+  - id: SA-002
+    description: "PPT에 없는 내용 임의 추가 금지"
+    condition: "analysis output contains non-PPT content"
+    action: "remove and tag [추론/보완 항목]"
+    severity: critical
+  - id: SA-003
+    description: "DDL 컬럼명 추정 금지"
+    condition: "column name not found in DDL via Grep"
+    action: "tag [코드확인필요]"
+    severity: critical
+  - id: SA-004
+    description: "convention 미포함 정보는 DB lookup으로 보완 가능"
+    condition: "convention Grep 결과 불충분 (뷰, 트리거, 인덱스, 실시간 코드값 등)"
+    action: "policies/runtime/db_access.yml 준수하여 DB SELECT 조회 허용"
+    severity: info

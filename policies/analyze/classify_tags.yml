@@ -1,0 +1,22 @@
+version: "1.0"
+scope: analysis
+tags:
+  - META
+  - SEARCH
+  - GRID
+  - FORM
+  - BUTTON
+  - EVENT
+  - CODE
+  - TABLE
+  - API
+  - MODAL
+  - NAV
+  - VALID
+  - SQL
+rules:
+  - id: CT-001
+    description: "모든 PPT 요소를 13개 태그 중 하나로 분류"
+    condition: "PPT element extracted"
+    action: "classify into one of 13 tags"
+    severity: warning

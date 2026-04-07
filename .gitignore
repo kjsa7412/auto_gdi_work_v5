@@ -1,0 +1,16 @@
+node_modules/
+
+# 개인 작업 파일 (공통 시스템에서 제외)
+system/runtime/tasks/
+system/runtime/fixes/
+user/inbox/tasks/
+user/inbox/fixes/
+user/output/
+user/review/
+user/test/
+proposals/policy_changes/new/
+proposals/policy_changes/done/
+proposals/policy_changes/backups/
+
+# archive (런타임 이력 보관)
+system/archive/

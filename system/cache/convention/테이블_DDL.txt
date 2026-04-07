@@ -1,0 +1,2623 @@
+CREATE TABLE ct_pay_list (
+    ctrt_id character varying(20) NOT NULL,
+    ver_no integer NOT NULL,
+    pay_se_cd character varying(20) NOT NULL,
+    pay_odr integer NOT NULL,
+    pay_amt numeric(18,2),
+    pay_dt date,
+    wrk_rmk character varying(100),
+    firs_reg_pgm_id character varying(50),
+    firs_reg_dts timestamp without time zone NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    firs_reg_user_id character varying(20),
+    firs_reg_ip character varying(50),
+    fina_reg_pgm_id character varying(50),
+    fina_reg_dts timestamp without time zone NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    fina_reg_user_id character varying(20),
+    fina_reg_ip character varying(50)
+,    CONSTRAINT ct_pay_list_pkey PRIMARY KEY (ctrt_id, ver_no, pay_se_cd, pay_odr)
+);
+CREATE TABLE ct_subc_mst (
+    ctrt_subc_id character varying(20) NOT NULL,
+    rsch_prj_id character varying(20) NOT NULL,
+    ctrt_nm character varying(200) NOT NULL,
+    ctrt_no character varying(20) NOT NULL,
+    ctrt_se_cd character varying(20),
+    ctrt_st_dt date,
+    wk_st_dt date,
+    ctrt_end_dt date,
+    cnsgn_entr_nm character varying(100),
+    ctrt_mthd_cd character varying(20),
+    cmpl_scdl_dt date,
+    ctrt_amt numeric(15,2),
+    uclm_amt numeric(15,2),
+    ctrt_stts_cd character varying(20),
+    elc_apv_stat_cd character varying(20),
+    extl_chgr_nm character varying(100),
+    extl_dept_nm character varying(100),
+    extl_eml character varying(100),
+    innr_chgr_nm character varying(100),
+    innr_dept_nm character varying(100),
+    innr_telno character varying(100),
+    innr_eml character varying(100),
+    wrk_rmk character varying(100),
+    firs_reg_pgm_id character varying(50),
+    firs_reg_dts timestamp without time zone DEFAULT CURRENT_TIMESTAMP,
+    firs_reg_user_id character varying(20),
+    firs_reg_ip character varying(50),
+    fina_reg_pgm_id character varying(50),
+    fina_reg_dts timestamp without time zone DEFAULT CURRENT_TIMESTAMP,
+    fina_reg_user_id character varying(20),
+    fina_reg_ip character varying(50),
+    pay_ver_no integer
+,    CONSTRAINT ct_subc_mst_pkey PRIMARY KEY (ctrt_subc_id)
+);
+CREATE TABLE my_etc_rslt_list (
+    etc_rslt_id character varying(20) NOT NULL,
+    etc_rslt_ctg_cd character varying(10),
+    rsch_prj_id character varying(20),
+    user_id character varying(40),
+    targ_yy_cd character varying(10),
+    activ_desc character varying(100),
+    activ_dt character varying(8),
+    run_inst_nm character varying(30),
+    attch_file_id character varying(20),
+    fst_evl_score numeric(6,2),
+    assr_id character varying(20),
+    evl_dts timestamp without time zone,
+    wrk_rmk character varying(100),
+    firs_reg_pgm_id character varying(50),
+    firs_reg_dts timestamp without time zone DEFAULT CURRENT_TIMESTAMP,
+    firs_reg_user_id character varying(20),
+    firs_reg_ip character varying(50),
+    fina_reg_pgm_id character varying(50),
+    fina_reg_dts timestamp without time zone DEFAULT CURRENT_TIMESTAMP,
+    fina_reg_user_id character varying(20),
+    fina_reg_ip character varying(50)
+,    CONSTRAINT my_etc_rslt_list_pkey PRIMARY KEY (etc_rslt_id)
+);
+CREATE TABLE ps_bod_activ_dtl (
+    bod_id character varying(20) NOT NULL,
+    activ_id character varying(20) NOT NULL,
+    targr_id character varying(20) NOT NULL,
+    atnd_yn character varying(1),
+    wrk_rmk character varying(100),
+    firs_reg_pgm_id character varying(50),
+    firs_reg_dts timestamp without time zone DEFAULT CURRENT_TIMESTAMP,
+    firs_reg_user_id character varying(20),
+    firs_reg_ip character varying(50),
+    fina_reg_pgm_id character varying(50),
+    fina_reg_dts timestamp without time zone DEFAULT CURRENT_TIMESTAMP,
+    fina_reg_user_id character varying(20),
+    fina_reg_ip character varying(50)
+,    CONSTRAINT ps_bod_activ_dtl_pkey PRIMARY KEY (bod_id, activ_id, targr_id)
+);
+CREATE TABLE ps_bod_activ_mst (
+    wrk_mast_id character varying(20) NOT NULL,
+    wrk_mast_uppr_tbl_nm character varying(30),
+    wrk_mast_uppr_id character varying(20),
+    wrk_chasu character varying(5) NOT NULL DEFAULT '00001'::character varying,
+    prgrs_stat_cd character varying(10),
+    wrk_hst_fina_id character varying(20),
+    end_yn character varying(1) NOT NULL DEFAULT 'N'::character varying,
+    use_yn character varying(1) NOT NULL DEFAULT 'Y'::character varying,
+    del_yn character varying(1) NOT NULL DEFAULT 'N'::character varying,
+    yy_cd character varying(10),
+    activ_ord_cd character varying(10),
+    bod_cls_cd character varying(10),
+    bod_meth_cd character varying(10),
+    activ_nm character varying(30),
+    activ_prps_desc character varying(100),
+    hold_start_dt character varying(8),
+    hold_start_tm character varying(6),
+    hold_end_dt character varying(8),
+    hold_end_tm character varying(6),
+    activ_plc_nm character varying(30),
+    activ_desc character varying(100),
+    expd_mthd_desc character varying(100),
+    activ_rslt_desc character varying(100),
+    pclt_itms_desc character varying(500),
+    attch_file_id character varying(20),
+    wrk_rmk character varying(100),
+    firs_reg_pgm_id character varying(50),
+    firs_reg_dts timestamp without time zone DEFAULT CURRENT_TIMESTAMP,
+    firs_reg_user_id character varying(20),
+    firs_reg_ip character varying(50),
+    fina_reg_pgm_id character varying(50),
+    fina_reg_dts timestamp without time zone DEFAULT CURRENT_TIMESTAMP,
+    fina_reg_user_id character varying(20),
+    fina_reg_ip character varying(50)
+,    CONSTRAINT ps_bod_activ_mst_pkey PRIMARY KEY (wrk_mast_id)
+);
+CREATE TABLE ps_bod_mbr_list (
+    bod_id character varying(20) NOT NULL,
+    mbr_id character varying(20) NOT NULL,
+    term_start_dt character varying(8) NOT NULL,
+    term_end_dt character varying(8) NOT NULL,
+    role_cd character varying(10),
+    wrk_rmk character varying(100),
+    firs_reg_pgm_id character varying(50),
+    firs_reg_dts timestamp without time zone DEFAULT CURRENT_TIMESTAMP,
+    firs_reg_user_id character varying(20),
+    firs_reg_ip character varying(50),
+    fina_reg_pgm_id character varying(50),
+    fina_reg_dts timestamp without time zone DEFAULT CURRENT_TIMESTAMP,
+    fina_reg_user_id character varying(20),
+    fina_reg_ip character varying(50)
+,    CONSTRAINT ps_bod_mbr_list_pkey PRIMARY KEY (bod_id, mbr_id, term_start_dt, term_end_dt)
+);
+CREATE TABLE ps_bod_mst (
+    wrk_mast_id character varying(20) NOT NULL,
+    wrk_mast_uppr_tbl_nm character varying(30),
+    wrk_mast_uppr_id character varying(20),
+    wrk_chasu character varying(5) NOT NULL DEFAULT '00001'::character varying,
+    prgrs_stat_cd character varying(10),
+    wrk_hst_fina_id character varying(20),
+    end_yn character varying(1) NOT NULL DEFAULT 'N'::character varying,
+    use_yn character varying(1) NOT NULL DEFAULT 'Y'::character varying,
+    del_yn character varying(1) NOT NULL DEFAULT 'N'::character varying,
+    bod_desc character varying(100),
+    wrk_rmk character varying(100),
+    firs_reg_pgm_id character varying(50),
+    firs_reg_dts timestamp without time zone DEFAULT CURRENT_TIMESTAMP,
+    firs_reg_user_id character varying(20),
+    firs_reg_ip character varying(50),
+    fina_reg_pgm_id character varying(50),
+    fina_reg_dts timestamp without time zone DEFAULT CURRENT_TIMESTAMP,
+    fina_reg_user_id character varying(20),
+    fina_reg_ip character varying(50)
+,    CONSTRAINT ps_bod_mst_pkey PRIMARY KEY (wrk_mast_id)
+);
+CREATE TABLE ps_cmte_activ_dtl (
+    cmte_id character varying(20) NOT NULL,
+    cmte_activ_id character varying(20) NOT NULL,
+    cmte_targr_id character varying(20) NOT NULL,
+    atnd_yn character varying(1),
+    wrk_rmk character varying(100),
+    firs_reg_pgm_id character varying(50),
+    firs_reg_dts timestamp without time zone DEFAULT CURRENT_TIMESTAMP,
+    firs_reg_user_id character varying(20),
+    firs_reg_ip character varying(50),
+    fina_reg_pgm_id character varying(50),
+    fina_reg_dts timestamp without time zone DEFAULT CURRENT_TIMESTAMP,
+    fina_reg_user_id character varying(20),
+    fina_reg_ip character varying(50)
+,    CONSTRAINT ps_cmte_activ_dtl_pkey PRIMARY KEY (cmte_id, cmte_activ_id, cmte_targr_id)
+);
+CREATE TABLE ps_cmte_activ_mst (
+    wrk_mast_id character varying(20) NOT NULL,
+    wrk_mast_uppr_tbl_nm character varying(30),
+    wrk_mast_uppr_id character varying(20),
+    wrk_chasu character varying(5) NOT NULL DEFAULT '00001'::character varying,
+    prgrs_stat_cd character varying(10),
+    wrk_hst_fina_id character varying(20),
+    end_yn character varying(1) NOT NULL DEFAULT 'N'::character varying,
+    use_yn character varying(1) NOT NULL DEFAULT 'Y'::character varying,
+    del_yn character varying(1) NOT NULL DEFAULT 'N'::character varying,
+    activ_prps_desc character varying(100),
+    activ_start_dt character varying(8),
+    activ_start_tm character varying(6),
+    activ_end_dt character varying(8),
+    activ_end_tm character varying(6),
+    scdl_reg_yn character varying(1),
+    activ_plc_nm character varying(30),
+    activ_desc character varying(100),
+    expd_mthd_desc character varying(100),
+    activ_rslt_desc character varying(100),
+    pclt_itms_desc character varying(500),
+    rslt_attch_file_id character varying(20),
+    wrk_rmk character varying(100),
+    firs_reg_pgm_id character varying(50),
+    firs_reg_dts timestamp without time zone DEFAULT CURRENT_TIMESTAMP,
+    firs_reg_user_id character varying(20),
+    firs_reg_ip character varying(50),
+    fina_reg_pgm_id character varying(50),
+    fina_reg_dts timestamp without time zone DEFAULT CURRENT_TIMESTAMP,
+    fina_reg_user_id character varying(20),
+    fina_reg_ip character varying(50)
+,    CONSTRAINT ps_cmte_activ_mst_pkey PRIMARY KEY (wrk_mast_id)
+);
+CREATE TABLE ps_cmte_mbr_list (
+    cmte_id character varying(20) NOT NULL,
+    mbr_id character varying(20) NOT NULL,
+    term_start_dt character varying(8) NOT NULL,
+    term_end_dt character varying(8) NOT NULL,
+    role_cd character varying(10),
+    wrk_rmk character varying(100),
+    firs_reg_pgm_id character varying(50),
+    firs_reg_dts timestamp without time zone DEFAULT CURRENT_TIMESTAMP,
+    firs_reg_user_id character varying(20),
+    firs_reg_ip character varying(50),
+    fina_reg_pgm_id character varying(50),
+    fina_reg_dts timestamp without time zone DEFAULT CURRENT_TIMESTAMP,
+    fina_reg_user_id character varying(20),
+    fina_reg_ip character varying(50)
+,    CONSTRAINT ps_cmte_mbr_list_pkey PRIMARY KEY (cmte_id, mbr_id, term_start_dt, term_end_dt)
+);
+CREATE TABLE ps_cmte_mst (
+    wrk_mast_id character varying(20) NOT NULL,
+    wrk_mast_uppr_tbl_nm character varying(30),
+    wrk_mast_uppr_id character varying(20),
+    wrk_chasu character varying(5) NOT NULL DEFAULT '00001'::character varying,
+    prgrs_stat_cd character varying(10),
+    wrk_hst_fina_id character varying(20),
+    end_yn character varying(1) NOT NULL DEFAULT 'N'::character varying,
+    use_yn character varying(1) NOT NULL DEFAULT 'Y'::character varying,
+    del_yn character varying(1) NOT NULL DEFAULT 'N'::character varying,
+    cmte_role_desc character varying(100),
+    base_rule_desc character varying(100),
+    attch_file_id character varying(20),
+    wrk_rmk character varying(100),
+    firs_reg_pgm_id character varying(50),
+    firs_reg_dts timestamp without time zone DEFAULT CURRENT_TIMESTAMP,
+    firs_reg_user_id character varying(20),
+    firs_reg_ip character varying(50),
+    fina_reg_pgm_id character varying(50),
+    fina_reg_dts timestamp without time zone DEFAULT CURRENT_TIMESTAMP,
+    fina_reg_user_id character varying(20),
+    fina_reg_ip character varying(50)
+,    CONSTRAINT ps_cmte_mst_pkey PRIMARY KEY (wrk_mast_id)
+);
+CREATE TABLE ps_ext_emp_mst (
+    user_id character varying(40) NOT NULL,
+    hp_no character varying(20) NOT NULL,
+    user_pw character varying(100),
+    user_nm character varying(30),
+    dept_nm character varying(30),
+    posi_nm character varying(30),
+    dty_nm character varying(30),
+    birt_dt character varying(8),
+    blng_nm character varying(30),
+    tel_no character varying(20),
+    email character varying(50),
+    rmk character varying(500),
+    wrk_rmk character varying(100),
+    firs_reg_pgm_id character varying(50),
+    firs_reg_dts timestamp without time zone DEFAULT CURRENT_TIMESTAMP,
+    firs_reg_user_id character varying(20),
+    firs_reg_ip character varying(50),
+    fina_reg_pgm_id character varying(50),
+    fina_reg_dts timestamp without time zone DEFAULT CURRENT_TIMESTAMP,
+    fina_reg_user_id character varying(20),
+    fina_reg_ip character varying(50)
+,    CONSTRAINT ps_ext_emp_mst_pkey PRIMARY KEY (user_id, hp_no)
+);
+CREATE TABLE ps_rcrt_aply_dtl (
+    rcrut_req_id character varying(20) NOT NULL,
+    jbcls_cd character varying(10),
+    mjr_fld_nm character varying(30),
+    mjr_fld_dtl_desc character varying(100),
+    rcrut_prd_mcnt smallint,
+    rcrut_tnop_cnt integer,
+    tc_wrk_rmk character varying(100),
+    rcrut_attch_file_id character varying(20),
+    attch_file_id character varying(20),
+    wrk_rmk character varying(100),
+    firs_reg_pgm_id character varying(50),
+    firs_reg_dts timestamp without time zone DEFAULT CURRENT_TIMESTAMP,
+    firs_reg_user_id character varying(20),
+    firs_reg_ip character varying(50),
+    fina_reg_pgm_id character varying(50),
+    fina_reg_dts timestamp without time zone DEFAULT CURRENT_TIMESTAMP,
+    fina_reg_user_id character varying(20),
+    fina_reg_ip character varying(50)
+,    CONSTRAINT ps_rcrt_aply_dtl_pkey PRIMARY KEY (rcrut_req_id)
+);
+CREATE TABLE ps_rcrt_aply_mst (
+    wrk_mast_id character varying(20) NOT NULL,
+    wrk_mast_uppr_tbl_nm character varying(30),
+    wrk_mast_uppr_id character varying(20),
+    wrk_chasu character varying(5) NOT NULL DEFAULT '00001'::character varying,
+    prgrs_stat_cd character varying(10),
+    wrk_hst_fina_id character varying(20),
+    end_yn character varying(1) NOT NULL DEFAULT 'N'::character varying,
+    use_yn character varying(1) NOT NULL DEFAULT 'Y'::character varying,
+    del_yn character varying(1) NOT NULL DEFAULT 'N'::character varying,
+    rsch_prj_id character varying(20),
+    rcrut_tp_cd character varying(10),
+    elc_apv_no character varying(20),
+    wrk_rmk character varying(100),
+    firs_reg_pgm_id character varying(50),
+    firs_reg_dts timestamp without time zone DEFAULT CURRENT_TIMESTAMP,
+    firs_reg_user_id character varying(20),
+    firs_reg_ip character varying(50),
+    fina_reg_pgm_id character varying(50),
+    fina_reg_dts timestamp without time zone DEFAULT CURRENT_TIMESTAMP,
+    fina_reg_user_id character varying(20),
+    fina_reg_ip character varying(50)
+,    CONSTRAINT ps_rcrt_aply_mst_pkey PRIMARY KEY (wrk_mast_id)
+);
+CREATE TABLE ps_rcrt_doc_insp_appn_list (
+    rcrut_noti_id character varying(20) NOT NULL,
+    appn_id character varying(20) NOT NULL,
+    appn_nm character varying(30),
+    hp_no character varying(20),
+    main_carr_desc character varying(100),
+    qual_desc character varying(100),
+    fina_edu_cd character varying(10),
+    rcpt_dt character varying(8),
+    insp_rslt_yn character varying(1),
+    rmk character varying(500),
+    attch_file_id character varying(20),
+    wrk_rmk character varying(100),
+    firs_reg_pgm_id character varying(50),
+    firs_reg_dts timestamp without time zone DEFAULT CURRENT_TIMESTAMP,
+    firs_reg_user_id character varying(20),
+    firs_reg_ip character varying(50),
+    fina_reg_pgm_id character varying(50),
+    fina_reg_dts timestamp without time zone DEFAULT CURRENT_TIMESTAMP,
+    fina_reg_user_id character varying(20),
+    fina_reg_ip character varying(50)
+,    CONSTRAINT ps_rcrt_doc_insp_appn_list_pkey PRIMARY KEY (rcrut_noti_id, appn_id)
+);
+CREATE TABLE ps_rcrt_doc_insp_jdg_list (
+    rcrut_noti_id character varying(20),
+    doc_insp_id character varying(20),
+    jdg_id character varying(20),
+    scdl_rel_mast_id character varying(20),
+    scdl_rel_id character varying(20),
+    wrk_rmk character varying(100),
+    firs_reg_pgm_id character varying(50),
+    firs_reg_dts timestamp without time zone DEFAULT CURRENT_TIMESTAMP,
+    firs_reg_user_id character varying(20),
+    firs_reg_ip character varying(50),
+    fina_reg_pgm_id character varying(50),
+    fina_reg_dts timestamp without time zone DEFAULT CURRENT_TIMESTAMP,
+    fina_reg_user_id character varying(20),
+    fina_reg_ip character varying(50)
+
+);
+CREATE TABLE ps_rcrt_doc_insp_mst (
+    wrk_mast_id character varying(20) NOT NULL,
+    wrk_mast_uppr_tbl_nm character varying(30),
+    wrk_mast_uppr_id character varying(20),
+    wrk_chasu character varying(5) DEFAULT 1,
+    prgrs_stat_cd character varying(10),
+    wrk_hst_fina_id character varying(20),
+    end_yn character varying(1) NOT NULL DEFAULT 'N'::character varying,
+    use_yn character varying(1) NOT NULL DEFAULT 'Y'::character varying,
+    del_yn character varying(1) NOT NULL DEFAULT 'N'::character varying,
+    doc_insp_id character varying(20) NOT NULL,
+    doc_insp_dt character varying(8),
+    doc_insp_tm character varying(6),
+    doc_insp_plc_nm character varying(30),
+    mtrm_conn_yn character varying(1),
+    wkly_scdl_reg_yn character varying(1),
+    res_rsrv_id character varying(20),
+    res_targr_id character varying(20),
+    reg_apv_no character varying(20),
+    rslt_apv_no character varying(20),
+    attch_file_id character varying(20),
+    wrk_rmk character varying(100),
+    firs_reg_pgm_id character varying(50),
+    firs_reg_dts timestamp without time zone DEFAULT CURRENT_TIMESTAMP,
+    firs_reg_user_id character varying(20),
+    firs_reg_ip character varying(50),
+    fina_reg_pgm_id character varying(50),
+    fina_reg_dts timestamp without time zone DEFAULT CURRENT_TIMESTAMP,
+    fina_reg_user_id character varying(20),
+    fina_reg_ip character varying(50)
+,    CONSTRAINT ps_rcrt_doc_insp_mst_pkey PRIMARY KEY (wrk_mast_id)
+);
+CREATE TABLE ps_rcrt_doc_insp_oppn_list (
+    appn_id character varying(20) NOT NULL,
+    jdg_id character varying(20) NOT NULL,
+    opnn_id character varying(20) NOT NULL,
+    opnn_1_score numeric(6,2),
+    opnn_2_score numeric(6,2),
+    opnn_3_score numeric(6,2),
+    opnn_4_score numeric(6,2),
+    opnn_5_score numeric(6,2),
+    opnn_6_score numeric(6,2),
+    opnn_7_score numeric(6,2),
+    insp_opnn_desc character varying(100),
+    insp_rmk character varying(100),
+    wrk_rmk character varying(100),
+    firs_reg_pgm_id character varying(50),
+    firs_reg_dts timestamp without time zone DEFAULT CURRENT_TIMESTAMP,
+    firs_reg_user_id character varying(20),
+    firs_reg_ip character varying(50),
+    fina_reg_pgm_id character varying(50),
+    fina_reg_dts timestamp without time zone DEFAULT CURRENT_TIMESTAMP,
+    fina_reg_user_id character varying(20),
+    fina_reg_ip character varying(50)
+,    CONSTRAINT ps_rcrt_doc_insp_oppn_list_pkey PRIMARY KEY (appn_id, jdg_id, opnn_id)
+);
+CREATE TABLE ps_rcrt_intv_insp_jdg_list (
+    rcrut_noti_id character varying(20) NOT NULL,
+    intv_insp_id character varying(20) NOT NULL,
+    jdg_id character varying(20),
+    wrk_rmk character varying(100),
+    firs_reg_pgm_id character varying(50),
+    firs_reg_dts timestamp without time zone DEFAULT CURRENT_TIMESTAMP,
+    firs_reg_user_id character varying(20),
+    firs_reg_ip character varying(50),
+    fina_reg_pgm_id character varying(50),
+    fina_reg_dts timestamp without time zone DEFAULT CURRENT_TIMESTAMP,
+    fina_reg_user_id character varying(20),
+    fina_reg_ip character varying(50)
+,    CONSTRAINT ps_rcrt_intv_insp_jdg_list_pkey PRIMARY KEY (rcrut_noti_id, intv_insp_id)
+);
+CREATE TABLE ps_rcrt_intv_insp_mst (
+    wrk_mast_id character varying(20) NOT NULL,
+    wrk_mast_uppr_tbl_nm character varying(30),
+    wrk_mast_uppr_id character varying(20),
+    wrk_chasu character varying(5) NOT NULL DEFAULT '00001'::character varying,
+    prgrs_stat_cd character varying(10),
+    wrk_hst_fina_id character varying(20),
+    end_yn character varying(1) NOT NULL DEFAULT 'N'::character varying,
+    use_yn character varying(1) NOT NULL DEFAULT 'Y'::character varying,
+    del_yn character varying(1) NOT NULL DEFAULT 'N'::character varying,
+    intv_insp_id character varying(20),
+    intv_insp_nm character varying(30),
+    intv_insp_dt character varying(8),
+    intv_insp_start_tm character varying(6),
+    intv_insp_end_tm character varying(6),
+    intv_insp_plc_nm character varying(50),
+    reg_apv_no character varying(20),
+    rslt_apv_no character varying(20),
+    attch_file_id character varying(20),
+    wrk_rmk character varying(100),
+    firs_reg_pgm_id character varying(50),
+    firs_reg_dts timestamp without time zone DEFAULT CURRENT_TIMESTAMP,
+    firs_reg_user_id character varying(20),
+    firs_reg_ip character varying(50),
+    fina_reg_pgm_id character varying(50),
+    fina_reg_dts timestamp without time zone DEFAULT CURRENT_TIMESTAMP,
+    fina_reg_user_id character varying(20),
+    fina_reg_ip character varying(50)
+,    CONSTRAINT ps_rcrt_intv_insp_mst_pkey PRIMARY KEY (wrk_mast_id)
+);
+CREATE TABLE ps_rcrt_intv_insp_oppn_list (
+    appn_id character varying(20) NOT NULL,
+    jdg_id character varying(20) NOT NULL,
+    opnn_id character varying(20) NOT NULL,
+    opnn_1_score numeric(6,2),
+    opnn_2_score numeric(6,2),
+    opnn_3_score numeric(6,2),
+    opnn_4_score numeric(6,2),
+    opnn_5_score numeric(6,2),
+    opnn_6_score numeric(6,2),
+    opnn_7_score numeric(6,2),
+    insp_opnn_desc character varying(100),
+    insp_rmk character varying(100),
+    wrk_rmk character varying(100),
+    firs_reg_pgm_id character varying(50),
+    firs_reg_dts timestamp without time zone DEFAULT CURRENT_TIMESTAMP,
+    firs_reg_user_id character varying(20),
+    firs_reg_ip character varying(50),
+    fina_reg_pgm_id character varying(50),
+    fina_reg_dts timestamp without time zone DEFAULT CURRENT_TIMESTAMP,
+    fina_reg_user_id character varying(20),
+    fina_reg_ip character varying(50)
+,    CONSTRAINT ps_rcrt_intv_insp_oppn_list_pkey PRIMARY KEY (appn_id, jdg_id, opnn_id)
+);
+CREATE TABLE ps_rcrt_noti_dtl (
+    rcrut_noti_id character varying(20) NOT NULL,
+    noti_dt character varying(8),
+    doc_rcpt_start_dt character varying(8),
+    doc_rcpt_end_dt character varying(8),
+    doc_rcpt_end_tm character varying(6),
+    doc_rcpt_psusr_noti_dt character varying(8),
+    intv_plc_nm character varying(30),
+    intv_insp_dt character varying(8),
+    fina_psusr_noti_dt character varying(8),
+    apmt_dt character varying(8),
+    etc_desc1 character varying(30),
+    etc_desc2 character varying(100),
+    etc_desc3 character varying(100),
+    attch_file_id character varying(20),
+    wrk_rmk character varying(100),
+    firs_reg_pgm_id character varying(50),
+    firs_reg_dts timestamp without time zone DEFAULT CURRENT_TIMESTAMP,
+    firs_reg_user_id character varying(20),
+    firs_reg_ip character varying(50),
+    fina_reg_pgm_id character varying(50),
+    fina_reg_dts timestamp without time zone DEFAULT CURRENT_TIMESTAMP,
+    fina_reg_user_id character varying(20),
+    fina_reg_ip character varying(50)
+,    CONSTRAINT ps_rcrt_noti_dtl_pkey PRIMARY KEY (rcrut_noti_id)
+);
+CREATE TABLE ps_rcrt_noti_mst (
+    wrk_mast_id character varying(20) NOT NULL,
+    wrk_mast_uppr_tbl_nm character varying(30),
+    wrk_mast_uppr_id character varying(20),
+    wrk_chasu character varying(5) NOT NULL DEFAULT '00001'::character varying,
+    prgrs_stat_cd character varying(10),
+    wrk_hst_fina_id character varying(20),
+    end_yn character varying(1) NOT NULL DEFAULT 'N'::character varying,
+    use_yn character varying(1) NOT NULL DEFAULT 'Y'::character varying,
+    del_yn character varying(1) NOT NULL DEFAULT 'N'::character varying,
+    rcrut_noti_id character varying(20),
+    rcrut_noti_no character varying(20),
+    rcrut_noti_stat_cd character varying(10),
+    insd_apv_no character varying(20),
+    ext_apv_no character varying(20),
+    wrk_rmk character varying(100),
+    firs_reg_pgm_id character varying(50),
+    firs_reg_dts timestamp without time zone DEFAULT CURRENT_TIMESTAMP,
+    firs_reg_user_id character varying(20),
+    firs_reg_ip character varying(50),
+    fina_reg_pgm_id character varying(50),
+    fina_reg_dts timestamp without time zone DEFAULT CURRENT_TIMESTAMP,
+    fina_reg_user_id character varying(20),
+    fina_reg_ip character varying(50)
+,    CONSTRAINT ps_rcrt_noti_mst_pkey PRIMARY KEY (wrk_mast_id)
+);
+CREATE TABLE qrtz_blob_triggers (
+    sched_name character varying(120) NOT NULL,
+    trigger_name character varying(200) NOT NULL,
+    trigger_group character varying(200) NOT NULL,
+    blob_data bytea
+,    CONSTRAINT qrtz_blob_triggers_pkey PRIMARY KEY (sched_name, trigger_name, trigger_group)
+);
+CREATE TABLE qrtz_calendars (
+    sched_name character varying(120) NOT NULL,
+    calendar_name character varying(200) NOT NULL,
+    calendar bytea NOT NULL
+,    CONSTRAINT qrtz_calendars_pkey PRIMARY KEY (sched_name, calendar_name)
+);
+CREATE TABLE qrtz_cron_triggers (
+    sched_name character varying(120) NOT NULL,
+    trigger_name character varying(200) NOT NULL,
+    trigger_group character varying(200) NOT NULL,
+    cron_expression character varying(120) NOT NULL,
+    time_zone_id character varying(80)
+,    CONSTRAINT qrtz_cron_triggers_pkey PRIMARY KEY (sched_name, trigger_name, trigger_group)
+);
+CREATE TABLE qrtz_fired_triggers (
+    sched_name character varying(120) NOT NULL,
+    entry_id character varying(95) NOT NULL,
+    trigger_name character varying(200) NOT NULL,
+    trigger_group character varying(200) NOT NULL,
+    instance_name character varying(200) NOT NULL,
+    fired_time bigint NOT NULL,
+    sched_time bigint NOT NULL,
+    priority integer NOT NULL,
+    state character varying(16) NOT NULL,
+    job_name character varying(200),
+    job_group character varying(200),
+    is_nonconcurrent boolean,
+    requests_recovery boolean
+,    CONSTRAINT qrtz_fired_triggers_pkey PRIMARY KEY (sched_name, entry_id)
+);
+CREATE TABLE qrtz_job_details (
+    sched_name character varying(120) NOT NULL,
+    job_name character varying(200) NOT NULL,
+    job_group character varying(200) NOT NULL,
+    description character varying(250),
+    job_class_name character varying(250) NOT NULL,
+    is_durable boolean NOT NULL,
+    is_nonconcurrent boolean NOT NULL,
+    is_update_data boolean NOT NULL,
+    requests_recovery boolean NOT NULL,
+    job_data bytea
+,    CONSTRAINT qrtz_job_details_pkey PRIMARY KEY (sched_name, job_name, job_group)
+);
+CREATE TABLE qrtz_locks (
+    sched_name character varying(120) NOT NULL,
+    lock_name character varying(40) NOT NULL
+,    CONSTRAINT qrtz_locks_pkey PRIMARY KEY (sched_name, lock_name)
+);
+CREATE TABLE qrtz_paused_trigger_grps (
+    sched_name character varying(120) NOT NULL,
+    trigger_group character varying(200) NOT NULL
+,    CONSTRAINT qrtz_paused_trigger_grps_pkey PRIMARY KEY (sched_name, trigger_group)
+);
+CREATE TABLE qrtz_scheduler_state (
+    sched_name character varying(120) NOT NULL,
+    instance_name character varying(200) NOT NULL,
+    last_checkin_time bigint NOT NULL,
+    checkin_interval bigint NOT NULL
+,    CONSTRAINT qrtz_scheduler_state_pkey PRIMARY KEY (sched_name, instance_name)
+);
+CREATE TABLE qrtz_simple_triggers (
+    sched_name character varying(120) NOT NULL,
+    trigger_name character varying(200) NOT NULL,
+    trigger_group character varying(200) NOT NULL,
+    repeat_count bigint NOT NULL,
+    repeat_interval bigint NOT NULL,
+    times_triggered bigint NOT NULL
+,    CONSTRAINT qrtz_simple_triggers_pkey PRIMARY KEY (sched_name, trigger_name, trigger_group)
+);
+CREATE TABLE qrtz_triggers (
+    sched_name character varying(120) NOT NULL,
+    trigger_name character varying(200) NOT NULL,
+    trigger_group character varying(200) NOT NULL,
+    job_name character varying(200) NOT NULL,
+    job_group character varying(200) NOT NULL,
+    description character varying(250),
+    next_fire_time bigint,
+    prev_fire_time bigint,
+    priority integer,
+    trigger_state character varying(16) NOT NULL,
+    trigger_type character varying(8) NOT NULL,
+    start_time bigint NOT NULL,
+    end_time bigint,
+    calendar_name character varying(200),
+    misfire_instr smallint,
+    job_data bytea
+,    CONSTRAINT qrtz_triggers_pkey PRIMARY KEY (sched_name, trigger_name, trigger_group)
+);
+CREATE TABLE rp_elc_apv_mst (
+    elc_apv_id character varying(20) NOT NULL,
+    wrk_mast_tbl_nm character varying(30),
+    wrk_mast_id character varying(20),
+    wrk_chasu character varying(5),
+    wrk_hst_id character varying(20),
+    elc_apv_no character varying(20),
+    elc_apv_stat_cd character varying(10),
+    drft_dt character varying(8),
+    drftr_id character varying(20),
+    apv_cmpltn_dts timestamp without time zone,
+    rjct_dts timestamp without time zone,
+    drft_cncl_dts timestamp without time zone,
+    elc_apv_addr character varying(100),
+    wrk_rmk character varying(100),
+    firs_reg_pgm_id character varying(50),
+    firs_reg_dts timestamp without time zone DEFAULT CURRENT_TIMESTAMP,
+    firs_reg_user_id character varying(20),
+    firs_reg_ip character varying(50),
+    fina_reg_pgm_id character varying(50),
+    fina_reg_dts timestamp without time zone DEFAULT CURRENT_TIMESTAMP,
+    fina_reg_user_id character varying(20),
+    fina_reg_ip character varying(50)
+,    CONSTRAINT rp_elc_apv_mst_pkey PRIMARY KEY (elc_apv_id)
+);
+CREATE TABLE rp_insd_drft_mst (
+    rsch_mast_id character varying(20) NOT NULL,
+    rsch_prj_id character varying(20) NOT NULL,
+    wrk_mast_uppr_tbl_nm character varying(30),
+    wrk_mast_uppr_id character varying(20),
+    wrk_chasu character varying(5),
+    prgrs_stat_cd character varying(10),
+    elc_apv_no character varying(20),
+    wrk_hst_fina_id character varying(20),
+    end_yn character varying(1) NOT NULL DEFAULT 'N'::character varying,
+    use_yn character varying(1) NOT NULL DEFAULT 'Y'::character varying,
+    del_yn character varying(1) NOT NULL DEFAULT 'N'::character varying,
+    drft_nm character varying(30),
+    drft_desc character varying(100),
+    attch_file_id character varying(20),
+    wrk_rmk character varying(100),
+    firs_reg_pgm_id character varying(50),
+    firs_reg_dts timestamp without time zone DEFAULT CURRENT_TIMESTAMP,
+    firs_reg_user_id character varying(20),
+    firs_reg_ip character varying(50),
+    fina_reg_pgm_id character varying(50),
+    fina_reg_dts timestamp without time zone DEFAULT CURRENT_TIMESTAMP,
+    fina_reg_user_id character varying(20),
+    fina_reg_ip character varying(50)
+,    CONSTRAINT rp_insd_drft_mst_pkey PRIMARY KEY (rsch_mast_id)
+);
+CREATE TABLE rp_opnn_evl_dtl_item_list (
+    opnn_evl_dtl_item_id character varying(20) NOT NULL,
+    opnn_evl_larg_ctg_id character varying(20),
+    opnn_evl_dtl_item_nm character varying(30),
+    opnn_evl_input_tp_cd character varying(10),
+    essn_yn character varying(1),
+    score_min_val numeric(6,2),
+    score_max_val numeric(6,2),
+    sort_ord smallint,
+    use_yn character varying(1),
+    wrk_rmk character varying(100),
+    firs_reg_pgm_id character varying(50),
+    firs_reg_dts timestamp without time zone DEFAULT CURRENT_TIMESTAMP,
+    firs_reg_user_id character varying(20),
+    firs_reg_ip character varying(50),
+    fina_reg_pgm_id character varying(50),
+    fina_reg_dts timestamp without time zone DEFAULT CURRENT_TIMESTAMP,
+    fina_reg_user_id character varying(20),
+    fina_reg_ip character varying(50)
+,    CONSTRAINT rp_opnn_evl_dtl_item_list_pkey PRIMARY KEY (opnn_evl_dtl_item_id)
+);
+CREATE TABLE rp_opnn_evl_larg_ctg_list (
+    opnn_evl_larg_ctg_id character varying(20) NOT NULL,
+    opnn_evl_std_id character varying(20),
+    opnn_evl_larg_ctg_nm character varying(30),
+    sort_ord smallint,
+    use_yn character varying(1),
+    wrk_rmk character varying(100),
+    firs_reg_pgm_id character varying(50),
+    firs_reg_dts timestamp without time zone DEFAULT CURRENT_TIMESTAMP,
+    firs_reg_user_id character varying(20),
+    firs_reg_ip character varying(50),
+    fina_reg_pgm_id character varying(50),
+    fina_reg_dts timestamp without time zone DEFAULT CURRENT_TIMESTAMP,
+    fina_reg_user_id character varying(20),
+    fina_reg_ip character varying(50)
+,    CONSTRAINT rp_opnn_evl_larg_ctg_list_pkey PRIMARY KEY (opnn_evl_larg_ctg_id)
+);
+CREATE TABLE rp_opnn_evl_std_mst (
+    opnn_evl_std_id character varying(20) NOT NULL,
+    opnn_evl_std_nm character varying(30),
+    apply_wrk_tbl_nm character varying(30),
+    use_yn character varying(1),
+    del_yn character varying(1),
+    wrk_rmk character varying(100),
+    firs_reg_pgm_id character varying(50),
+    firs_reg_dts timestamp without time zone DEFAULT CURRENT_TIMESTAMP,
+    firs_reg_user_id character varying(20),
+    firs_reg_ip character varying(50),
+    fina_reg_pgm_id character varying(50),
+    fina_reg_dts timestamp without time zone DEFAULT CURRENT_TIMESTAMP,
+    fina_reg_user_id character varying(20),
+    fina_reg_ip character varying(50)
+,    CONSTRAINT rp_opnn_evl_std_mst_pkey PRIMARY KEY (opnn_evl_std_id)
+);
+CREATE TABLE rp_plnd_chg_mst (
+    wrk_mast_id character varying(20) NOT NULL,
+    rsch_prj_id character varying(20) NOT NULL,
+    wrk_chasu character varying(5) DEFAULT '1'::character varying,
+    wrk_mast_uppr_tbl_nm character varying(30),
+    wrk_mast_uppr_id character varying(20),
+    prgrs_stat_cd character varying(10),
+    wrk_hst_fina_id character varying(20),
+    end_yn character varying(1) DEFAULT 'N'::character varying,
+    use_yn character varying(1) DEFAULT 'Y'::character varying,
+    del_yn character varying(1) DEFAULT 'N'::character varying,
+    prj_mngt_nm character varying(30),
+    rsch_start_dt character varying(8),
+    rsch_end_dt character varying(8),
+    prj_ordr_nm character varying(30),
+    prj_ordr_dept_nm character varying(30),
+    rsch_mgr_tp_cd character varying(10),
+    rsch_mgr_nm character varying(30),
+    outsd_cnsmt_incl_yn character varying(1),
+    prnt_partner_nm character varying(30),
+    rsch_prj_stop_dt character varying(8),
+    rsch_prj_rsm_dt character varying(8),
+    attch_file_id character varying(20),
+    wrk_rmk character varying(100),
+    firs_reg_pgm_id character varying(50),
+    firs_reg_dts timestamp without time zone DEFAULT CURRENT_TIMESTAMP,
+    firs_reg_user_id character varying(20),
+    firs_reg_ip character varying(50),
+    fina_reg_pgm_id character varying(50),
+    fina_reg_dts timestamp without time zone DEFAULT CURRENT_TIMESTAMP,
+    fina_reg_user_id character varying(20),
+    fina_reg_ip character varying(50)
+,    CONSTRAINT rp_plnd_chg_mst_pkey PRIMARY KEY (wrk_mast_id)
+);
+CREATE TABLE rp_plnd_chg_req_mst (
+    wrk_mast_id character varying(20) NOT NULL,
+    rsch_prj_id character varying(20) NOT NULL,
+    wrk_mast_uppr_tbl_nm character varying(30),
+    wrk_mast_uppr_id character varying(20),
+    wrk_chasu character varying(5) NOT NULL DEFAULT '1'::character varying,
+    prgrs_stat_cd character varying(10),
+    wrk_hst_fina_id character varying(20),
+    end_yn character varying(1) NOT NULL DEFAULT 'N'::character varying,
+    use_yn character varying(1) NOT NULL DEFAULT 'Y'::character varying,
+    del_yn character varying(1) NOT NULL DEFAULT 'N'::character varying,
+    req_dt character varying(8),
+    chg_desc_attch_yn character varying(1),
+    budg_rvsn_attch_yn character varying(1),
+    chg_resn_desc character varying(100),
+    wrk_rmk character varying(100),
+    firs_reg_pgm_id character varying(50),
+    firs_reg_dts timestamp without time zone DEFAULT CURRENT_TIMESTAMP,
+    firs_reg_user_id character varying(20),
+    firs_reg_ip character varying(50),
+    fina_reg_pgm_id character varying(50),
+    fina_reg_dts timestamp without time zone DEFAULT CURRENT_TIMESTAMP,
+    fina_reg_user_id character varying(20),
+    fina_reg_ip character varying(50)
+,    CONSTRAINT rp_plnd_chg_req_mst_pkey PRIMARY KEY (wrk_mast_id)
+);
+CREATE TABLE rp_plnd_chg_targr_list (
+    wrk_mast_id character varying(20) NOT NULL,
+    rschr_id character varying(20),
+    rschr_tp_cd character varying(10),
+    prtn_prd_start_dt character varying(8),
+    prtn_prd_end_dt character varying(8),
+    prtn_rte numeric(7,4),
+    evl_rte numeric(7,4),
+    wrk_run_desc character varying(100),
+    wrk_rmk character varying(100),
+    firs_reg_pgm_id character varying(50),
+    firs_reg_dts timestamp without time zone DEFAULT CURRENT_TIMESTAMP,
+    firs_reg_user_id character varying(20),
+    firs_reg_ip character varying(50),
+    fina_reg_pgm_id character varying(50),
+    fina_reg_dts timestamp without time zone DEFAULT CURRENT_TIMESTAMP,
+    fina_reg_user_id character varying(20),
+    fina_reg_ip character varying(50)
+,    CONSTRAINT rp_plnd_chg_targr_list_pkey PRIMARY KEY (wrk_mast_id)
+);
+CREATE TABLE rp_plnd_mst (
+    wrk_mast_id character varying(20) NOT NULL,
+    rsch_prj_id character varying(20) NOT NULL,
+    wrk_mast_uppr_tbl_nm character varying(30),
+    wrk_mast_uppr_id character varying(20),
+    wrk_chasu character varying(5) NOT NULL DEFAULT '1'::character varying,
+    prgrs_stat_cd character varying(10),
+    wrk_hst_fina_id character varying(20),
+    end_yn character varying(1) DEFAULT 'N'::character varying,
+    use_yn character varying(1) DEFAULT 'Y'::character varying,
+    del_yn character varying(1) DEFAULT 'N'::character varying,
+    drft_yn character varying(1),
+    attch_file_id character varying(20),
+    wrk_rmk character varying(100),
+    firs_reg_pgm_id character varying(50),
+    firs_reg_dts timestamp without time zone DEFAULT CURRENT_TIMESTAMP,
+    firs_reg_user_id character varying(20),
+    firs_reg_ip character varying(50),
+    fina_reg_pgm_id character varying(50),
+    fina_reg_dts timestamp without time zone DEFAULT CURRENT_TIMESTAMP,
+    fina_reg_user_id character varying(20),
+    fina_reg_ip character varying(50)
+,    CONSTRAINT rp_plnd_mst_pkey PRIMARY KEY (wrk_mast_id)
+);
+CREATE TABLE rp_plnd_targr_list (
+    wrk_mast_id character varying(20) NOT NULL,
+    rschr_id character varying(20) NOT NULL,
+    rschr_tp_cd character varying(10),
+    prtn_prd_start_dt character varying(8),
+    prtn_prd_end_dt character varying(8),
+    prtn_rte numeric(7,4),
+    evl_rte numeric(7,4),
+    wrk_run_desc character varying(100),
+    wrk_rmk character varying(100),
+    firs_reg_pgm_id character varying(50),
+    firs_reg_dts timestamp without time zone DEFAULT CURRENT_TIMESTAMP,
+    firs_reg_user_id character varying(20),
+    firs_reg_ip character varying(50),
+    fina_reg_pgm_id character varying(50),
+    fina_reg_dts timestamp without time zone DEFAULT CURRENT_TIMESTAMP,
+    fina_reg_user_id character varying(20),
+    fina_reg_ip character varying(50)
+,    CONSTRAINT rp_plnd_targr_list_pkey PRIMARY KEY (wrk_mast_id, rschr_id)
+);
+CREATE TABLE rp_pre_rview_mst (
+    wrk_mast_id character varying(20) NOT NULL,
+    rsch_prj_id character varying(20) NOT NULL,
+    wrk_mast_uppr_tbl_nm character varying(30),
+    wrk_mast_uppr_id character varying(20),
+    prgrs_stat_cd character varying(10),
+    wrk_chasu character varying(5) NOT NULL DEFAULT '1'::character varying,
+    wrk_hst_fina_id character varying(20),
+    end_yn character varying(1) NOT NULL DEFAULT 'N'::character varying,
+    use_yn character varying(1) NOT NULL DEFAULT 'Y'::character varying,
+    del_yn character varying(1) NOT NULL DEFAULT 'N'::character varying,
+    rview_tmlt_start_dt character varying(8),
+    rview_tmlt_end_dt character varying(8),
+    wrk_rmk character varying(100),
+    firs_reg_pgm_id character varying(50),
+    firs_reg_dts timestamp without time zone DEFAULT CURRENT_TIMESTAMP,
+    firs_reg_user_id character varying(20),
+    firs_reg_ip character varying(50),
+    fina_reg_pgm_id character varying(50),
+    fina_reg_dts timestamp without time zone DEFAULT CURRENT_TIMESTAMP,
+    fina_reg_user_id character varying(20),
+    fina_reg_ip character varying(50)
+,    CONSTRAINT rp_pre_rview_mst_pkey PRIMARY KEY (wrk_mast_id)
+);
+CREATE TABLE rp_pre_rview_opl_list (
+    wrk_mast_id character varying(20) NOT NULL,
+    rview_targr_id character varying(20) NOT NULL,
+    rsch_prj_id character varying(20) NOT NULL,
+    prgrs_stat_cd character varying(10),
+    rmk_1_desc character varying(100),
+    rmk_2_desc character varying(100),
+    rmk_3_desc character varying(100),
+    adpt_rslt_cd character varying(10),
+    joint_sngl_tp_cd character varying(10),
+    insd_outsd_tp_cd character varying(10),
+    prd_desc character varying(100),
+    rjct_resn_desc character varying(100),
+    wrk_rmk character varying(100),
+    firs_reg_pgm_id character varying(50),
+    firs_reg_dts timestamp without time zone DEFAULT CURRENT_TIMESTAMP,
+    firs_reg_user_id character varying(20),
+    firs_reg_ip character varying(50),
+    fina_reg_pgm_id character varying(50),
+    fina_reg_dts timestamp without time zone DEFAULT CURRENT_TIMESTAMP,
+    fina_reg_user_id character varying(20),
+    fina_reg_ip character varying(50)
+,    CONSTRAINT rp_pre_rview_opl_list_pkey PRIMARY KEY (wrk_mast_id, rview_targr_id, rsch_prj_id)
+);
+CREATE TABLE rp_prj_rcpt_mst (
+    wrk_mast_id character varying(20) NOT NULL,
+    rsch_prj_id character varying(20) NOT NULL,
+    wrk_mast_uppr_tbl_nm character varying(30),
+    wrk_mast_uppr_id character varying(20),
+    prgrs_stat_cd character varying(10),
+    wrk_chasu character varying(5) NOT NULL DEFAULT '1'::character varying,
+    wrk_hst_fina_id character varying(20),
+    end_yn character varying(1) NOT NULL DEFAULT 'N'::character varying,
+    use_yn character varying(1) NOT NULL DEFAULT 'Y'::character varying,
+    del_yn character varying(1) NOT NULL DEFAULT 'N'::character varying,
+    rmk_1_desc character varying(1000),
+    rmk_2_desc character varying(1000),
+    rmk_3_desc character varying(1000),
+    rmk_4_desc character varying(1000),
+    rmk_5_desc character varying(1000),
+    rmk_6_desc character varying(1000),
+    attch_file_id character varying(20),
+    rcpt_dt character varying(8),
+    drft_yn character varying(1),
+    wrk_rmk character varying(100),
+    firs_reg_pgm_id character varying(50),
+    firs_reg_dts timestamp without time zone DEFAULT CURRENT_TIMESTAMP,
+    firs_reg_user_id character varying(20),
+    firs_reg_ip character varying(50),
+    fina_reg_pgm_id character varying(50),
+    fina_reg_dts timestamp without time zone DEFAULT CURRENT_TIMESTAMP,
+    fina_reg_user_id character varying(20),
+    fina_reg_ip character varying(50)
+,    CONSTRAINT rp_prj_rcpt_mst_pk PRIMARY KEY (wrk_mast_id)
+);
+CREATE TABLE rp_prj_rcpt_mst_bak (
+    wrk_mast_id character varying(20),
+    rsch_prj_id character varying(20),
+    wrk_mast_uppr_tbl_nm character varying(30),
+    wrk_mast_uppr_id character varying(20),
+    prgrs_stat_cd character varying(10),
+    wrk_chasu character varying(5),
+    wrk_hst_fina_id character varying(20),
+    end_yn character varying(1),
+    use_yn character varying(1),
+    del_yn character varying(1),
+    rmk_1_desc character varying(1000),
+    rmk_2_desc character varying(1000),
+    rmk_3_desc character varying(1000),
+    rmk_4_desc character varying(1000),
+    rmk_5_desc character varying(1000),
+    rmk_6_desc character varying(1000),
+    attch_file_id character varying(20),
+    rcpt_dt character varying(8),
+    wrk_rmk character varying(100),
+    firs_reg_pgm_id character varying(50),
+    firs_reg_dts timestamp without time zone,
+    firs_reg_user_id character varying(20),
+    firs_reg_ip character varying(50),
+    fina_reg_pgm_id character varying(50),
+    fina_reg_dts timestamp without time zone,
+    fina_reg_user_id character varying(20),
+    fina_reg_ip character varying(50),
+    drft_yn character varying(1)
+
+);
+CREATE TABLE rp_prj_run_insp_mst (
+    wrk_mast_id character varying(20) NOT NULL,
+    rsch_prj_id character varying(20) NOT NULL,
+    wrk_mast_uppr_tbl_nm character varying(30),
+    wrk_mast_uppr_id character varying(20),
+    wrk_chasu character varying(5) NOT NULL DEFAULT '1'::character varying,
+    prgrs_stat_cd character varying(10),
+    wrk_hst_fina_id character varying(20),
+    end_yn character varying(1) NOT NULL DEFAULT 'N'::character varying,
+    use_yn character varying(1) NOT NULL DEFAULT 'Y'::character varying,
+    del_yn character varying(1) NOT NULL DEFAULT 'N'::character varying,
+    wrk_rmk character varying(100),
+    firs_reg_pgm_id character varying(50),
+    firs_reg_dts timestamp without time zone DEFAULT CURRENT_TIMESTAMP,
+    firs_reg_user_id character varying(20),
+    firs_reg_ip character varying(50),
+    fina_reg_pgm_id character varying(50),
+    fina_reg_dts timestamp without time zone DEFAULT CURRENT_TIMESTAMP,
+    fina_reg_user_id character varying(20),
+    fina_reg_ip character varying(50)
+,    CONSTRAINT rp_prj_run_insp_mst_pkey PRIMARY KEY (wrk_mast_id)
+);
+CREATE TABLE rp_prus_rslt_req_mst (
+    wrk_mast_id character varying(20) NOT NULL,
+    rsch_prj_id character varying(20),
+    wrk_mast_uppr_tbl_nm character varying(30),
+    wrk_mast_uppr_id character varying(20),
+    wrk_chasu character varying(5) NOT NULL DEFAULT 1,
+    prgrs_stat_cd character varying(10),
+    wrk_hst_fina_id character varying(20),
+    end_yn character varying(1) NOT NULL DEFAULT 'N'::character varying,
+    use_yn character varying(1) NOT NULL DEFAULT 'Y'::character varying,
+    del_yn character varying(1) NOT NULL DEFAULT 'N'::character varying,
+    rslt_req_prd_start_dt character varying(8),
+    rslt_req_prd_end_dt character varying(8),
+    prus_rslt_tp_cd character varying(10),
+    prus_rslt_desc character varying(100),
+    wrk_rmk character varying(100),
+    firs_reg_pgm_id character varying(50),
+    firs_reg_dts timestamp without time zone DEFAULT CURRENT_TIMESTAMP,
+    firs_reg_user_id character varying(20),
+    firs_reg_ip character varying(50),
+    fina_reg_pgm_id character varying(50),
+    fina_reg_dts timestamp without time zone DEFAULT CURRENT_TIMESTAMP,
+    fina_reg_user_id character varying(20),
+    fina_reg_ip character varying(50)
+,    CONSTRAINT rp_prus_rslt_req_mst_pkey PRIMARY KEY (wrk_mast_id)
+);
+CREATE TABLE rp_rdc_mst (
+    wrk_mast_id character varying(20) NOT NULL,
+    rsch_prj_id character varying(20) NOT NULL,
+    wrk_mast_uppr_tbl_nm character varying(30),
+    wrk_mast_uppr_id character varying(20),
+    wrk_chasu character varying(5) NOT NULL DEFAULT '1'::character varying,
+    prgrs_stat_cd character varying(10),
+    wrk_hst_fina_id character varying(20),
+    end_yn character varying(1) NOT NULL DEFAULT 'N'::character varying,
+    use_yn character varying(1) NOT NULL DEFAULT 'Y'::character varying,
+    del_yn character varying(1) NOT NULL DEFAULT 'N'::character varying,
+    insp_ctg_cd character varying(10),
+    insp_nm character varying(30),
+    insp_agnd_desc character varying(100),
+    insp_dt character varying(8),
+    insp_start_tm character varying(6),
+    insp_end_tm character varying(6),
+    insp_plc_nm character varying(30),
+    attch_file_id character varying(20),
+    fix_yn character varying(1),
+    wrk_rmk character varying(100),
+    firs_reg_pgm_id character varying(50),
+    firs_reg_dts timestamp without time zone DEFAULT CURRENT_TIMESTAMP,
+    firs_reg_user_id character varying(20),
+    firs_reg_ip character varying(50),
+    fina_reg_pgm_id character varying(50),
+    fina_reg_dts timestamp without time zone DEFAULT CURRENT_TIMESTAMP,
+    fina_reg_user_id character varying(20),
+    fina_reg_ip character varying(50)
+,    CONSTRAINT rp_rdc_mst_pkey PRIMARY KEY (wrk_mast_id)
+);
+CREATE TABLE rp_rdc_opl_dtl (
+    wrk_mast_id character varying(20) NOT NULL,
+    opnn_evl_dtl_item_id character varying(20) NOT NULL,
+    opnn_evl_input_tp_cd character varying(10),
+    opnn_evl_input_desc character varying(100),
+    wrk_rmk character varying(100),
+    firs_reg_pgm_id character varying(50),
+    firs_reg_dts timestamp without time zone DEFAULT CURRENT_TIMESTAMP,
+    firs_reg_user_id character varying(20),
+    firs_reg_ip character varying(50),
+    fina_reg_pgm_id character varying(50),
+    fina_reg_dts timestamp without time zone DEFAULT CURRENT_TIMESTAMP,
+    fina_reg_user_id character varying(20),
+    fina_reg_ip character varying(50)
+,    CONSTRAINT rp_rdc_opl_dtl_pkey PRIMARY KEY (wrk_mast_id, opnn_evl_dtl_item_id)
+);
+CREATE TABLE rp_rdc_opl_mst (
+    wrk_mast_id character varying(20) NOT NULL,
+    rsch_prj_id character varying(20),
+    wrk_mast_uppr_tbl_nm character varying(30),
+    wrk_mast_uppr_id character varying(20),
+    wrk_chasu character varying(5),
+    prgrs_stat_cd character varying(10),
+    wrk_hst_fina_id character varying(20),
+    end_yn character varying(1),
+    use_yn character varying(1),
+    del_yn character varying(1),
+    insp_targr_id character varying(20),
+    opnn_evl_std_id character varying(20),
+    attch_file_id character varying(20),
+    wrk_rmk character varying(100),
+    firs_reg_pgm_id character varying(50),
+    firs_reg_dts timestamp without time zone DEFAULT CURRENT_TIMESTAMP,
+    firs_reg_user_id character varying(20),
+    firs_reg_ip character varying(50),
+    fina_reg_pgm_id character varying(50),
+    fina_reg_dts timestamp without time zone DEFAULT CURRENT_TIMESTAMP,
+    fina_reg_user_id character varying(20),
+    fina_reg_ip character varying(50)
+,    CONSTRAINT rp_rdc_opl_mst_pkey PRIMARY KEY (wrk_mast_id)
+);
+CREATE TABLE rp_rdc_targr_list (
+    wrk_mast_id character varying(20) NOT NULL,
+    insp_targr_id character varying(20) NOT NULL,
+    insp_targr_tp_cd character varying(10),
+    wrk_rmk character varying(100),
+    firs_reg_pgm_id character varying(50),
+    firs_reg_dts timestamp without time zone DEFAULT CURRENT_TIMESTAMP,
+    firs_reg_user_id character varying(20),
+    firs_reg_ip character varying(50),
+    fina_reg_pgm_id character varying(50),
+    fina_reg_dts timestamp without time zone DEFAULT CURRENT_TIMESTAMP,
+    fina_reg_user_id character varying(20),
+    fina_reg_ip character varying(50)
+,    CONSTRAINT rp_rdc_targr_list_pkey PRIMARY KEY (wrk_mast_id, insp_targr_id)
+);
+CREATE TABLE rp_rpdc_mst (
+    wrk_mast_id character varying(20) NOT NULL,
+    rsch_prj_id character varying(20),
+    wrk_mast_uppr_tbl_nm character varying(30),
+    wrk_mast_uppr_id character varying(20),
+    wrk_chasu character varying(5) NOT NULL DEFAULT 1,
+    prgrs_stat_cd character varying(10),
+    wrk_hst_fina_id character varying(20),
+    end_yn character varying(1) NOT NULL DEFAULT 'N'::character varying,
+    use_yn character varying(1) NOT NULL DEFAULT 'Y'::character varying,
+    del_yn character varying(1) NOT NULL DEFAULT 'N'::character varying,
+    plgr_rte numeric(7,4),
+    attch_file_cpkl_id character varying(20),
+    attch_file_fina_rpdc_id character varying(20),
+    wrk_rmk character varying(100),
+    firs_reg_pgm_id character varying(50),
+    firs_reg_dts timestamp without time zone DEFAULT CURRENT_TIMESTAMP,
+    firs_reg_user_id character varying(20),
+    firs_reg_ip character varying(50),
+    fina_reg_pgm_id character varying(50),
+    fina_reg_dts timestamp without time zone DEFAULT CURRENT_TIMESTAMP,
+    fina_reg_user_id character varying(20),
+    fina_reg_ip character varying(50)
+,    CONSTRAINT rp_rpdc_mst_pkey PRIMARY KEY (wrk_mast_id)
+);
+CREATE TABLE rp_rpmc_insp_evl_list (
+    wrk_mast_id character varying(20) NOT NULL,
+    insp_targr_id character varying(20) NOT NULL,
+    rsch_prj_id character varying(20) NOT NULL,
+    prgrs_stat_cd character varying(10),
+    insp_dcsn_yn character varying(1),
+    insp_opnn_desc character varying(100),
+    wrk_rmk character varying(100),
+    firs_reg_pgm_id character varying(50),
+    firs_reg_dts timestamp without time zone DEFAULT CURRENT_TIMESTAMP,
+    firs_reg_user_id character varying(20),
+    firs_reg_ip character varying(50),
+    fina_reg_pgm_id character varying(50),
+    fina_reg_dts timestamp without time zone DEFAULT CURRENT_TIMESTAMP,
+    fina_reg_user_id character varying(20),
+    fina_reg_ip character varying(50)
+,    CONSTRAINT rp_rpmc_insp_evl_list_pkey PRIMARY KEY (wrk_mast_id, insp_targr_id, rsch_prj_id)
+);
+CREATE TABLE rp_rpmc_insp_mst (
+    wrk_mast_id character varying(20) NOT NULL,
+    wrk_mast_uppr_tbl_nm character varying(30),
+    wrk_mast_uppr_id character varying(20),
+    wrk_chasu character varying(5) NOT NULL DEFAULT '1'::character varying,
+    prgrs_stat_cd character varying(10),
+    wrk_hst_fina_id character varying(20),
+    end_yn character varying(1) NOT NULL DEFAULT 'N'::character varying,
+    use_yn character varying(1) NOT NULL DEFAULT 'Y'::character varying,
+    del_yn character varying(1) NOT NULL DEFAULT 'N'::character varying,
+    mtrm_nm character varying(30),
+    insp_dt character varying(8),
+    insp_start_tm character varying(6),
+    insp_end_tm character varying(6),
+    oppb_yn character varying(1),
+    agnd_desc character varying(100),
+    attch_file_id character varying(20),
+    wrk_rmk character varying(100),
+    firs_reg_pgm_id character varying(50),
+    firs_reg_dts timestamp without time zone DEFAULT CURRENT_TIMESTAMP,
+    firs_reg_user_id character varying(20),
+    firs_reg_ip character varying(50),
+    fina_reg_pgm_id character varying(50),
+    fina_reg_dts timestamp without time zone DEFAULT CURRENT_TIMESTAMP,
+    fina_reg_user_id character varying(20),
+    fina_reg_ip character varying(50)
+,    CONSTRAINT rp_rpmc_insp_mst_pkey PRIMARY KEY (wrk_mast_id)
+);
+CREATE TABLE rp_rpmc_insp_prj_list (
+    wrk_mast_id character varying(20) NOT NULL,
+    rsch_prj_id character varying(20) NOT NULL,
+    prgrs_yn_cd character varying(10),
+    rsch_cls_cd character varying(10),
+    prnt_partner_cd character varying(10),
+    rsch_mgr_id character varying(20),
+    wrk_rmk character varying(100),
+    firs_reg_pgm_id character varying(50),
+    firs_reg_dts timestamp without time zone DEFAULT CURRENT_TIMESTAMP,
+    firs_reg_user_id character varying(20),
+    firs_reg_ip character varying(50),
+    fina_reg_pgm_id character varying(50),
+    fina_reg_dts timestamp without time zone DEFAULT CURRENT_TIMESTAMP,
+    fina_reg_user_id character varying(20),
+    fina_reg_ip character varying(50)
+,    CONSTRAINT rp_rpmc_insp_prj_list_pkey PRIMARY KEY (wrk_mast_id, rsch_prj_id)
+);
+CREATE TABLE rp_rpmc_insp_targr_list (
+    wrk_mast_id character varying(20) NOT NULL,
+    insp_targr_id character varying(20) NOT NULL,
+    wrk_rmk character varying(100),
+    firs_reg_pgm_id character varying(50),
+    firs_reg_dts timestamp without time zone DEFAULT CURRENT_TIMESTAMP,
+    firs_reg_user_id character varying(20),
+    firs_reg_ip character varying(50),
+    fina_reg_pgm_id character varying(50),
+    fina_reg_dts timestamp without time zone DEFAULT CURRENT_TIMESTAMP,
+    fina_reg_user_id character varying(20),
+    fina_reg_ip character varying(50)
+,    CONSTRAINT rp_rpmc_insp_targr_list_pkey PRIMARY KEY (wrk_mast_id, insp_targr_id)
+);
+CREATE TABLE rp_rsch_budg_dtl (
+    rsch_budg_dtl_id character varying(20) NOT NULL,
+    rsch_budg_mast_id character varying(20) NOT NULL,
+    item_tp_cd character varying(10),
+    item_cd character varying(10),
+    item_nm character varying(30),
+    budg_item_tp_cd character varying(10),
+    budg_item_cd character varying(10),
+    budg_item_nm character varying(30),
+    calc_base_cd character varying(10),
+    calc_base_nm character varying(30),
+    calc_desc character varying(100),
+    cost_amt bigint,
+    wrk_rmk character varying(100),
+    firs_reg_pgm_id character varying(50),
+    firs_reg_dts timestamp without time zone DEFAULT CURRENT_TIMESTAMP,
+    firs_reg_user_id character varying(20),
+    firs_reg_ip character varying(50),
+    fina_reg_pgm_id character varying(50),
+    fina_reg_dts timestamp without time zone DEFAULT CURRENT_TIMESTAMP,
+    fina_reg_user_id character varying(20),
+    fina_reg_ip character varying(50)
+,    CONSTRAINT rp_rsch_budg_dtl_pkey PRIMARY KEY (rsch_budg_dtl_id)
+);
+CREATE TABLE rp_rsch_budg_mst (
+    rsch_budg_mast_id character varying(20) NOT NULL,
+    rsch_prj_id character varying(20),
+    pjt_id character varying(20),
+    pjt_nm character varying(30),
+    wrk_rmk character varying(100),
+    firs_reg_pgm_id character varying(50),
+    firs_reg_dts timestamp without time zone DEFAULT CURRENT_TIMESTAMP,
+    firs_reg_user_id character varying(20),
+    firs_reg_ip character varying(50),
+    fina_reg_pgm_id character varying(50),
+    fina_reg_dts timestamp without time zone DEFAULT CURRENT_TIMESTAMP,
+    fina_reg_user_id character varying(20),
+    fina_reg_ip character varying(50)
+,    CONSTRAINT rp_rsch_budg_mst_pkey PRIMARY KEY (rsch_budg_mast_id)
+);
+CREATE TABLE rp_rsch_prj_mst (
+    wrk_mast_id character varying(20) NOT NULL,
+    rsch_prj_id character varying(20) NOT NULL,
+    wrk_mast_uppr_tbl_nm character varying(30),
+    wrk_mast_uppr_id character varying(20),
+    wrk_chasu character varying(5),
+    prgrs_stat_cd character varying(10),
+    wrk_hst_fina_id character varying(20),
+    end_yn character varying(1) NOT NULL DEFAULT 'N'::character varying,
+    use_yn character varying(1) NOT NULL DEFAULT 'Y'::character varying,
+    del_yn character varying(1) NOT NULL DEFAULT 'N'::character varying,
+    prj_mngt_no character varying(20),
+    prj_targ_yy character varying(4),
+    rsch_ctg_cd character varying(10),
+    rsch_cls_cd character varying(10),
+    prj_nm character varying(30),
+    prj_mngt_nm character varying(30),
+    rsch_start_dt character varying(8),
+    rsch_end_dt character varying(8),
+    prj_ordr_nm character varying(30),
+    prj_ordr_dept_nm character varying(30),
+    rsch_mgr_tp_cd character varying(10),
+    rsch_mgr_nm character varying(30),
+    dg_yn character varying(1),
+    base_prj_yn character varying(1),
+    fcs_prj_yn character varying(1),
+    outsd_cnsmt_incl_yn character varying(1),
+    prnt_partner_nm character varying(30),
+    evl_cmte_wghtd_val_val numeric(6,2),
+    rsch_ctg_larg_cd character varying(10),
+    prj_targ_no character varying(10),
+    si_gun_prj_yn character varying(1) DEFAULT 'N'::character varying,
+    wrk_rmk character varying(100),
+    firs_reg_pgm_id character varying(30),
+    firs_reg_dts timestamp without time zone,
+    firs_reg_user_id character varying(20),
+    firs_reg_ip character varying(50),
+    fina_reg_pgm_id character varying(30),
+    fina_reg_dts timestamp without time zone,
+    fina_reg_user_id character varying(20),
+    fina_reg_ip character varying(50)
+,    CONSTRAINT rp_rsch_prj_mst_pkey PRIMARY KEY (wrk_mast_id, rsch_prj_id)
+);
+CREATE TABLE rp_rvsn_insp_mst (
+    wrk_mast_id character varying(20) NOT NULL,
+    rsch_prj_id character varying(20),
+    wrk_mast_uppr_tbl_nm character varying(30),
+    wrk_mast_uppr_id character varying(20),
+    wrk_chasu character varying(5),
+    prgrs_stat_cd character varying(10),
+    wrk_hst_fina_id character varying(20),
+    end_yn character varying(1),
+    use_yn character varying(1),
+    del_yn character varying(1),
+    insp_nm character varying(30),
+    insp_agnd_desc character varying(100),
+    insp_dt character varying(8),
+    insp_start_tm character varying(6),
+    insp_end_tm character varying(6),
+    insp_plc_nm character varying(30),
+    wrk_rmk character varying(100),
+    firs_reg_pgm_id character varying(50),
+    firs_reg_dts timestamp without time zone DEFAULT CURRENT_TIMESTAMP,
+    firs_reg_user_id character varying(20),
+    firs_reg_ip character varying(50),
+    fina_reg_pgm_id character varying(50),
+    fina_reg_dts timestamp without time zone DEFAULT CURRENT_TIMESTAMP,
+    fina_reg_user_id character varying(20),
+    fina_reg_ip character varying(50)
+,    CONSTRAINT rp_rvsn_insp_mst_pkey PRIMARY KEY (wrk_mast_id)
+);
+CREATE TABLE rp_rvsn_insp_targr_list (
+    wrk_mast_id character varying(20) NOT NULL,
+    insp_targr_id character varying(20) NOT NULL,
+    wrk_rmk character varying(100),
+    firs_reg_pgm_id character varying(50),
+    firs_reg_dts timestamp without time zone DEFAULT CURRENT_TIMESTAMP,
+    firs_reg_user_id character varying(20),
+    firs_reg_ip character varying(50),
+    fina_reg_pgm_id character varying(50),
+    fina_reg_dts timestamp without time zone DEFAULT CURRENT_TIMESTAMP,
+    fina_reg_user_id character varying(20),
+    fina_reg_ip character varying(50)
+,    CONSTRAINT rp_rvsn_insp_targr_list_pkey PRIMARY KEY (wrk_mast_id, insp_targr_id)
+);
+CREATE TABLE rp_serv_insp_mst (
+    wrk_mast_id character varying(20) NOT NULL,
+    rsch_prj_id character varying(20) NOT NULL,
+    wrk_mast_uppr_tbl_nm character varying(30),
+    wrk_mast_uppr_id character varying(20),
+    wrk_chasu character varying(5) NOT NULL DEFAULT '1'::character varying,
+    prgrs_stat_cd character varying(10),
+    wrk_hst_fina_id character varying(20),
+    end_yn character varying(1) NOT NULL DEFAULT 'N'::character varying,
+    use_yn character varying(1) NOT NULL DEFAULT 'Y'::character varying,
+    del_yn character varying(1) NOT NULL DEFAULT 'N'::character varying,
+    insp_nm character varying(30),
+    insp_agnd_desc character varying(100),
+    insp_dt character varying(8),
+    insp_start_tm character varying(6),
+    insp_end_tm character varying(6),
+    insp_plc_nm character varying(30),
+    attch_file_id character varying(20),
+    wrk_rmk character varying(100),
+    firs_reg_pgm_id character varying(50),
+    firs_reg_dts timestamp without time zone DEFAULT CURRENT_TIMESTAMP,
+    firs_reg_user_id character varying(20),
+    firs_reg_ip character varying(50),
+    fina_reg_pgm_id character varying(50),
+    fina_reg_dts timestamp without time zone DEFAULT CURRENT_TIMESTAMP,
+    fina_reg_user_id character varying(20),
+    fina_reg_ip character varying(50)
+,    CONSTRAINT rp_serv_insp_mst_pkey PRIMARY KEY (wrk_mast_id)
+);
+CREATE TABLE rp_serv_insp_targr_list (
+    wrk_mast_id character varying(20) NOT NULL,
+    insp_targr_id character varying(20) NOT NULL,
+    wrk_rmk character varying(100),
+    firs_reg_pgm_id character varying(50),
+    firs_reg_dts timestamp without time zone DEFAULT CURRENT_TIMESTAMP,
+    firs_reg_user_id character varying(20),
+    firs_reg_ip character varying(50),
+    fina_reg_pgm_id character varying(50),
+    fina_reg_dts timestamp without time zone DEFAULT CURRENT_TIMESTAMP,
+    fina_reg_user_id character varying(20),
+    fina_reg_ip character varying(50)
+,    CONSTRAINT rp_serv_insp_targr_list_pkey PRIMARY KEY (wrk_mast_id, insp_targr_id)
+);
+CREATE TABLE rp_wrk_hst_dtl (
+    wrk_hst_dtl_id character varying(20) NOT NULL,
+    wrk_hst_id character varying(20),
+    wrk_mast_tbl_nm character varying(30),
+    wrk_mast_id character varying(20),
+    chg_tp_cd character varying(10),
+    phys_col_nm character varying(30),
+    logc_col_nm character varying(30),
+    old_data character varying(100),
+    new_data character varying(100),
+    wrk_rmk character varying(100),
+    firs_reg_pgm_id character varying(50),
+    firs_reg_dts timestamp without time zone DEFAULT CURRENT_TIMESTAMP,
+    firs_reg_user_id character varying(20),
+    firs_reg_ip character varying(50),
+    fina_reg_pgm_id character varying(50),
+    fina_reg_dts timestamp without time zone DEFAULT CURRENT_TIMESTAMP,
+    fina_reg_user_id character varying(20),
+    fina_reg_ip character varying(50)
+,    CONSTRAINT rp_wrk_hst_dtl_pkey PRIMARY KEY (wrk_hst_dtl_id)
+);
+CREATE TABLE rp_wrk_hst_mst (
+    wrk_hst_id character varying(20) NOT NULL,
+    wrk_mast_tbl_nm character varying(30) NOT NULL,
+    wrk_mast_id character varying(20) NOT NULL,
+    rsch_prj_id character varying(20),
+    wrk_chasu character varying(5),
+    wrk_hst_chasu character varying(5),
+    chg_tp_cd character varying(10),
+    old_data jsonb,
+    new_data jsonb,
+    chg_desc character varying(100),
+    wrk_rmk character varying(100),
+    firs_reg_pgm_id character varying(50),
+    firs_reg_dts timestamp without time zone DEFAULT CURRENT_TIMESTAMP,
+    firs_reg_user_id character varying(20),
+    firs_reg_ip character varying(50),
+    fina_reg_pgm_id character varying(50),
+    fina_reg_dts timestamp without time zone DEFAULT CURRENT_TIMESTAMP,
+    fina_reg_user_id character varying(20),
+    fina_reg_ip character varying(50)
+,    CONSTRAINT rp_wrk_hst_mst_pkey PRIMARY KEY (wrk_hst_id)
+);
+CREATE TABLE rp_wrk_hst_stat_info (
+    wrk_stat_hst_id character varying(20) NOT NULL,
+    rsch_prj_id character varying(20) NOT NULL,
+    wrk_mast_tbl_nm character varying(30) NOT NULL,
+    wrk_mast_id character varying(20) NOT NULL,
+    wrk_chasu character varying(5) NOT NULL DEFAULT '1'::character varying,
+    wrk_mast_uppr_tbl_nm character varying(30),
+    wrk_mast_uppr_id character varying(20),
+    old_prgrs_stat_cd character varying(10),
+    new_prgrs_stat_cd character varying(10),
+    chg_resn_desc character varying(100),
+    wrk_rmk character varying(100),
+    firs_reg_pgm_id character varying(50),
+    firs_reg_dts timestamp without time zone DEFAULT CURRENT_TIMESTAMP,
+    firs_reg_user_id character varying(20),
+    firs_reg_ip character varying(50),
+    fina_reg_pgm_id character varying(50),
+    fina_reg_dts timestamp without time zone DEFAULT CURRENT_TIMESTAMP,
+    fina_reg_user_id character varying(20),
+    fina_reg_ip character varying(50)
+,    CONSTRAINT rp_wrk_hst_stat_info_pkey PRIMARY KEY (wrk_stat_hst_id)
+);
+CREATE TABLE sy_alarm_send_desc_tmp (
+    reg_seq integer,
+    call_to character varying(30),
+    call_from character varying(30),
+    message character varying(4000),
+    template_code character varying(30),
+    fallback_type character varying(3),
+    fallback_subject character varying(60),
+    fallback_message character varying(4000),
+    msg_etc1 character varying(160),
+    msg_etc2 character varying(160),
+    msg_etc3 character varying(160),
+    msg_etc4 character varying(160),
+    msg_etc5 character varying(160),
+    msg_etc6 character varying(160),
+    wrk_rmk character varying(100),
+    firs_reg_pgm_id character varying(20),
+    firs_reg_dts timestamp without time zone,
+    firs_reg_user_id character varying(20),
+    firs_reg_ip character varying(50),
+    fina_reg_pgm_id character varying(20),
+    fina_reg_dts timestamp without time zone,
+    fina_reg_user_id character varying(20),
+    fina_reg_ip character varying(50),
+    rsrv_yn character varying(1),
+    rsrv_dts timestamp without time zone,
+    btn_nm1 character varying(40),
+    btn_mobl_desc1 character varying(100),
+    btn_pc_desc1 character varying(100),
+    btn_nm2 character varying(40),
+    btn_mobl_desc2 character varying(100),
+    btn_pc_desc2 character varying(100),
+    btn_nm3 character varying(40),
+    btn_mobl_desc3 character varying(100),
+    btn_pc_desc3 character varying(100)
+
+);
+CREATE TABLE sy_approval_info (
+    appro_key bigint NOT NULL,
+    out_process_code character varying(50),
+    form_id character varying(50),
+    file_list character varying(200),
+    contents_str text,
+    subject_str character varying(200),
+    doc_id character varying(50),
+    a10_user_id character varying(50),
+    a10_emp_seq character varying(50),
+    a10_dept_seq character varying(50),
+    a10_comp_seq character varying(50),
+    a10_group_seq character varying(50),
+    table_nm character varying(100),
+    table_key character varying(100),
+    req_emp_no character varying(20),
+    apv_state_cd character varying(5),
+    apv_dt character varying(8),
+    apv_emp_no character varying(20),
+    service_url character varying(256),
+    ref_doc_id character varying(100),
+    next_apvr character varying(50),
+    firs_reg_pgm_id character varying(20),
+    firs_reg_dts timestamp without time zone DEFAULT now(),
+    firs_reg_user_id character varying(20),
+    firs_reg_ip character varying(50),
+    fina_reg_pgm_id character varying(20),
+    fina_reg_dts timestamp without time zone DEFAULT now(),
+    fina_reg_user_id character varying(20),
+    fina_reg_ip character varying(50)
+,    CONSTRAINT sy_approval_info_pk PRIMARY KEY (appro_key)
+);
+CREATE TABLE sy_approval_info_ud_log (
+    id bigint NOT NULL DEFAULT nextval('sy_approval_info_ud_log_id_seq'::regclass),
+    op text NOT NULL,
+    old_data jsonb,
+    new_data jsonb,
+    changed_by text,
+    client_addr text,
+    server_addr text,
+    log_dts timestamp without time zone NOT NULL DEFAULT now()
+,    CONSTRAINT sy_approval_info_ud_log_pkey PRIMARY KEY (id)
+);
+CREATE TABLE sy_batch_job_config (
+    job_cd character varying(20) NOT NULL,
+    job_nm character varying(100) NOT NULL,
+    job_path character varying(100),
+    exec_cycl character varying(50),
+    use_yn character varying(1),
+    fina_exec_stat character varying(10),
+    fina_exec_cnt bigint,
+    apply_yn character varying(1),
+    wrk_tp_cd character varying(2),
+    wrk_rmk character varying(100),
+    firs_reg_pgm_id character varying(50),
+    firs_reg_dts timestamp without time zone DEFAULT now(),
+    firs_reg_user_id character varying(20),
+    firs_reg_ip character varying(50),
+    fina_reg_pgm_id character varying(50),
+    fina_reg_dts timestamp without time zone,
+    fina_reg_user_id character varying(20),
+    fina_reg_ip character varying(50)
+,    CONSTRAINT sy_batch_job_config_pk PRIMARY KEY (job_cd)
+);
+CREATE TABLE sy_batch_job_config_ud_log (
+    id bigint NOT NULL DEFAULT nextval('sy_batch_job_config_ud_log_id_seq'::regclass),
+    op text NOT NULL,
+    old_data jsonb,
+    new_data jsonb,
+    changed_by text,
+    client_addr text,
+    server_addr text,
+    log_dts timestamp without time zone NOT NULL DEFAULT now()
+,    CONSTRAINT sy_batch_job_config_ud_log_pkey PRIMARY KEY (id)
+);
+CREATE TABLE sy_batch_job_log (
+    id bigint NOT NULL,
+    exec_dt character varying(8) NOT NULL,
+    job_cd character varying(20) NOT NULL,
+    start_dts timestamp without time zone,
+    end_dts timestamp without time zone,
+    exec_rslt character varying(50),
+    exec_cnt bigint,
+    exec_msg text,
+    wrk_tp_cd character varying(2),
+    wrk_rmk character varying(100),
+    firs_reg_pgm_id character varying(50),
+    firs_reg_dts timestamp without time zone DEFAULT now(),
+    firs_reg_user_id character varying(20),
+    firs_reg_ip character varying(50),
+    fina_reg_pgm_id character varying(50),
+    fina_reg_dts timestamp without time zone,
+    fina_reg_user_id character varying(20),
+    fina_reg_ip character varying(50)
+,    CONSTRAINT sy_batch_job_log_pk PRIMARY KEY (id)
+);
+CREATE TABLE sy_batch_job_log_ud_log (
+    id bigint NOT NULL DEFAULT nextval('sy_batch_job_log_ud_log_id_seq'::regclass),
+    op text NOT NULL,
+    old_data jsonb,
+    new_data jsonb,
+    changed_by text,
+    client_addr text,
+    server_addr text,
+    log_dts timestamp without time zone NOT NULL DEFAULT now()
+,    CONSTRAINT sy_batch_job_log_ud_log_pkey PRIMARY KEY (id)
+);
+CREATE TABLE sy_batch_pgm_exec (
+    exec_no character varying(20) NOT NULL,
+    exec_proc_id character varying(100),
+    exec_vrbl_desc character varying(200),
+    exec_stat_cd character varying(10) NOT NULL DEFAULT 'R'::character varying,
+    err_msg_desc character varying(2000),
+    wrk_rmk character varying(100),
+    req_pgm_id character varying(20),
+    req_user_id character varying(20),
+    req_ip character varying(50),
+    req_dts timestamp without time zone,
+    exec_dts timestamp without time zone,
+    end_dts timestamp without time zone
+,    CONSTRAINT sy_batch_pgm_exec_pkey PRIMARY KEY (exec_no)
+);
+CREATE TABLE sy_batch_pgm_exec_ud_log (
+    id bigint NOT NULL DEFAULT nextval('sy_batch_pgm_exec_ud_log_id_seq'::regclass),
+    op text NOT NULL,
+    old_data jsonb,
+    new_data jsonb,
+    changed_by text,
+    client_addr text,
+    server_addr text,
+    log_dts timestamp without time zone NOT NULL DEFAULT now()
+,    CONSTRAINT sy_batch_pgm_exec_ud_log_pkey PRIMARY KEY (id)
+);
+CREATE TABLE sy_batch_pgm_list (
+    proc_id character varying(100) NOT NULL,
+    proc_nm character varying(200),
+    use_yn character varying(1) NOT NULL DEFAULT 'Y'::character varying,
+    wrk_rmk character varying(100),
+    reg_dts timestamp without time zone,
+    reg_user_id character varying(20),
+    reg_ip character varying(50)
+,    CONSTRAINT sy_batch_pgm_list_pkey PRIMARY KEY (proc_id)
+);
+CREATE TABLE sy_batch_pgm_list_ud_log (
+    id bigint NOT NULL DEFAULT nextval('sy_batch_pgm_list_ud_log_id_seq'::regclass),
+    op text NOT NULL,
+    old_data jsonb,
+    new_data jsonb,
+    changed_by text,
+    client_addr text,
+    server_addr text,
+    log_dts timestamp without time zone NOT NULL DEFAULT now()
+,    CONSTRAINT sy_batch_pgm_list_ud_log_pkey PRIMARY KEY (id)
+);
+CREATE TABLE sy_bi_acct_info (
+    dept_cd character varying(10) NOT NULL,
+    bi_id character varying(10),
+    wrk_rmk character varying(100),
+    firs_reg_pgm_id character varying(20),
+    firs_reg_dts timestamp without time zone DEFAULT now(),
+    firs_reg_user_id character varying(20),
+    firs_reg_ip character varying(50),
+    fina_reg_pgm_id character varying(20),
+    fina_reg_dts timestamp without time zone,
+    fina_reg_user_id character varying(20),
+    fina_reg_ip character varying(50)
+,    CONSTRAINT sy_bi_acct_info_pkey PRIMARY KEY (dept_cd)
+);
+CREATE TABLE sy_bi_acct_info_ud_log (
+    id bigint NOT NULL DEFAULT nextval('sy_bi_acct_info_ud_log_id_seq'::regclass),
+    op text NOT NULL,
+    old_data jsonb,
+    new_data jsonb,
+    changed_by text,
+    client_addr text,
+    server_addr text,
+    log_dts timestamp without time zone NOT NULL DEFAULT now()
+,    CONSTRAINT sy_bi_acct_info_ud_log_pkey PRIMARY KEY (id)
+);
+CREATE TABLE sy_bi_prnt_info (
+    pgm_id character varying(20) NOT NULL,
+    bi_prnt_id character varying(50) NOT NULL,
+    bi_prnt_nm character varying(100),
+    bi_prnt_tp_cd character varying(2) NOT NULL,
+    bi_prnt_proj character varying(10) NOT NULL,
+    menu_mdul_id character varying(2),
+    menu_mdul_tp_id character varying(3),
+    wrk_rmk character varying(100),
+    firs_reg_pgm_id character varying(50),
+    firs_reg_dts timestamp without time zone DEFAULT now(),
+    firs_reg_user_id character varying(20),
+    firs_reg_ip character varying(50),
+    fina_reg_pgm_id character varying(50),
+    fina_reg_dts timestamp without time zone,
+    fina_reg_user_id character varying(20),
+    fina_reg_ip character varying(50)
+,    CONSTRAINT sy_bi_prnt_info_pk PRIMARY KEY (pgm_id)
+);
+CREATE TABLE sy_bi_prnt_info_ud_log (
+    id bigint NOT NULL DEFAULT nextval('sy_bi_prnt_info_ud_log_id_seq'::regclass),
+    op text NOT NULL,
+    old_data jsonb,
+    new_data jsonb,
+    changed_by text,
+    client_addr text,
+    server_addr text,
+    log_dts timestamp without time zone NOT NULL DEFAULT now()
+,    CONSTRAINT sy_bi_prnt_info_ud_log_pkey PRIMARY KEY (id)
+);
+CREATE TABLE sy_biz_btch_pgm_exec (
+    id bigint NOT NULL,
+    wrk_kind_cd character varying(10),
+    req_dts timestamp without time zone,
+    req_emp_no character varying(20),
+    parm1 character varying(50),
+    parm2 character varying(50),
+    parm3 character varying(50),
+    parm4 character varying(50),
+    parm5 character varying(50),
+    parm6 character varying(50),
+    parm7 character varying(50),
+    parm8 character varying(50),
+    parm9 character varying(50),
+    parm10 character varying(50),
+    parm11 character varying(50),
+    parm12 character varying(50),
+    parm13 character varying(50),
+    parm14 character varying(50),
+    parm15 character varying(50),
+    parm16 character varying(50),
+    parm17 character varying(50),
+    parm18 character varying(50),
+    parm19 character varying(50),
+    parm20 character varying(50),
+    start_dts timestamp without time zone,
+    end_dts timestamp without time zone,
+    wrk_stat_cd character varying(10),
+    err_desc character varying(100),
+    wrk_rmk character varying(100),
+    firs_reg_pgm_id character varying(20),
+    firs_reg_dts timestamp without time zone DEFAULT now(),
+    firs_reg_user_id character varying(20),
+    firs_reg_ip character varying(50),
+    fina_reg_pgm_id character varying(20),
+    fina_reg_dts timestamp without time zone,
+    fina_reg_user_id character varying(20),
+    fina_reg_ip character varying(50)
+,    CONSTRAINT sy_biz_btch_pgm_exec_pkey PRIMARY KEY (id)
+);
+CREATE TABLE sy_biz_btch_pgm_exec_ud_log (
+    id bigint NOT NULL DEFAULT nextval('sy_biz_btch_pgm_exec_ud_log_id_seq'::regclass),
+    op text NOT NULL,
+    old_data jsonb,
+    new_data jsonb,
+    changed_by text,
+    client_addr text,
+    server_addr text,
+    log_dts timestamp without time zone NOT NULL DEFAULT now()
+,    CONSTRAINT sy_biz_btch_pgm_exec_ud_log_pkey PRIMARY KEY (id)
+);
+CREATE TABLE sy_biz_btch_pgm_setu (
+    id bigint NOT NULL,
+    wrk_kind_cd character varying(10),
+    parm1 character varying(50),
+    parm2 character varying(50),
+    parm3 character varying(50),
+    parm4 character varying(50),
+    parm5 character varying(50),
+    parm6 character varying(50),
+    parm7 character varying(50),
+    parm8 character varying(50),
+    parm9 character varying(50),
+    parm10 character varying(50),
+    parm11 character varying(50),
+    parm12 character varying(50),
+    parm13 character varying(50),
+    parm14 character varying(50),
+    parm15 character varying(50),
+    parm16 character varying(50),
+    parm17 character varying(50),
+    parm18 character varying(50),
+    parm19 character varying(50),
+    parm20 character varying(50),
+    wrk_rmk character varying(100),
+    firs_reg_pgm_id character varying(20),
+    firs_reg_dts timestamp without time zone DEFAULT now(),
+    firs_reg_user_id character varying(20),
+    firs_reg_ip character varying(50),
+    fina_reg_pgm_id character varying(20),
+    fina_reg_dts timestamp without time zone,
+    fina_reg_user_id character varying(20),
+    fina_reg_ip character varying(50)
+,    CONSTRAINT sy_biz_btch_pgm_setu_pkey PRIMARY KEY (id)
+);
+CREATE TABLE sy_biz_btch_pgm_setu_ud_log (
+    id bigint NOT NULL DEFAULT nextval('sy_biz_btch_pgm_setu_ud_log_id_seq'::regclass),
+    op text NOT NULL,
+    old_data jsonb,
+    new_data jsonb,
+    changed_by text,
+    client_addr text,
+    server_addr text,
+    log_dts timestamp without time zone NOT NULL DEFAULT now()
+,    CONSTRAINT sy_biz_btch_pgm_setu_ud_log_pkey PRIMARY KEY (id)
+);
+CREATE TABLE sy_biz_slip_seq_info (
+    biz_slip_seq_tp character varying(1) NOT NULL,
+    wh_cd character varying(2) NOT NULL,
+    ym character varying(6) NOT NULL,
+    biz_slip_seq integer NOT NULL,
+    firs_reg_pgm_id character varying(20),
+    firs_reg_dts timestamp without time zone DEFAULT now(),
+    firs_reg_user_id character varying(20),
+    firs_reg_ip character varying(50),
+    fina_reg_pgm_id character varying(20),
+    fina_reg_dts timestamp without time zone DEFAULT now(),
+    fina_reg_user_id character varying(20),
+    fina_reg_ip character varying(50)
+,    CONSTRAINT sy_biz_slip_seq_info_pk PRIMARY KEY (biz_slip_seq_tp, wh_cd, ym)
+);
+CREATE TABLE sy_biz_slip_seq_info_ud_log (
+    id bigint NOT NULL DEFAULT nextval('sy_biz_slip_seq_info_ud_log_id_seq'::regclass),
+    op text NOT NULL,
+    old_data jsonb,
+    new_data jsonb,
+    changed_by text,
+    client_addr text,
+    server_addr text,
+    log_dts timestamp without time zone NOT NULL DEFAULT now()
+,    CONSTRAINT sy_biz_slip_seq_info_ud_log_pkey PRIMARY KEY (id)
+);
+CREATE TABLE sy_blng_dept_chg (
+    emp_no character varying(20) NOT NULL,
+    chg_dept_cd character varying(10) NOT NULL,
+    wrk_rmk character varying(100),
+    firs_reg_pgm_id character varying(20),
+    firs_reg_dts timestamp without time zone DEFAULT now(),
+    firs_reg_user_id character varying(20),
+    firs_reg_ip character varying(50),
+    fina_reg_pgm_id character varying(20),
+    fina_reg_dts timestamp without time zone DEFAULT now(),
+    fina_reg_user_id character varying(20),
+    fina_reg_ip character varying(50)
+,    CONSTRAINT sy_blng_dept_chg_pkey PRIMARY KEY (emp_no)
+);
+CREATE TABLE sy_brndz_auth (
+    emp_no character varying(20) NOT NULL,
+    wrk_rmk character varying(100),
+    firs_reg_pgm_id character varying(20),
+    firs_reg_dts timestamp without time zone,
+    firs_reg_user_id character varying(20),
+    firs_reg_ip character varying(50),
+    fina_reg_pgm_id character varying(20),
+    fina_reg_dts timestamp without time zone,
+    fina_reg_user_id character varying(20),
+    fina_reg_ip character varying(50)
+,    CONSTRAINT sy_brndz_auth_pkey PRIMARY KEY (emp_no)
+);
+CREATE TABLE sy_brndz_auth_ud_log (
+    id bigint NOT NULL DEFAULT nextval('sy_brndz_auth_ud_log_id_seq'::regclass),
+    op text NOT NULL,
+    old_data jsonb,
+    new_data jsonb,
+    changed_by text,
+    client_addr text,
+    server_addr text,
+    log_dts timestamp without time zone NOT NULL DEFAULT now()
+,    CONSTRAINT sy_brndz_auth_ud_log_pkey PRIMARY KEY (id)
+);
+CREATE TABLE sy_brndz_bizd_info (
+    mpng_no bigint NOT NULL,
+    bizd_cd character varying(10) NOT NULL,
+    start_ym character varying(6) NOT NULL,
+    end_ym character varying(6) NOT NULL,
+    wrk_rmk character varying(100) NOT NULL,
+    firs_reg_pgm_id character varying(20),
+    firs_reg_dts timestamp without time zone DEFAULT now(),
+    firs_reg_user_id character varying(20),
+    firs_reg_ip character varying(50),
+    fina_reg_pgm_id character varying(20),
+    fina_reg_dts timestamp without time zone DEFAULT now(),
+    fina_reg_user_id character varying(20),
+    fina_reg_ip character varying(50)
+,    CONSTRAINT sy_brndz_bizd_info_pk PRIMARY KEY (mpng_no)
+);
+CREATE TABLE sy_brndz_bizd_info_ud_log (
+    id bigint NOT NULL DEFAULT nextval('sy_brndz_bizd_info_ud_log_id_seq'::regclass),
+    op text NOT NULL,
+    old_data jsonb,
+    new_data jsonb,
+    changed_by text,
+    client_addr text,
+    server_addr text,
+    log_dts timestamp without time zone NOT NULL DEFAULT now()
+,    CONSTRAINT sy_brndz_bizd_info_ud_log_pkey PRIMARY KEY (id)
+);
+CREATE TABLE sy_brndz_cc_info (
+    cc_cd character varying(10) NOT NULL,
+    ctrt_start_ym character varying(6) NOT NULL,
+    ctrt_end_ym character varying(6) NOT NULL,
+    bizd_cd character varying(10),
+    wrk_rmk character varying(100),
+    firs_reg_pgm_id character varying(50),
+    firs_reg_dts timestamp without time zone,
+    firs_reg_user_id character varying(20),
+    firs_reg_ip character varying(50),
+    fina_reg_pgm_id character varying(50),
+    fina_reg_dts timestamp without time zone,
+    fina_reg_user_id character varying(20),
+    fina_reg_ip character varying(50)
+,    CONSTRAINT sy_brndz_cc_info_pkey PRIMARY KEY (cc_cd, ctrt_start_ym)
+);
+CREATE TABLE sy_brndz_cc_info_ud_log (
+    id bigint NOT NULL DEFAULT nextval('sy_brndz_cc_info_ud_log_id_seq'::regclass),
+    op text NOT NULL,
+    old_data jsonb,
+    new_data jsonb,
+    changed_by text,
+    client_addr text,
+    server_addr text,
+    log_dts timestamp without time zone NOT NULL DEFAULT now()
+,    CONSTRAINT sy_brndz_cc_info_ud_log_pkey PRIMARY KEY (id)
+);
+CREATE TABLE sy_code_dtl (
+    wrk_tp_cd character varying(2) NOT NULL,
+    cd_tp_cd character varying(3) NOT NULL,
+    comm_cd character varying(10) NOT NULL,
+    comm_cd_nm character varying(100) NOT NULL,
+    sort_ord smallint,
+    use_yn character varying(1) DEFAULT 'Y'::character varying,
+    rel_wrk_tp_cd character varying(2),
+    rel_cd_tp_cd character varying(3),
+    rel_comm_cd character varying(10),
+    cd_prop_val1 character varying(100),
+    cd_prop_val2 character varying(100),
+    cd_prop_val3 character varying(100),
+    cd_prop_val4 character varying(100),
+    cd_prop_val5 character varying(100),
+    comm_cd_desc character varying(200),
+    wrk_rmk character varying(100),
+    firs_reg_pgm_id character varying(20),
+    firs_reg_dts timestamp without time zone DEFAULT now(),
+    firs_reg_user_id character varying(20),
+    firs_reg_ip character varying(50),
+    fina_reg_pgm_id character varying(20),
+    fina_reg_dts timestamp without time zone,
+    fina_reg_user_id character varying(20),
+    fina_reg_ip character varying(50)
+,    CONSTRAINT sy_code_dtl_pkey PRIMARY KEY (wrk_tp_cd, cd_tp_cd, comm_cd)
+);
+CREATE TABLE sy_code_dtl_ud_log (
+    id bigint NOT NULL DEFAULT nextval('sy_code_dtl_ud_log_id_seq'::regclass),
+    op text NOT NULL,
+    old_data jsonb,
+    new_data jsonb,
+    changed_by text,
+    client_addr text,
+    server_addr text,
+    log_dts timestamp without time zone NOT NULL DEFAULT now()
+,    CONSTRAINT sy_code_dtl_ud_log_pkey PRIMARY KEY (id)
+);
+CREATE TABLE sy_code_info_nj (
+    wrk_tp character varying(2) NOT NULL,
+    cd_tp character varying(3) NOT NULL,
+    cd character varying(10) NOT NULL,
+    kor_nm character varying(100),
+    eng_nm character varying(50),
+    use_yn character varying(1),
+    sort_ord character varying(3),
+    reg_psbl_dept character varying(5),
+    rmk character varying(200),
+    rel_cd character varying(10),
+    reg_dts timestamp without time zone DEFAULT now(),
+    reg_emp_no character varying(20),
+    ip character varying(50)
+,    CONSTRAINT sy_code_info_nj_pk PRIMARY KEY (wrk_tp, cd_tp, cd)
+);
+CREATE TABLE sy_code_info_nj_ud_log (
+    id bigint NOT NULL DEFAULT nextval('sy_code_info_nj_ud_log_id_seq'::regclass),
+    op text NOT NULL,
+    old_data jsonb,
+    new_data jsonb,
+    changed_by text,
+    client_addr text,
+    server_addr text,
+    log_dts timestamp without time zone NOT NULL DEFAULT now()
+,    CONSTRAINT sy_code_info_nj_ud_log_pkey PRIMARY KEY (id)
+);
+CREATE TABLE sy_code_mst (
+    wrk_tp_cd character varying(2) NOT NULL,
+    cd_tp_cd character varying(3) NOT NULL,
+    cd_tp_nm character varying(30) NOT NULL,
+    use_yn character varying(1) DEFAULT 'Y'::character varying,
+    sys_yn character varying(1) DEFAULT 'N'::character varying,
+    cd_tp_desc character varying(100),
+    wrk_rmk character varying(100),
+    firs_reg_pgm_id character varying(20),
+    firs_reg_dts timestamp without time zone DEFAULT now(),
+    firs_reg_user_id character varying(20),
+    firs_reg_ip character varying(50),
+    fina_reg_pgm_id character varying(20),
+    fina_reg_dts timestamp without time zone,
+    fina_reg_user_id character varying(20),
+    fina_reg_ip character varying(50)
+,    CONSTRAINT sy_code_mst_pk PRIMARY KEY (wrk_tp_cd, cd_tp_cd)
+);
+CREATE TABLE sy_col_info_sjerp (
+    table_catalog name NOT NULL,
+    table_schema name NOT NULL,
+    table_name name NOT NULL,
+    column_name name NOT NULL,
+    ordinal_position integer,
+    column_default character varying,
+    is_nullable character varying(3),
+    data_type character varying,
+    character_maximum_length integer,
+    character_octet_length integer,
+    numeric_precision integer,
+    numeric_precision_radix integer,
+    numeric_scale integer,
+    datetime_precision integer,
+    interval_type character varying,
+    interval_precision integer,
+    character_set_catalog name,
+    character_set_schema name,
+    character_set_name name,
+    collation_catalog name,
+    collation_schema name,
+    collation_name name,
+    domain_catalog name,
+    domain_schema name,
+    domain_name name,
+    udt_catalog name,
+    udt_schema name,
+    udt_name name,
+    scope_catalog name,
+    scope_schema name,
+    scope_name name,
+    maximum_cardinality integer,
+    dtd_identifier name,
+    is_self_referencing character varying(3),
+    is_identity character varying(3),
+    identity_generation character varying,
+    identity_start character varying,
+    identity_increment character varying,
+    identity_maximum character varying,
+    identity_minimum character varying,
+    identity_cycle character varying(3),
+    is_generated character varying,
+    generation_expression character varying,
+    is_updatable character varying(3)
+,    CONSTRAINT sy_col_info_sjerp_pk PRIMARY KEY (table_catalog, table_schema, table_name, column_name)
+);
+CREATE TABLE sy_comp_info (
+    comp_nm character varying(100) NOT NULL,
+    biz_no character varying(20),
+    corp_no character varying(20),
+    tel_no character varying(20),
+    fax_no character varying(20),
+    post_no character varying(10),
+    base_addr character varying(100),
+    dtl_addr character varying(100),
+    ceo_nm character varying(30),
+    wrk_rmk character varying(100),
+    firs_reg_pgm_id character varying(20),
+    firs_reg_dts timestamp without time zone DEFAULT now(),
+    firs_reg_user_id character varying(20),
+    firs_reg_ip character varying(50),
+    fina_reg_pgm_id character varying(20),
+    fina_reg_dts timestamp without time zone,
+    fina_reg_user_id character varying(20),
+    fina_reg_ip character varying(50),
+    id integer NOT NULL DEFAULT nextval('sy_comp_info_id_seq'::regclass)
+,    CONSTRAINT sy_comp_info_pkey PRIMARY KEY (id)
+);
+CREATE TABLE sy_dept_apmt_info (
+    apmt_no character varying(20) NOT NULL,
+    user_id character varying(20) NOT NULL,
+    apmt_nm character varying(100),
+    emp_no character varying(20),
+    apmt_dt character varying(8),
+    bef_dept_cd character varying(10),
+    apmt_dept_cd character varying(10),
+    bef_mtjob_dept_cd character varying(10),
+    apmt_mtjob_dept_cd character varying(10),
+    auth_apply_yn character varying(1) DEFAULT 'N'::character varying,
+    wrk_rmk character varying(100),
+    firs_reg_pgm_id character varying(20),
+    firs_reg_dts timestamp without time zone DEFAULT now(),
+    firs_reg_user_id character varying(20),
+    firs_reg_ip character varying(50),
+    fina_reg_pgm_id character varying(20),
+    fina_reg_dts timestamp without time zone,
+    fina_reg_user_id character varying(20),
+    fina_reg_ip character varying(50)
+,    CONSTRAINT sy_dept_apmt_info_pkey PRIMARY KEY (apmt_no, user_id)
+);
+CREATE TABLE sy_dept_brndz_info (
+    dept_cd character varying(10) NOT NULL,
+    wrk_rmk character varying(100),
+    firs_reg_pgm_id character varying(20),
+    firs_reg_dts timestamp without time zone DEFAULT now(),
+    firs_reg_user_id character varying(20),
+    firs_reg_ip character varying(50),
+    fina_reg_pgm_id character varying(20),
+    fina_reg_dts timestamp without time zone,
+    fina_reg_user_id character varying(20),
+    fina_reg_ip character varying(50)
+,    CONSTRAINT sy_dept_brndz_info_pkey PRIMARY KEY (dept_cd)
+);
+CREATE TABLE sy_dept_info (
+    dept_cd character varying(10) NOT NULL,
+    dept_nm character varying(30) NOT NULL,
+    uppr_dept_cd character varying(10),
+    dept_mngr_id character varying(20),
+    cc_cd character varying(10),
+    disp_yn character varying(1),
+    use_yn character varying(1),
+    wrk_rmk character varying(100),
+    firs_reg_pgm_id character varying(20),
+    firs_reg_dts timestamp without time zone DEFAULT now(),
+    firs_reg_user_id character varying(20),
+    firs_reg_ip character varying(50),
+    fina_reg_pgm_id character varying(20),
+    fina_reg_dts timestamp without time zone,
+    fina_reg_user_id character varying(20),
+    fina_reg_ip character varying(50)
+,    CONSTRAINT sy_dept_info_pkey PRIMARY KEY (dept_cd)
+);
+CREATE TABLE sy_env_info (
+    env_cd character varying(50) NOT NULL,
+    env_nm character varying(100) NOT NULL,
+    env_val character varying(100),
+    env_cd_desc character varying(100),
+    wrk_rmk character varying(100),
+    firs_reg_pgm_id character varying(20),
+    firs_reg_dts timestamp without time zone DEFAULT now(),
+    firs_reg_user_id character varying(20),
+    firs_reg_ip character varying(50),
+    fina_reg_pgm_id character varying(20),
+    fina_reg_dts timestamp without time zone,
+    fina_reg_user_id character varying(20),
+    fina_reg_ip character varying(50)
+,    CONSTRAINT sy_env_info_pkey PRIMARY KEY (env_cd)
+);
+CREATE TABLE sy_err_list (
+    err_key bigint NOT NULL,
+    err_dt character varying(10),
+    err_type character varying(50),
+    err_object character varying(50),
+    err_content character varying(300),
+    reg_pgm_id character varying(20),
+    reg_dts timestamp without time zone DEFAULT now(),
+    reg_user_id character varying(20),
+    reg_ip character varying(50)
+,    CONSTRAINT sy_err_list_pk PRIMARY KEY (err_key)
+);
+CREATE TABLE sy_err_log_info (
+    err_key bigint NOT NULL,
+    err_dt character varying(10),
+    err_type character varying(50),
+    err_object character varying(50),
+    err_content character varying(300),
+    reg_pgm_id character varying(20),
+    reg_dts timestamp without time zone DEFAULT now(),
+    reg_user_id character varying(20),
+    reg_ip character varying(50)
+,    CONSTRAINT sy_err_log_info_pk PRIMARY KEY (err_key)
+);
+CREATE TABLE sy_esp_user_info (
+    comp_nm character varying(200) NOT NULL,
+    rprs_comp_yn character varying(1) NOT NULL,
+    emp_no character varying(20) NOT NULL,
+    user_id character varying(30) NOT NULL,
+    user_nm character varying(200) NOT NULL,
+    dept_cd character varying(20) NOT NULL,
+    dept_nm character varying(200) NOT NULL,
+    posi_cd character varying(20) NOT NULL,
+    posi_nm character varying(100) NOT NULL,
+    dty_cd character varying(20) NOT NULL,
+    dty_nm character varying(200) NOT NULL,
+    retr_yn character varying(1) NOT NULL,
+    hp_no character varying(20) NOT NULL,
+    inln_no character varying(40) NOT NULL,
+    email_addr character varying(100) NOT NULL,
+    useyn character varying(1)
+
+);
+CREATE TABLE sy_file_info (
+    file_id character varying(20) NOT NULL,
+    file_seq character varying(5) NOT NULL,
+    save_file_nm character varying(100) NOT NULL,
+    org_file_nm character varying(150),
+    file_tp character varying(200),
+    file_path character varying(100),
+    file_val character varying(100),
+    firs_reg_pgm_id character varying(20),
+    firs_reg_dts timestamp without time zone DEFAULT now(),
+    firs_reg_user_id character varying(20),
+    firs_reg_ip character varying(50),
+    fina_reg_pgm_id character varying(20),
+    fina_reg_dts timestamp without time zone,
+    fina_reg_user_id character varying(20),
+    fina_reg_ip character varying(50)
+,    CONSTRAINT sy_file_info_pkey PRIMARY KEY (file_id, file_seq)
+);
+CREATE TABLE sy_grp_auth_info (
+    grp_id character varying(20) NOT NULL,
+    pgm_id character varying(20) NOT NULL,
+    use_yn character varying(1) DEFAULT 'N'::character varying,
+    srch_yn character varying(1) DEFAULT 'N'::character varying,
+    new_yn character varying(1) DEFAULT 'N'::character varying,
+    save_yn character varying(1) DEFAULT 'N'::character varying,
+    del_yn character varying(1) DEFAULT 'N'::character varying,
+    prnt_yn character varying(1) DEFAULT 'N'::character varying,
+    upld_yn character varying(1) DEFAULT 'N'::character varying,
+    init_yn character varying(1) DEFAULT 'N'::character varying,
+    etc1_yn character varying(1) DEFAULT 'N'::character varying,
+    etc2_yn character varying(1) DEFAULT 'N'::character varying,
+    etc3_yn character varying(1) DEFAULT 'N'::character varying,
+    etc4_yn character varying(1) DEFAULT 'N'::character varying,
+    etc5_yn character varying(1) DEFAULT 'N'::character varying,
+    etc6_yn character varying(1) DEFAULT 'N'::character varying,
+    etc7_yn character varying(1) DEFAULT 'N'::character varying,
+    etc8_yn character varying(1) DEFAULT 'N'::character varying,
+    etc9_yn character varying(1) DEFAULT 'N'::character varying,
+    etc10_yn character varying(1) DEFAULT 'N'::character varying,
+    spcl1_yn character varying(1) DEFAULT 'N'::character varying,
+    spcl2_yn character varying(1) DEFAULT 'N'::character varying,
+    spcl3_yn character varying(1) DEFAULT 'N'::character varying,
+    spcl4_yn character varying(1) DEFAULT 'N'::character varying,
+    spcl5_yn character varying(1) DEFAULT 'N'::character varying,
+    spcl6_yn character varying(1) DEFAULT 'N'::character varying,
+    spcl7_yn character varying(1) DEFAULT 'N'::character varying,
+    spcl8_yn character varying(1) DEFAULT 'N'::character varying,
+    spcl9_yn character varying(1) DEFAULT 'N'::character varying,
+    spcl10_yn character varying(1) DEFAULT 'N'::character varying,
+    wrk_rmk character varying(100),
+    firs_reg_pgm_id character varying(20),
+    firs_reg_dts timestamp without time zone DEFAULT now(),
+    firs_reg_user_id character varying(20),
+    firs_reg_ip character varying(50),
+    fina_reg_pgm_id character varying(20),
+    fina_reg_dts timestamp without time zone,
+    fina_reg_user_id character varying(20),
+    fina_reg_ip character varying(50)
+,    CONSTRAINT sy_grp_auth_info_pkey PRIMARY KEY (grp_id, pgm_id)
+);
+CREATE TABLE sy_grp_dept_info (
+    grp_id character varying(20) NOT NULL,
+    dept_cd character varying(10) NOT NULL,
+    wrk_rmk character varying(100),
+    firs_reg_pgm_id character varying(20),
+    firs_reg_dts timestamp without time zone DEFAULT now(),
+    firs_reg_user_id character varying(20),
+    firs_reg_ip character varying(50),
+    fina_reg_pgm_id character varying(20),
+    fina_reg_dts timestamp without time zone,
+    fina_reg_user_id character varying(20),
+    fina_reg_ip character varying(50)
+,    CONSTRAINT sy_grp_dept_info_pkey PRIMARY KEY (grp_id, dept_cd)
+);
+CREATE TABLE sy_grp_info (
+    grp_id character varying(20) NOT NULL,
+    grp_nm character varying(30) NOT NULL,
+    sort_ord smallint,
+    grp_desc character varying(100),
+    wrk_rmk character varying(100),
+    firs_reg_pgm_id character varying(20),
+    firs_reg_dts timestamp without time zone DEFAULT now(),
+    firs_reg_user_id character varying(20),
+    firs_reg_ip character varying(50),
+    fina_reg_pgm_id character varying(20),
+    fina_reg_dts timestamp without time zone,
+    fina_reg_user_id character varying(20),
+    fina_reg_ip character varying(50)
+,    CONSTRAINT sy_grp_info_pkey PRIMARY KEY (grp_id)
+);
+CREATE TABLE sy_grp_user_info (
+    grp_id character varying(20) NOT NULL,
+    user_id character varying(20) NOT NULL,
+    wrk_rmk character varying(100),
+    firs_reg_pgm_id character varying(20),
+    firs_reg_dts timestamp without time zone DEFAULT now(),
+    firs_reg_user_id character varying(20),
+    firs_reg_ip character varying(50),
+    fina_reg_pgm_id character varying(20),
+    fina_reg_dts timestamp without time zone,
+    fina_reg_user_id character varying(20),
+    fina_reg_ip character varying(50)
+,    CONSTRAINT sy_grp_user_info_pkey PRIMARY KEY (grp_id, user_id)
+);
+CREATE TABLE sy_log_info (
+    log_key bigint NOT NULL,
+    log_dt character varying(10),
+    log_type character varying(10),
+    log_content character varying(50),
+    reg_pgm_id character varying(20),
+    reg_dts timestamp without time zone DEFAULT now(),
+    reg_user_id character varying(20),
+    reg_ip character varying(50),
+    log_rmk text
+,    CONSTRAINT sy_log_info_pk PRIMARY KEY (log_key)
+);
+CREATE TABLE sy_lunar_to_solar (
+    lunc_dt character varying(8),
+    solc_dt character varying(8),
+    yun_yn smallint
+
+);
+CREATE TABLE sy_menu_info (
+    menu_mdul_id character varying(10) NOT NULL,
+    menu_id character varying(20) NOT NULL,
+    menu_nm character varying(100) NOT NULL,
+    uppr_menu_id character varying(20),
+    menu_tp_cd character varying(1),
+    pgm_id character varying(20),
+    wrk_rmk character varying(100),
+    firs_reg_pgm_id character varying(20),
+    firs_reg_dts timestamp without time zone DEFAULT now(),
+    firs_reg_user_id character varying(20),
+    firs_reg_ip character varying(50),
+    fina_reg_pgm_id character varying(20),
+    fina_reg_dts timestamp without time zone,
+    fina_reg_user_id character varying(20),
+    fina_reg_ip character varying(50)
+,    CONSTRAINT sy_menu_info_pkey PRIMARY KEY (menu_mdul_id, menu_id)
+);
+CREATE TABLE sy_menu_mdul_dtl (
+    menu_mdul_id character varying(10) NOT NULL,
+    menu_mdul_tp_id character varying(3) NOT NULL,
+    menu_mdul_tp_nm character varying(30) NOT NULL,
+    menu_mdul_tp_desc character varying(100),
+    wrk_rmk character varying(100),
+    firs_reg_pgm_id character varying(20),
+    firs_reg_dts timestamp without time zone DEFAULT now(),
+    firs_reg_user_id character varying(20),
+    firs_reg_ip character varying(50),
+    fina_reg_pgm_id character varying(20),
+    fina_reg_dts timestamp without time zone,
+    fina_reg_user_id character varying(20),
+    fina_reg_ip character varying(50)
+,    CONSTRAINT sy_menu_mdul_dtl_pk PRIMARY KEY (menu_mdul_id, menu_mdul_tp_id)
+);
+CREATE TABLE sy_menu_mdul_info (
+    menu_mdul_id character varying(10) NOT NULL,
+    menu_mdul_nm character varying(30) NOT NULL,
+    menu_mdul_snm character varying(10) NOT NULL,
+    sort_ord smallint,
+    menu_mdul_desc character varying(100),
+    wrk_rmk character varying(100),
+    firs_reg_pgm_id character varying(20),
+    firs_reg_dts timestamp without time zone DEFAULT now(),
+    firs_reg_user_id character varying(20),
+    firs_reg_ip character varying(50),
+    fina_reg_pgm_id character varying(20),
+    fina_reg_dts timestamp without time zone,
+    fina_reg_user_id character varying(20),
+    fina_reg_ip character varying(50)
+,    CONSTRAINT sy_menu_mdul_info_pkey PRIMARY KEY (menu_mdul_id)
+);
+CREATE TABLE sy_menu_mdul_mst (
+    menu_mdul_id character varying(10) NOT NULL,
+    menu_mdul_nm character varying(30) NOT NULL,
+    menu_mdul_snm character varying(10) NOT NULL,
+    sort_ord smallint,
+    menu_mdul_desc character varying(100),
+    wrk_rmk character varying(100),
+    firs_reg_pgm_id character varying(20),
+    firs_reg_dts timestamp without time zone DEFAULT now(),
+    firs_reg_user_id character varying(20),
+    firs_reg_ip character varying(50),
+    fina_reg_pgm_id character varying(20),
+    fina_reg_dts timestamp without time zone,
+    fina_reg_user_id character varying(20),
+    fina_reg_ip character varying(50)
+,    CONSTRAINT sy_menu_mdul_mst_pk PRIMARY KEY (menu_mdul_id)
+);
+CREATE TABLE sy_pgm_fav_info (
+    user_id character varying(20) NOT NULL,
+    pgm_id character varying(20) NOT NULL,
+    wrk_rmk character varying(100),
+    firs_reg_pgm_id character varying(20),
+    firs_reg_dts timestamp without time zone DEFAULT now(),
+    firs_reg_user_id character varying(20),
+    firs_reg_ip character varying(50),
+    fina_reg_pgm_id character varying(20),
+    fina_reg_dts timestamp without time zone,
+    fina_reg_user_id character varying(20),
+    fina_reg_ip character varying(50)
+,    CONSTRAINT sy_pgm_fav_info_pkey PRIMARY KEY (user_id, pgm_id)
+);
+CREATE TABLE sy_pgm_info (
+    pgm_id character varying(20) NOT NULL,
+    pgm_nm character varying(30) NOT NULL,
+    wrk_tp_cd character varying(2),
+    pgm_ctg_cd character varying(3),
+    pgm_path character varying(100),
+    use_yn character varying(1) DEFAULT 'N'::character varying,
+    srch_yn character varying(1) DEFAULT 'N'::character varying,
+    new_yn character varying(1) DEFAULT 'N'::character varying,
+    save_yn character varying(1) DEFAULT 'N'::character varying,
+    del_yn character varying(1) DEFAULT 'N'::character varying,
+    prnt_yn character varying(1) DEFAULT 'N'::character varying,
+    upld_yn character varying(1) DEFAULT 'N'::character varying,
+    init_yn character varying(1) DEFAULT 'N'::character varying,
+    etc_desc1 character varying(30),
+    etc_desc2 character varying(30),
+    etc_desc3 character varying(30),
+    etc_desc4 character varying(30),
+    etc_desc5 character varying(30),
+    etc_desc6 character varying(30),
+    etc_desc7 character varying(30),
+    etc_desc8 character varying(30),
+    etc_desc9 character varying(30),
+    etc_desc10 character varying(30),
+    spcl_desc1 character varying(30),
+    spcl_desc2 character varying(30),
+    spcl_desc3 character varying(30),
+    spcl_desc4 character varying(30),
+    spcl_desc5 character varying(30),
+    spcl_desc6 character varying(30),
+    spcl_desc7 character varying(30),
+    spcl_desc8 character varying(30),
+    spcl_desc9 character varying(30),
+    spcl_desc10 character varying(30),
+    pgm_desc character varying(100),
+    wrk_rmk character varying(100),
+    firs_reg_pgm_id character varying(20),
+    firs_reg_dts timestamp without time zone DEFAULT now(),
+    firs_reg_user_id character varying(20),
+    firs_reg_ip character varying(50),
+    fina_reg_pgm_id character varying(20),
+    fina_reg_dts timestamp without time zone,
+    fina_reg_user_id character varying(20),
+    fina_reg_ip character varying(50),
+    menu_mdul_tp_id character varying(20),
+    menu_mdul_id character varying(20)
+,    CONSTRAINT sy_pgm_info_pk PRIMARY KEY (pgm_id)
+);
+CREATE TABLE sy_prnt_dtl (
+    ref_pgm_id character varying(20) NOT NULL,
+    prnt_id character varying(20) NOT NULL,
+    prnt_nm character varying(30),
+    prnt_path character varying(100),
+    sort_ord smallint,
+    use_yn character varying(1),
+    src_pgm_id character varying(20),
+    wrk_rmk character varying(100),
+    firs_reg_pgm_id character varying(50),
+    firs_reg_dts timestamp without time zone DEFAULT now(),
+    firs_reg_user_id character varying(20),
+    firs_reg_ip character varying(50),
+    fina_reg_pgm_id character varying(50),
+    fina_reg_dts timestamp without time zone DEFAULT now(),
+    fina_reg_user_id character varying(20),
+    fina_reg_ip character varying(50)
+,    CONSTRAINT sy_prnt_dtl_pkey PRIMARY KEY (ref_pgm_id, prnt_id)
+);
+CREATE TABLE sy_prnt_mst (
+    pgm_id character varying(20) NOT NULL,
+    prnt_id character varying(20) NOT NULL,
+    prnt_nm character varying(30),
+    menu_mdul_id character varying(2),
+    menu_mdul_tp_id character varying(3),
+    prnt_path character varying(100),
+    sort_ord smallint,
+    wrk_rmk character varying(100),
+    firs_reg_pgm_id character varying(50),
+    firs_reg_dts timestamp without time zone DEFAULT now(),
+    firs_reg_user_id character varying(20),
+    firs_reg_ip character varying(50),
+    fina_reg_pgm_id character varying(50),
+    fina_reg_dts timestamp without time zone DEFAULT now(),
+    fina_reg_user_id character varying(20),
+    fina_reg_ip character varying(50)
+,    CONSTRAINT sy_prnt_mst_pk PRIMARY KEY (pgm_id, prnt_id)
+);
+CREATE TABLE sy_user_auth_info (
+    user_id character varying(20) NOT NULL,
+    grp_id character varying(20) NOT NULL,
+    pgm_id character varying(20) NOT NULL,
+    use_yn character varying(1) DEFAULT 'N'::character varying,
+    srch_yn character varying(1) DEFAULT 'N'::character varying,
+    new_yn character varying(1) DEFAULT 'N'::character varying,
+    save_yn character varying(1) DEFAULT 'N'::character varying,
+    del_yn character varying(1) DEFAULT 'N'::character varying,
+    prnt_yn character varying(1) DEFAULT 'N'::character varying,
+    upld_yn character varying(1) DEFAULT 'N'::character varying,
+    init_yn character varying(1) DEFAULT 'N'::character varying,
+    etc1_yn character varying(1) DEFAULT 'N'::character varying,
+    etc2_yn character varying(1) DEFAULT 'N'::character varying,
+    etc3_yn character varying(1) DEFAULT 'N'::character varying,
+    etc4_yn character varying(1) DEFAULT 'N'::character varying,
+    etc5_yn character varying(1) DEFAULT 'N'::character varying,
+    etc6_yn character varying(1) DEFAULT 'N'::character varying,
+    etc7_yn character varying(1) DEFAULT 'N'::character varying,
+    etc8_yn character varying(1) DEFAULT 'N'::character varying,
+    etc9_yn character varying(1) DEFAULT 'N'::character varying,
+    etc10_yn character varying(1) DEFAULT 'N'::character varying,
+    spcl1_yn character varying(1) DEFAULT 'N'::character varying,
+    spcl2_yn character varying(1) DEFAULT 'N'::character varying,
+    spcl3_yn character varying(1) DEFAULT 'N'::character varying,
+    spcl4_yn character varying(1) DEFAULT 'N'::character varying,
+    spcl5_yn character varying(1) DEFAULT 'N'::character varying,
+    spcl6_yn character varying(1) DEFAULT 'N'::character varying,
+    spcl7_yn character varying(1) DEFAULT 'N'::character varying,
+    spcl8_yn character varying(1) DEFAULT 'N'::character varying,
+    spcl9_yn character varying(1) DEFAULT 'N'::character varying,
+    spcl10_yn character varying(1) DEFAULT 'N'::character varying,
+    wrk_rmk character varying(100),
+    firs_reg_pgm_id character varying(20),
+    firs_reg_dts timestamp without time zone DEFAULT now(),
+    firs_reg_user_id character varying(20),
+    firs_reg_ip character varying(50),
+    fina_reg_pgm_id character varying(20),
+    fina_reg_dts timestamp without time zone,
+    fina_reg_user_id character varying(20),
+    fina_reg_ip character varying(50)
+,    CONSTRAINT sy_user_auth_info_pkey PRIMARY KEY (user_id, grp_id, pgm_id)
+);
+CREATE TABLE sy_user_bizd_info (
+    user_id character varying(20) NOT NULL,
+    bizd_cd character varying(10) NOT NULL,
+    main_bizd_yn character varying(1),
+    wrk_rmk character varying(100),
+    firs_reg_pgm_id character varying(20),
+    firs_reg_dts timestamp without time zone DEFAULT now(),
+    firs_reg_user_id character varying(20),
+    firs_reg_ip character varying(50),
+    fina_reg_pgm_id character varying(20),
+    fina_reg_dts timestamp without time zone,
+    fina_reg_user_id character varying(20),
+    fina_reg_ip character varying(50)
+,    CONSTRAINT sy_user_bizd_info_pkey PRIMARY KEY (user_id, bizd_cd)
+);
+CREATE TABLE sy_user_brndz_info (
+    user_id character varying(20) NOT NULL,
+    main_brndz_yn character varying(1) NOT NULL DEFAULT 'N'::character varying,
+    wrk_rmk character varying(100),
+    firs_reg_pgm_id character varying(20),
+    firs_reg_dts timestamp without time zone DEFAULT now(),
+    firs_reg_user_id character varying(20),
+    firs_reg_ip character varying(50),
+    fina_reg_pgm_id character varying(20),
+    fina_reg_dts timestamp without time zone,
+    fina_reg_user_id character varying(20),
+    fina_reg_ip character varying(50)
+,    CONSTRAINT sy_user_brndz_info_pkey PRIMARY KEY (user_id)
+);
+CREATE TABLE sy_user_dept_info (
+    user_id character varying(20) NOT NULL,
+    dept_cd character varying(10) NOT NULL,
+    main_comp_yn character varying(1) NOT NULL,
+    main_dept_yn character varying(1) NOT NULL,
+    emp_no character varying(20),
+    pstn_cd character varying(10),
+    dty_cd character varying(10),
+    wrk_rmk character varying(100),
+    firs_reg_pgm_id character varying(20),
+    firs_reg_dts timestamp without time zone DEFAULT now(),
+    firs_reg_user_id character varying(20),
+    firs_reg_ip character varying(50),
+    fina_reg_pgm_id character varying(20),
+    fina_reg_dts timestamp without time zone DEFAULT now(),
+    fina_reg_user_id character varying(20),
+    fina_reg_ip character varying(50)
+,    CONSTRAINT sy_user_dept_info_pkey PRIMARY KEY (user_id, dept_cd)
+);
+CREATE TABLE sy_user_info (
+    user_id character varying(20) NOT NULL,
+    user_nm character varying(30) NOT NULL,
+    emp_no character varying(20),
+    pstn_cd character varying(10),
+    dty_cd character varying(10),
+    join_dt character varying(8),
+    retr_dt character varying(8),
+    hlof_tp_cd character varying(10),
+    tel_no character varying(20),
+    hp_no character varying(20),
+    zip_no character varying(10),
+    base_addr character varying(100),
+    dtl_addr character varying(100),
+    email character varying(50),
+    use_yn character varying(1) DEFAULT 'Y'::character varying,
+    pos_use_yn character varying(1) DEFAULT 'N'::character varying,
+    postalk_use_yn character varying(1) DEFAULT 'N'::character varying,
+    ext_user_yn character varying(1) DEFAULT 'N'::character varying,
+    auto_updt_yn character varying(1) DEFAULT 'Y'::character varying,
+    isf_login_yn character varying(1) DEFAULT 'N'::character varying,
+    isf_login_pwd character varying(100),
+    wrk_rmk character varying(100),
+    firs_reg_pgm_id character varying(20),
+    firs_reg_dts timestamp without time zone DEFAULT now(),
+    firs_reg_user_id character varying(20),
+    firs_reg_ip character varying(50),
+    fina_reg_pgm_id character varying(20),
+    fina_reg_dts timestamp without time zone DEFAULT now(),
+    fina_reg_user_id character varying(20),
+    fina_reg_ip character varying(50)
+,    CONSTRAINT sy_user_info_pk PRIMARY KEY (user_id)
+);
+CREATE TABLE sy_wrk_tp_info (
+    wrk_tp_cd character varying(2) NOT NULL,
+    wrk_tp_nm character varying(30) NOT NULL,
+    sort_ord smallint,
+    use_yn character varying(1) DEFAULT 'Y'::character varying,
+    wrk_tp_desc character varying(100),
+    wrk_rmk character varying(100),
+    firs_reg_pgm_id character varying(20),
+    firs_reg_dts timestamp without time zone DEFAULT now(),
+    firs_reg_user_id character varying(20),
+    firs_reg_ip character varying(50),
+    fina_reg_pgm_id character varying(20),
+    fina_reg_dts timestamp without time zone,
+    fina_reg_user_id character varying(20),
+    fina_reg_ip character varying(50)
+,    CONSTRAINT sy_wrk_tp_info_pk PRIMARY KEY (wrk_tp_cd)
+);
+CREATE TABLE sy_xls_info (
+    pgm_id character varying(20) NOT NULL,
+    xls_seq character varying(5) NOT NULL,
+    xls_nm character varying(30) NOT NULL,
+    file_id character varying(20) NOT NULL,
+    xls_desc character varying(100),
+    firs_reg_pgm_id character varying(20),
+    firs_reg_dts timestamp without time zone DEFAULT now(),
+    firs_reg_user_id character varying(20),
+    firs_reg_ip character varying(50),
+    fina_reg_pgm_id character varying(20),
+    fina_reg_dts timestamp without time zone DEFAULT now(),
+    fina_reg_user_id character varying(20),
+    fina_reg_ip character varying(50)
+,    CONSTRAINT sy_xls_info_pkey PRIMARY KEY (pgm_id, xls_seq)
+);

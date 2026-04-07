@@ -1,0 +1,23 @@
+version: "1.0"
+scope: verify.controller
+checks:
+  - id: VC-001
+    name: "어노테이션 확인"
+    check: "@Slf4j @Controller present"
+    severity: critical
+  - id: VC-002
+    name: "생성자 주입"
+    check: "service injected via constructor"
+    severity: warning
+  - id: VC-003
+    name: "메서드 어노테이션"
+    check: "@AddUserInfo @LogAction @ResponseBody present on each endpoint"
+    severity: critical
+  - id: VC-004
+    name: "BaseResponse 반환"
+    check: "all methods return BaseResponse"
+    severity: critical
+  - id: VC-005
+    name: "예외 처리"
+    check: "try-catch with BaseResponse.Error"
+    severity: critical

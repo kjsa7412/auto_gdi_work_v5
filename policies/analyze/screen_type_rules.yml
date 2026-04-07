@@ -1,0 +1,40 @@
+version: "1.0"
+scope: analysis
+screen_types:
+  - type: search-grid-form
+    conditions:
+      - has_search_area: true
+      - has_grid: true
+      - has_detail_form: true
+    confidence: high
+  - type: grid-only
+    conditions:
+      - has_search_area: true
+      - has_grid: true
+      - has_detail_form: false
+    confidence: high
+  - type: form-detail
+    conditions:
+      - is_sub_screen: true
+      - has_detail_form: true
+    confidence: high
+  - type: popup-grid
+    conditions:
+      - is_popup: true
+    confidence: high
+  - type: unknown
+    conditions:
+      - none_of_above: true
+    confidence: low
+    requires_manual_review: true
+rules:
+  - id: STR-001
+    description: "화면유형 자동 분류"
+    condition: "screen analysis complete"
+    action: "match against screen_types conditions"
+    severity: critical
+  - id: STR-002
+    description: "unknown 유형은 수작업 전환"
+    condition: "screen_type == unknown"
+    action: "set manual_required: true"
+    severity: critical

@@ -1,0 +1,29 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Verify Result",
+  "type": "object",
+  "required": ["task_id", "screen_id", "verified_at", "overall_status", "checks"],
+  "properties": {
+    "task_id": { "type": "string" },
+    "screen_id": { "type": "string" },
+    "verified_at": { "type": "string", "format": "date-time" },
+    "overall_status": { "type": "string", "enum": ["pass", "fail", "manual_required"] },
+    "checks": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["check_id", "name", "result", "severity"],
+        "properties": {
+          "check_id": { "type": "string" },
+          "name": { "type": "string" },
+          "result": { "type": "string", "enum": ["pass", "fail", "skip"] },
+          "severity": { "type": "string", "enum": ["critical", "warning", "info"] },
+          "message": { "type": "string" },
+          "auto_fixed": { "type": "boolean", "default": false }
+        }
+      }
+    },
+    "critical_failures": { "type": "integer" },
+    "warnings": { "type": "integer" }
+  }
+}
